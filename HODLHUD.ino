@@ -1,18 +1,19 @@
 /* TODO 
 
 [ ] We want to: Consistently log code results/status during operation
-    [ ] For this we need to: Create Logger class
+    [X] For this we need to: Create Logger class
         And that requires the following:
         [ ] Create properties
-            [ ] Name:        string
-            [ ] Shape Type:  string     
-            [ ] Start Pos X: int 
-            [ ] Start Pos Y: int
-            [ ] Width (X):   int
-            [ ] Width (Y):   int
-        [ ] Create functions
-            [ ]   
-    [ ] Call upon logger class from each other class
+            [ ] 
+        [X] Create functions
+            [X]  Print
+    [ ] Initialize & call logger class from each other class
+        [X] HODLHUD Main File
+        [ ] WiFi Connector class
+        [ ] Currency pair data class
+        [ ] API caller class
+        [ ] UI element data class
+        [ ] Display printer class
 
 [ ] We want to: Connect to WiFi
     [ ] Create WiFi connector class
