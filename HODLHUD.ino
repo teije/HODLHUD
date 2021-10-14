@@ -71,12 +71,27 @@
                 [ ] Reset Display Partially()
                 [ ] 
 
+[ ] We want to: Interact with the elements on the display
+    [ ] 
     
 */
-void setup() {
 
+#include "Logger.h"
+
+const int LOOP_DELAY = 500;
+const Logger* LOGGER = new Logger("HODLHUD");
+
+void setup() {
+  Serial.begin(9600);
+  LOGGER->print("Setup start");
+
+  LOGGER->print("Setup end");
 }
 
 void loop() {
-
+  LOGGER->print("Loop start");
+  
+  
+  delay(LOOP_DELAY);
+  LOGGER->print("Look end");
 }
