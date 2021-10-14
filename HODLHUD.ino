@@ -15,17 +15,17 @@
         [ ] UI element data class
         [ ] Display printer class
 
-[ ] We want to: Connect to WiFi
-    [ ] Create WiFi connector class
-        [ ] Create properties
-            [ ] SSID:     string
-            [ ] Password: string
+[X] We want to: Connect to WiFi
+    [X] Create WiFi connector class
+        [X] Create properties
+            [X] SSID:     string
+            [X] Password: string
         [ ] Create functions
-            [ ] Connect()     return boolean:connectionSuccesful
-            [ ] Reconnect()   return boolean:connectionSuccesful
+            [X] Connect()     return boolean:connectionSuccesful
+            [X] Reconnect()   return boolean:connectionSuccesful
             [ ] IsConnected() return boolean:isConnected
-        [ ] Initialize WiFi connector class
-        [ ] Establish a WiFi connection
+        [X] Initialize WiFi connector class
+        [X] Establish a WiFi connection
         [ ] Allow the connection/testing multiple WiFi connections
         
 [ ] We want to: Fetch and store data (from the Binance API)
@@ -77,14 +77,29 @@
     
 */
 
-#include "Logger.h"
+// Third party libraries
+#include <Ethernet.h>
+#include <HTTPClient.h>
+#include <WiFi.h>
 
-const int LOOP_DELAY = 500;
-const Logger* LOGGER = new Logger("HODLHUD");
+// Project classes
+#include "Logger.h"
+#include "WiFiConnector.h"
+
+// Constants
+int LOOP_DELAY = 1000;
+
+// Testing WiFi hotspot config
+const char* ssid     = "HODL";
+const char* password = "HODLHUDV3";
+
+Logger* LOGGER = new Logger("HODLHUD");
 
 void setup() {
   Serial.begin(9600);
   LOGGER->print("Setup start");
+
+  WiFiConnector* hotSpotTeije = new WiFiConnector("HODL", "HODLHUDV3");
 
   LOGGER->print("Setup end");
 }
