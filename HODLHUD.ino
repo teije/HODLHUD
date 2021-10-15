@@ -9,8 +9,8 @@
             [X]  Print
     [ ] Initialize & call logger class from each other class
         [X] HODLHUD Main File
-        [ ] WiFi Connector class
-        [ ] Currency pair data class
+        [X] WiFi Connector class
+        [X] Currency pair data class
         [ ] API caller class
         [ ] UI element data class
         [ ] Display printer class
@@ -29,12 +29,12 @@
         [ ] Allow the connection/testing multiple WiFi connections
         
 [ ] We want to: Fetch and store data (from the Binance API)
-    [ ] Create a class to hold currency data
-        [ ] Create a CurrencyPair class/object 
-            [ ] Create properties
-                [ ] Main Currency:    string     
-                [ ] Cointer Currency: string
-                [ ] Spot Price:       float
+    [X] Create a way to hold currency data
+        [X] Create a CurrencyPair class/object 
+            [X] Create properties
+                [X] Main Currency:    string     
+                [X] Cointer Currency: string
+                [X] Spot Price:       float
             [ ] Create functions
                 [ ]     
             
