@@ -85,6 +85,7 @@
 // Project classes
 #include "Logger.h"
 #include "WiFiConnector.h"
+#include "CurrencyPair.h"
 
 // Constants
 int LOOP_DELAY = 1000;
@@ -100,6 +101,8 @@ void setup() {
   LOGGER->print("Setup start");
 
   WiFiConnector* hotSpotTeije = new WiFiConnector("HODL", "HODLHUDV3");
+
+  CurrencyPair* ADAUSD = new CurrencyPair("ADA","EUR", 2.1602);
 
   LOGGER->print("Setup end");
 }
