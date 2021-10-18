@@ -1,9 +1,11 @@
 class CurrencyPair
 {
   private:
+    // Services
     Logger* logger = new Logger("CurrencyPair");
      
   public:
+    // Properties
     String baseCurrency;    // Unique currency identifyer of the crypto currency (usually an abbreviation; BTC, ETH, LTC, etc.) 
     String counterCurrency; // Base currency in which the exchange rate is defined
     float spotPrice;        // Exchange price (in the baseCurrency)

@@ -12,6 +12,7 @@
 #include <WiFiGeneric.h>
 class WiFiConnector {
   private:
+    // Properties
     char* ssid;                        // Name of the network
     char* password;                    // Password used to connect to the network
     String deviceHostName;              // Name the device uses to idenify itself on the network/modem
@@ -20,6 +21,7 @@ class WiFiConnector {
     uint32_t connectionAttemptDelay;    // Time between each connection attempt in ms
     uint32_t notConnectedCounter;    // Time between each connection attempt in ms
 
+    // Services
     Logger* logger = new Logger("WiFiConnector");
 
   public: 
@@ -42,7 +44,7 @@ class WiFiConnector {
       logger->print("Connecting to WiFi (" + String(ssid) + ")");
       logger->print("Using MAC address: " + WiFi.macAddress());
 
-      notConnectedCounter = 0;
+      notConnectedCounter = 1;
 
       while (WiFi.status() != WL_CONNECTED) {
         reconnect();
