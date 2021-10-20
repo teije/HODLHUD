@@ -119,28 +119,17 @@ void setup() {
 
   // Instance of the API caller class to fetch data from the binance API
   APICaller* binanceAPI = new APICaller("Binance");         // Create a new caller for the Binance API
-  String timestamp = binanceAPI->timestamp();               // Fetch the current timestamp
-  const char* payload = ("timestamp=" + timestamp).c_str(); // Construct the payload for the signature
-  String signature = binanceAPI->signature(payload);        // Create a signature from the payload
-
-  String response = binanceAPI->execute("/sapi/v1/capital/config/getall?timestamp=" + timestamp + "&signature=" + signature); // Execute the API call to fetch wallet contents
-
-  logger->print(response);
-
-  String deposit_timestamp = binanceAPI->timestamp();               // Fetch the current timestamp
-  const char* deposit_payload = ("timestamp=" + deposit_timestamp).c_str(); // Construct the payload for the signature
-  String deposit_signature = binanceAPI->signature(deposit_payload);        // Create a signature from the payload
-
-  String depositResponse = binanceAPI->execute("/sapi/v1/capital/deposit/hisrec?timestamp=" + deposit_timestamp + "&signature=" + deposit_signature);
-  
-  logger->print(depositResponse);
+  String walletAllCoinsJSON = binanceAPI->execute("/sapi/v1/capital/config/getall");  // Execute API call to fetch all wallet coins
+  String walletAllDeposits  = binanceAPI->execute("/sapi/v1/capital/deposit/hisrec"); // Execute API call to fetch all deposits to the wallet
 
   logger->print("Setup end");
 }
 
 void loop() {
   logger->print("Loop start");
+
+  String depositResponse = binanceAPI->execute("/sapi/v1/capital/deposit/hisrec");
   
   delay(LOOP_DELAY);
-  logger->print("Look end");
+  logger->print("Loop end");
 }

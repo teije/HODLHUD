@@ -11,11 +11,9 @@ class APICaller
     HTTPClient http;
 
     // Constants
-    const String BINANCE_BASE_URL   = "https://api.binance.com";
-    char *BINANCE_API_KEY    = "y7ZTPqACsHNxFR5m2JDQ7SdgJ1mOaInXWJT74QWVo3jgTdgAWUVbjMBFZolcTopb";
-    //char *BINANCE_API_SECRET = "ClFDW0obmAXwh90kOZG8X3VzrUaMzekMqzqDefavl5MK1EK0IPrbN0yNtAQDYRlQ";
-    char *BINANCE_API_SECRET = "TGdqRdsKQ3YtEBaOW9uOgBQbWXrD8QubAXUUfaGocZraOVRG3Hs5tjNQeWt8Tyxo";
-
+    const String BINANCE_BASE_URL = "https://api.binance.com";
+    char *BINANCE_API_KEY         = "y7ZTPqACsHNxFR5m2JDQ7SdgJ1mOaInXWJT74QWVo3jgTdgAWUVbjMBFZolcTopb";
+    char *BINANCE_API_SECRET      = "TGdqRdsKQ3YtEBaOW9uOgBQbWXrD8QubAXUUfaGocZraOVRG3Hs5tjNQeWt8Tyxo";
 
     // Services
     Logger* logger = new Logger("APICaller");
@@ -36,8 +34,16 @@ class APICaller
       logger->print("New APICaller created for: " + apiName + " with base url: " + apiBaseUrl);
     }
     
-    String execute(String endpoint) {
-        String targetUrl = apiBaseUrl + endpoint;  // Construct the full request url
+    String execute(String endpoint, String queryParameterString = "") {
+        String timestamp    = getTimestamp();
+        const char *payload = ("timestamp=" + timestamp + queryParameterString).c_str();
+        String signature    = parseSignature(payload);
+        
+        String targetUrl = 
+          apiBaseUrl + 
+          endpoint +
+          "?timestamp=" + timestamp + "&signature=" + signature +
+          queryParameterString;  // Construct the full request url
         
         logger->print("Executing GET request on: " + targetUrl);
         
@@ -53,7 +59,7 @@ class APICaller
         if (responseCode > 0) { //Check for the returning code
           response = http.getString();
           logger->print("Response Code (" + String(responseCode) + ") " + response);
-          if (response = "") {
+          if (response == "") {
             logger->print("The response was empty");
           }
         } else if (responseCode < 0) {
@@ -61,15 +67,6 @@ class APICaller
         } else {
           logger->print("Response Code (" + String(responseCode) + ") API call was not executed succesfully");
         }
-
-        DynamicJsonDocument doc(899715);
-        deserializeJson(doc, response);  // Converting from a string to a json object
-
-        
-
-        //logger->print("Deposit Amount #1: " + responseArray[0]);
-        //logger->print("Deposit Amount #2: " + String(depositAmount2));
-        //logger->print("Deposit Amount #3: " + String(depositAmount3));
        
         http.end();
         
@@ -77,10 +74,10 @@ class APICaller
     }
 
     /* This method grabs the current time (as a timestamp), which is required for other API calls */
-    String timestamp() {
+    String getTimestamp() {
       String targetUrl = "https://worldtimeapi.org/api/timezone/Etc/UTC"; // Set target URL to the time API
         
-      logger->print("Executing GET request on: " + targetUrl);                    
+      logger->print("Fetching timestamp from: " + targetUrl);                    
       http.begin(targetUrl.c_str());          // Start API request with the constructed url
       
       int responseCode = http.GET();          // Send the request
@@ -108,7 +105,7 @@ class APICaller
           "week_number": 42
       }*/
 
-      String timestamp_seconds = jsonObject["unixtime"];          // Grabbing the unix timestamp from the jsonObject
+      String timestamp_seconds = jsonObject["unixtime"]; // Grabbing the unix timestamp from the jsonObject
       logger->print("JSON Object timestamp seconds: " + timestamp_seconds);
       
       String timestamp_milliseconds  = timestamp_seconds + "000"; // 'Convert' to miliseconds
@@ -116,12 +113,12 @@ class APICaller
 
       logger->print("Extracted timestamp (milliseconds/UNIX) from JSON object: " + timestamp_milliseconds);
 
-      http.end();                             // End API request to free up resources
+      http.end(); // End API request to free up resources
 
       return timestamp_milliseconds;
     }
 
-    String signature(const char *payload) {
+    String parseSignature(const char *payload) {
         /* HMAC Shizzle */
         String signature = "";                                                                // Signature variable to store the entire value
         
