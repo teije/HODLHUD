@@ -47,7 +47,7 @@ class APICaller
         
         logger->print("Executing GET request on: " + targetUrl);
         
-        http.begin(targetUrl.c_str());                      // Start API request with the constructed url
+        http.begin(targetUrl.c_str()); // Start API request with the constructed url
 
         http.addHeader("Content-Type", "application/json");
         http.addHeader("X-MBX-APIKEY", BINANCE_API_KEY);
