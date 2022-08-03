@@ -98,8 +98,6 @@
 int LOOP_DELAY = 10000;
 
 // Testing WiFi hotspot config
-char ssid[]     = "HODL";
-char password[] = "HODLHUDV3";
 char ssid[]     = "Deepthought";
 char password[] = "dont-forget-your-towel";
 
@@ -122,21 +120,11 @@ void setup() {
   // Instance of the API caller class to fetch data from the binance API
   APICaller* binanceAPI = new APICaller("Binance");                                   // Create a new caller for the Binance API
   
-  //logger->print("Fetching All Wallet Coins");
-  //String walletAllCoinsJSON = binanceAPI->execute("/sapi/v1/capital/config/getall");  // Execute API call to fetch all wallet coins
-  
   logger->print("Fetching Account Deposits");
   String walletAllDeposits  = binanceAPI->execute("/sapi/v1/capital/deposit/hisrec"); // Execute API call to fetch all deposits to the wallet
   
   logger->print("Fetching Account Snapshot");
   String walletSnapshot  = binanceAPI->execute("/sapi/v1/accountSnapshot", "&type=SPOT"); 
-
-  logger->print("Fetching ADA Trades");
-  String adaTrades  = binanceAPI->execute("/api/v3/myTrades", "ADA");
-  
-  logger->print("Fetching Account Summary");
-  String accountSummary = binanceAPI->execute("/api/v3/account");
-  
   
   logger->print("Setup end\n\n");
 }
