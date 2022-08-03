@@ -100,6 +100,8 @@ int LOOP_DELAY = 10000;
 // Testing WiFi hotspot config
 char ssid[]     = "HODL";
 char password[] = "HODLHUDV3";
+char ssid[]     = "Deepthought";
+char password[] = "dont-forget-your-towel";
 
 Logger* logger = new Logger(" HODLHUD ");
 
