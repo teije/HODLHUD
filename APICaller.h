@@ -83,6 +83,30 @@ class APICaller
         return response;
     }
 
+    float getUSDtoEURrate() {
+      String response = execute("/api/v3/ticker/price", "?symbol=EURUSDT", false);
+
+      DynamicJsonDocument jsonObject(1024);   // Reserving memory space to hold the json object
+      deserializeJson(jsonObject, response);  // Converting from a string to a json object
+      const char* valueString = jsonObject["price"];
+      float rate = strtof(valueString, NULL);
+      
+      logger->print("Fetched EUR to USDT Rate: ");
+      logger->printFloat(rate);
+
+      return rate;
+    }
+
+    float getEURtoUSDrate() {
+      float rate = getUSDtoEURrate();
+      float inverseRate = 1 / rate;
+      
+      logger->print("Calculated USDT to EUR Rate: ");
+      logger->printFloat(inverseRate);
+      
+      return inverseRate;
+    }
+
     /* This method grabs the current time (as a timestamp), which is required for other API calls */
     String getTimestamp() {
       String targetUrl = "https://worldtimeapi.org/api/timezone/Etc/UTC"; // Set target URL to the time API
@@ -95,25 +119,6 @@ class APICaller
       
       DynamicJsonDocument jsonObject(1024);   // Reserving memory space to hold the json object
       deserializeJson(jsonObject, response);  // Converting from a string to a json object
-
-      // The json object contains the following properties:
-      /*{
-          "abbreviation": "CEST",
-          "client_ip": "94.168.86.251",
-          "datetime": "2021-10-18T12:53:05.626733+02:00",
-          "day_of_week": 1,
-          "day_of_year": 291,
-          "dst": true,
-          "dst_from": "2021-03-28T01:00:00+00:00",
-          "dst_offset": 3600,
-          "dst_until": "2021-10-31T01:00:00+00:00",
-          "raw_offset": 3600,
-          "timezone": "Europe/Amsterdam",
-          "unixtime": 1634554385,
-          "utc_datetime": "2021-10-18T10:53:05.626733+00:00",
-          "utc_offset": "+02:00",
-          "week_number": 42
-      }*/
 
       String timestamp_seconds = jsonObject["unixtime"]; // Grabbing the unix timestamp from the jsonObject
       logger->print("JSON Object timestamp seconds: " + timestamp_seconds);

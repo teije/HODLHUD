@@ -82,8 +82,9 @@ void setup() {
   String adaSpotPrice = binanceAPI->execute("/api/v3/ticker/price", "?symbol=" + ADA->symbol + "USDT", false);
 
   binanceAPI->getUSDtoEURrate();
+  binanceAPI->getEURtoUSDrate();
  
-  //logger->print("Setup end\n\n");
+  logger->print("Setup end\n\n");
 }
 
 void loop() {
