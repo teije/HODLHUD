@@ -13,6 +13,17 @@
         [X] Establish a WiFi connection
         [ ] Allow connecting/testing sequential WiFi connections
         [ ] Move the WiFi credentials to a file that is not committed to GIT (https://www.arduino.cc/en/Reference/FileRead)
+
+[ ] We want to: Fetch all available coins from a Google Sheet
+    [ ] Create the google sheet document
+    [ ] We want to store:
+        [ ] A trades per row, with values:
+            [ ] Base symbol
+            [ ] Counter symbol
+            [ ] Amount
+            [ ] Date/Time
+        [ ] A row (seperate sheet?) that holds our balance for each coin with amount > 0
+        [ ] 
         
 [ ] We want to: Print visual elements to the display
     [ ] Create a UIElement data object
@@ -49,7 +60,7 @@
 #include "Logger.h"
 #include "WiFiConnector.h"
 #include "Coin.h"
-#include "APICaller.h"
+#include "ApiCaller.h"
 
 // Constants
 int LOOP_DELAY = 10000;
@@ -73,7 +84,7 @@ void setup() {
   Coin* ADAwithAmount = new Coin("ADA", "Cardano", 10, 1.50);
 
   // Instance of the API caller class to fetch data from the binance API
-  APICaller* binanceAPI = new APICaller("Binance"); // Create a new caller for the Binance API
+  ApiCaller* binanceAPI = new ApiCaller("Binance"); // Create a new caller for the Binance API
 
   logger->print("Fetching Account Snapshot");
   String walletSnapshot  = binanceAPI->execute("/sapi/v1/accountSnapshot", "&type=SPOT", true); 

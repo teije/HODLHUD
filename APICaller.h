@@ -2,7 +2,7 @@
 #include <ArduinoJson.h>
 #include "mbedtls/md.h"
 
-class APICaller
+class ApiCaller
 {
   private:
     // Properties
@@ -27,7 +27,7 @@ class APICaller
     }
      
   public:
-    APICaller(String ApiName) {
+    ApiCaller(String ApiName) {
       apiName     = ApiName;
       apiBaseUrl  = resolveBaseUrl(ApiName);
       
@@ -35,7 +35,15 @@ class APICaller
     }
     
     String execute(String endpoint, String queryParameterString = "", bool requiresAuth = false) {
-        String timestamp    = getTimestamp();
+      if (apiName == "Binance") {
+       return executeBinance(endpoint, queryParameterString, requiresAuth);
+      } else {
+        return "API Unknown, call not executed...";
+      }
+    }
+
+    String executeBinance(String endpoint, String queryParameterString, bool requiresAuth) {
+      String timestamp    = getTimestamp();
         const char *payload = ("timestamp=" + timestamp + queryParameterString).c_str();
         String signature    = parseSignature(payload);
 
@@ -101,7 +109,7 @@ class APICaller
       float rate = getUSDtoEURrate();
       float inverseRate = 1 / rate;
       
-      logger->print("Calculated USDT to EUR Rate: ");
+      logger->print("Fetched USDT to EUR Rate: ");
       logger->printFloat(inverseRate);
       
       return inverseRate;

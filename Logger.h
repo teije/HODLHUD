@@ -11,8 +11,8 @@ class Logger {
 
     void printFloat(float floatValue, int decimalsToShow = 5) 
     { 
-      Serial.println("["+ loggerSourceName +"] \t");
-      Serial.print(floatValue, decimalsToShow); 
+      Serial.print("["+ loggerSourceName +"] \t");
+      Serial.println(floatValue, decimalsToShow); 
     }
 
 };
