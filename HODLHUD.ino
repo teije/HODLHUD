@@ -48,7 +48,7 @@
 // Project classes
 #include "Logger.h"
 #include "WiFiConnector.h"
-#include "CurrencyPair.h"
+#include "Coin.h"
 #include "APICaller.h"
 
 // Constants
@@ -71,8 +71,9 @@ void setup() {
   WiFiConnector* hotSpotTeije = new WiFiConnector(ssid, password);
   hotSpotTeije->connect();
 
-  // Test Currency Pair
-  CurrencyPair* ADAUSD = new CurrencyPair("ADA","EUR", 2.1602);
+  // Test Coins
+  Coin* ADA = new Coin("ADA", "Cardano");
+  Coin* ADAwithAmount = new Coin("ADA", "Cardano", 10, 1.50);
 
   // Instance of the API caller class to fetch data from the binance API
   APICaller* binanceAPI = new APICaller("Binance");                                   // Create a new caller for the Binance API
