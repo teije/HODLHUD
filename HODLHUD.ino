@@ -60,9 +60,6 @@ char password[] = "dont-forget-your-towel";
 
 Logger* logger = new Logger(" HODLHUD ");
 
-// Instance of the API caller class to fetch data from the binance API
-APICaller* binanceAPI = new APICaller("Binance");
-
 void setup() {
   Serial.begin(9600);
   logger->print("Setup start");
@@ -76,15 +73,17 @@ void setup() {
   Coin* ADAwithAmount = new Coin("ADA", "Cardano", 10, 1.50);
 
   // Instance of the API caller class to fetch data from the binance API
-  APICaller* binanceAPI = new APICaller("Binance");                                   // Create a new caller for the Binance API
-  
-  logger->print("Fetching Account Deposits");
-  String walletAllDeposits  = binanceAPI->execute("/sapi/v1/capital/deposit/hisrec"); // Execute API call to fetch all deposits to the wallet
-  
+  APICaller* binanceAPI = new APICaller("Binance"); // Create a new caller for the Binance API
+
   logger->print("Fetching Account Snapshot");
-  String walletSnapshot  = binanceAPI->execute("/sapi/v1/accountSnapshot", "&type=SPOT"); 
-  
-  logger->print("Setup end\n\n");
+  String walletSnapshot  = binanceAPI->execute("/sapi/v1/accountSnapshot", "&type=SPOT", true); 
+
+  logger->print("Fetching ADA/EUR Spot Price");
+  String adaSpotPrice = binanceAPI->execute("/api/v3/ticker/price", "?symbol=" + ADA->symbol + "USDT", false);
+
+  binanceAPI->getUSDtoEURrate();
+ 
+  //logger->print("Setup end\n\n");
 }
 
 void loop() {
