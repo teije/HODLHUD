@@ -1,20 +1,5 @@
 /* TODO 
 
-[ ] We want to: Consistently log code results/status during operation
-    [X] For this we need to: Create Logger class
-        And that requires the following:
-        [ ] Create properties
-            [ ] 
-        [X] Create functions
-            [X]  Print
-    [ ] Initialize & call logger class from each other class
-        [X] HODLHUD Main File
-        [X] WiFi Connector class
-        [X] Currency pair data class
-        [ ] API caller class
-        [ ] UI element data class
-        [ ] Display printer class
-
 [X] We want to: Connect to WiFi
     [X] Create WiFi connector class
         [X] Create properties
@@ -26,37 +11,9 @@
             [ ] IsConnected() return boolean:isConnected
         [X] Initialize WiFi connector class
         [X] Establish a WiFi connection
-        [ ] Allow the connection/testing multiple WiFi connections
+        [ ] Allow connecting/testing sequential WiFi connections
         [ ] Move the WiFi credentials to a file that is not committed to GIT (https://www.arduino.cc/en/Reference/FileRead)
         
-[ ] We want to: Fetch and store data (from the Binance API)
-    [X] Create a way to hold currency data
-        [X] Create a CurrencyPair class/object 
-            [X] Create properties
-                [X] Main Currency:    string     
-                [X] Cointer Currency: string
-                [X] Spot Price:       float
-            [ ] Create functions
-                [ ]     
-            
-    [ ] Make an API call to Binance
-        [X] Create Binance API service class
-            [ ] Create properties
-                [X] Name:     string
-                [X] Base URL: string
-                [X] API Key:  string
-            [ ] Create functions
-                [ ] getWalletContents()                           return JSON string
-                [ ] getSpotPrice(dateTime=default:now)            return JSON string
-                [ ] getPriceForPeriod(startDateTime, endDateTime) return JSON string
-                [ ]
-            [ ] Read API key from file
-            [ ] Construct an API call
-                [ ] Provide a signature: https://techtutorialsx.com/2018/01/25/esp32-arduino-applying-the-hmac-sha-256-mechanism/
-                [X] Provide an api-key
-                [ ] Provide an api-secret
-                [X] Provide the milliseconds http://kendziorra.nl/arduino/114-my-simple-milliseconds-time-library
-
 [ ] We want to: Print visual elements to the display
     [ ] Create a UIElement data object
         [ ] Create properties
