@@ -8,4 +8,11 @@ class Logger {
     }
   
     void print(String text) { Serial.println("["+ loggerSourceName +"] \t" + text); }
+
+    void printFloat(float floatValue, int decimalsToShow = 5) 
+    { 
+      Serial.println("["+ loggerSourceName +"] \t");
+      Serial.print(floatValue, decimalsToShow); 
+    }
+
 };
