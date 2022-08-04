@@ -34,16 +34,26 @@ class APICaller
       logger->print("New APICaller created for: " + apiName + " with base url: " + apiBaseUrl);
     }
     
-    String execute(String endpoint, String queryParameterString = "") {
+    String execute(String endpoint, String queryParameterString = "", bool requiresAuth = false) {
         String timestamp    = getTimestamp();
         const char *payload = ("timestamp=" + timestamp + queryParameterString).c_str();
         String signature    = parseSignature(payload);
-        
-        String targetUrl = 
-          apiBaseUrl + 
-          endpoint +
-          "?timestamp=" + timestamp + "&signature=" + signature +
-          queryParameterString;  // Construct the full request url
+
+        String targetUrl = "";
+
+        // Construct the full request url
+        if (requiresAuth) {
+          targetUrl = 
+            apiBaseUrl + 
+            endpoint +
+            "?timestamp=" + timestamp + "&signature=" + signature +
+            queryParameterString;  
+        } else {
+          targetUrl = 
+            apiBaseUrl + 
+            endpoint +
+            queryParameterString;
+        }
         
         logger->print("Executing GET request on: " + targetUrl);
         
