@@ -15,31 +15,59 @@ class ApiCaller
     char *BINANCE_API_KEY         = "y7ZTPqACsHNxFR5m2JDQ7SdgJ1mOaInXWJT74QWVo3jgTdgAWUVbjMBFZolcTopb";
     char *BINANCE_API_SECRET      = "TGdqRdsKQ3YtEBaOW9uOgBQbWXrD8QubAXUUfaGocZraOVRG3Hs5tjNQeWt8Tyxo";
 
-    // Services
-    Logger* logger = new Logger("APICaller");
 
-    String resolveBaseUrl(String ApiName) {
-      if (ApiName == "Binance") {
-       return BINANCE_BASE_URL;
-      } else {
-        return "null";
-      }
-    }
+    //https://sheets.googleapis.com/v4/spreadsheets/{sheet_id}/values/Sheet1!A1:D5?key={YOUR_API_KEY}
+    //https://sheets.googleapis.com/v4/spreadsheets/spreadsheetId/values/Sheet1!A1:D5
+    const String GOOGLE_BASE_URL            = "https://sheets.googleapis.com/v4/spreadsheets";
+    const String GOOGLE_BASE_URL_MIDDLE     = "values";
+    const String GOOGLE_BASE_URL_SUFFIX     = "?key=";
+    const String GOOGLE_SHEET_ID            = "1geu-fnt5D6whhLoX8m_mC-AKpi6enbpTGn6bZ2PFQik";
+    const String GOOGLE_API_KEY             = "AIzaSyCRrO7YUxzgkhW8kDI8j9I257QnuykSxH0";
+    
+
+    // Services
+    Logger* logger = new Logger("ApiCaller");
      
   public:
-    ApiCaller(String ApiName) {
-      apiName     = ApiName;
-      apiBaseUrl  = resolveBaseUrl(ApiName);
-      
-      logger->print("New APICaller created for: " + apiName + " with base url: " + apiBaseUrl);
+    ApiCaller() {
+      logger->print("New APICaller created");
     }
-    
-    String execute(String endpoint, String queryParameterString = "", bool requiresAuth = false) {
-      if (apiName == "Binance") {
-       return executeBinance(endpoint, queryParameterString, requiresAuth);
-      } else {
-        return "API Unknown, call not executed...";
-      }
+
+    String executeGoogle(String pageTitle, String topLeftCell, String bottomRightCell) {
+        String targetUrl = "";
+        // Construct the full request url
+        targetUrl = GOOGLE_BASE_URL         + "/" + 
+                    GOOGLE_SHEET_ID         + "/" + 
+                    GOOGLE_BASE_URL_MIDDLE  + "/" + 
+                    pageTitle               + "!" + 
+                    topLeftCell             + ":" + 
+                    bottomRightCell         + 
+                    GOOGLE_BASE_URL_SUFFIX  + 
+                    GOOGLE_API_KEY;
+
+        logger->print("Executing GET request on: " + targetUrl);
+        
+        http.begin(targetUrl.c_str()); // Start API request with the constructed url
+
+        int responseCode = http.GET(); // Send HTTP GET request to the server. The response data is stored in the jsonResponse variable
+        
+        String response = "";
+        
+        if (responseCode > 0) { //Check for the returning code
+          response = http.getString();
+          logger->print("Response Code (" + String(responseCode) + ") " + response);
+          if (response == "") {
+            logger->print("The response was empty");
+          }
+        } else if (responseCode < 0) {
+          logger->print("Response Code (" + String(responseCode) + ") Response received, but API call was not executed succesfully");
+        } else {
+          logger->print("Response Code (" + String(responseCode) + ") API call was not executed succesfully");
+        }
+       
+        http.end();
+        
+        return response;
     }
 
     String executeBinance(String endpoint, String queryParameterString, bool requiresAuth) {
@@ -51,15 +79,18 @@ class ApiCaller
 
         // Construct the full request url
         if (requiresAuth) {
-          targetUrl = 
-            apiBaseUrl + 
-            endpoint +
-            "?timestamp=" + timestamp + "&signature=" + signature +
+          targetUrl          = 
+            BINANCE_BASE_URL + 
+            endpoint         +
+            "?timestamp="    + 
+            timestamp        + 
+            "&signature="    + 
+            signature        +
             queryParameterString;  
         } else {
-          targetUrl = 
-            apiBaseUrl + 
-            endpoint +
+          targetUrl          = 
+            BINANCE_BASE_URL + 
+            endpoint         +
             queryParameterString;
         }
         
@@ -92,7 +123,7 @@ class ApiCaller
     }
 
     float getUSDtoEURrate() {
-      String response = execute("/api/v3/ticker/price", "?symbol=EURUSDT", false);
+      String response = executeBinance("/api/v3/ticker/price", "?symbol=EURUSDT", false);
 
       DynamicJsonDocument jsonObject(1024);   // Reserving memory space to hold the json object
       deserializeJson(jsonObject, response);  // Converting from a string to a json object

@@ -83,17 +83,23 @@ void setup() {
   Coin* ADA = new Coin("ADA", "Cardano");
   Coin* ADAwithAmount = new Coin("ADA", "Cardano", 10, 1.50);
 
-  // Instance of the API caller class to fetch data from the binance API
-  ApiCaller* binanceAPI = new ApiCaller("Binance"); // Create a new caller for the Binance API
+  
+  ApiCaller* apiCaller = new ApiCaller(); // Instance of the API caller class to fetch data from the binance API
 
   logger->print("Fetching Account Snapshot");
-  String walletSnapshot  = binanceAPI->execute("/sapi/v1/accountSnapshot", "&type=SPOT", true); 
+  String walletSnapshot  = apiCaller->executeBinance("/sapi/v1/accountSnapshot", "&type=SPOT", true); 
 
   logger->print("Fetching ADA/EUR Spot Price");
-  String adaSpotPrice = binanceAPI->execute("/api/v3/ticker/price", "?symbol=" + ADA->symbol + "USDT", false);
+  String adaSpotPrice = apiCaller->executeBinance("/api/v3/ticker/price", "?symbol=" + ADA->symbol + "USDT", false);
 
-  binanceAPI->getUSDtoEURrate();
-  binanceAPI->getEURtoUSDrate();
+  apiCaller->getUSDtoEURrate();
+  apiCaller->getEURtoUSDrate();
+
+  logger->print("The 'trades' Google Sheet Page - Range A1:B2");
+  apiCaller->executeGoogle("trades", "A1", "B2");
+  
+  logger->print("The 'balance' Google Sheet Page - Range A1:B2");
+  apiCaller->executeGoogle("balance", "A1", "B2");
  
   logger->print("Setup end\n\n");
 }
