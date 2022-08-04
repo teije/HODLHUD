@@ -155,4 +155,31 @@ class APICaller
 
         return signature;
     }
+
+    bool hasBinanceApiConnection() {
+      String timestamp    = getTimestamp();
+        const char *payload = ("timestamp=" + timestamp).c_str();
+        String signature = parseSignature(payload);
+        bool isConnected = false;
+        
+        String targetUrl = 
+          apiBaseUrl + 
+          "/api/v3/ping";  
+        
+        logger->print("Executing GET request on: " + targetUrl);
+        
+        http.begin(targetUrl.c_str()); // Start API request with the constructed url
+
+        http.addHeader("Content-Type", "application/json");
+        http.addHeader("X-MBX-APIKEY", BINANCE_API_KEY);
+
+        int responseCode = http.GET(); // Send HTTP GET request to the server. The response data is stored in the jsonResponse variable
+        
+        String response = "";
+        
+        if (responseCode > 0) {
+          return true;
+        }
+        return false;
+    }
 };
