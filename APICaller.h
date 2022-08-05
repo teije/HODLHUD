@@ -2,6 +2,8 @@
 #include <ArduinoJson.h>
 #include "mbedtls/md.h"
 
+#include "Transaction.h"
+
 class ApiCaller
 {
   private:
@@ -33,6 +35,11 @@ class ApiCaller
       logger->print("New APICaller created");
     }
 
+    
+    //////////////////////////////////
+    //////////// GOOGLE //////////////
+    //////////////////////////////////
+
     String executeGoogle(String pageTitle, String topLeftCell, String bottomRightCell) {
         String targetUrl = "";
         // Construct the full request url
@@ -56,6 +63,7 @@ class ApiCaller
         if (responseCode > 0) { //Check for the returning code
           response = http.getString();
           logger->print("Response Code (" + String(responseCode) + ") " + response);
+
           if (response == "") {
             logger->print("The response was empty");
           }
@@ -70,8 +78,166 @@ class ApiCaller
         return response;
     }
 
+    int getTransactionCount() {
+      String targetUrl        = "";
+      String pageTitle        = "trades";
+      String topLeftCell      = "A2";
+      String bottomRightCell  = "A2";
+      
+      // Construct the full request url
+      targetUrl = GOOGLE_BASE_URL         + "/" + 
+                  GOOGLE_SHEET_ID         + "/" + 
+                  GOOGLE_BASE_URL_MIDDLE  + "/" + 
+                  pageTitle               + "!" + 
+                  topLeftCell             + ":" + 
+                  bottomRightCell         + 
+                  GOOGLE_BASE_URL_SUFFIX  + 
+                  GOOGLE_API_KEY;
+
+      logger->print("Executing GET request on: " + targetUrl);
+      
+      http.begin(targetUrl.c_str()); // Start API request with the constructed url
+
+      int responseCode = http.GET(); // Send HTTP GET request to the server. The response data is stored in the jsonResponse variable
+      
+      String response = "";
+      
+      if (responseCode > 0) { //Check for the returning code
+        response = http.getString();
+        logger->print("Response Code (" + String(responseCode) + ") " + response);
+
+        if (response == "") {
+          logger->print("The response was empty");
+        }
+      } else if (responseCode < 0) {
+        logger->print("Response Code (" + String(responseCode) + ") Response received, but API call was not executed succesfully");
+      } else {
+        logger->print("Response Code (" + String(responseCode) + ") API call was not executed succesfully");
+      }
+     
+      http.end();
+
+      DynamicJsonDocument jsonObject(1024);   // Reserving memory space to hold the json object
+      deserializeJson(jsonObject, response);  // Converting from a string to a json object
+      
+      String transactionCount = jsonObject["values"][0][0];
+
+      logger->print("Extracted transaction count from json response: " + transactionCount);
+      
+      return transactionCount.toInt();
+    }
+
+    Transaction * getTransactions() {
+      String targetUrl              = "";
+      String pageTitle              = "trades";
+      int headerRowCount            = 3;
+      int transactionCount          = getTransactionCount();
+      String topLeftCell            = "A4";
+      String bottomRightCell_Letter = "J";
+      String bottomRightCell_Number = String(headerRowCount + transactionCount);
+      String bottomRightCell        = bottomRightCell_Letter + bottomRightCell_Number;
+      
+      // Construct the full request url
+      targetUrl = GOOGLE_BASE_URL         + "/" + 
+                  GOOGLE_SHEET_ID         + "/" + 
+                  GOOGLE_BASE_URL_MIDDLE  + "/" + 
+                  pageTitle               + "!" + 
+                  topLeftCell             + ":" + 
+                  bottomRightCell         + 
+                  GOOGLE_BASE_URL_SUFFIX  + 
+                  GOOGLE_API_KEY;
+
+      logger->print("Executing GET request on: " + targetUrl);
+      
+      http.begin(targetUrl.c_str()); // Start API request with the constructed url
+
+      int responseCode = http.GET(); // Send HTTP GET request to the server. The response data is stored in the jsonResponse variable
+      
+      String response = "";
+      
+      if (responseCode > 0) { //Check for the returning code
+        response = http.getString();
+        logger->print("Response Code (" + String(responseCode) + ") " + response);
+
+        if (response == "") {
+          logger->print("The response was empty");
+        }
+      } else if (responseCode < 0) {
+        logger->print("Response Code (" + String(responseCode) + ") Response received, but API call was not executed succesfully");
+      } else {
+        logger->print("Response Code (" + String(responseCode) + ") API call was not executed succesfully");
+      }
+     
+      http.end();
+
+      DynamicJsonDocument jsonObject(1024);   // Reserving memory space to hold the json object
+      deserializeJson(jsonObject, response);  // Converting from a string to a json object
+      
+      logger->print("Creating " + (String)transactionCount + " transaction objects");
+      Transaction *transactions[transactionCount];
+
+      for (int i=0; i<transactionCount; i++) { 
+        logger->print("Creating transaction#" + (String)i);
+      
+        bool showOnHud        = jsonObject["values"][i][0].as<bool>();
+        String baseName       = jsonObject["values"][i][1].as<String>();
+        String baseSymbol     = jsonObject["values"][i][2].as<String>();
+        float baseAmount      = jsonObject["values"][i][3].as<float>();
+        String counterName    = jsonObject["values"][i][4].as<String>();
+        String counterSymbol  = jsonObject["values"][i][5].as<String>();
+        float counterAmount   = jsonObject["values"][i][6].as<float>();
+        String date           = jsonObject["values"][i][7].as<String>();
+        String remarks        = jsonObject["values"][i][8].as<String>();
+
+        int day   = String(date[0] + date[1]).toInt();
+        int month = String(date[3] + date[4]).toInt();
+        int year  = String(date[6] + date[7] + date[8] + date[9]).toInt();
+
+        Coin *baseCoin    = new Coin(baseSymbol, baseName, baseAmount);
+        Coin *counterCoin = new Coin(counterSymbol, counterName, counterAmount);
+
+        transactions[i] = new Transaction(
+          showOnHud,
+          baseCoin, counterCoin,
+          day, month, year,
+          remarks
+          );
+      }
+
+      
+      
+      return *transactions;
+    }
+    
+    String getCellValue(String pageName, String cell) {
+      String response = executeGoogle(pageName, cell, cell);
+
+      DynamicJsonDocument jsonObject(64);   // Reserving memory space to hold the json object
+      deserializeJson(jsonObject, response);  // Converting from a string to a json object
+      
+      const char* value = jsonObject["values"];
+      
+      logger->print("Fetched cell value: " + (String)value);
+    }
+
+    String getCellRangeValues(String pageName, String topLeftCell, String bottomRightCell) {
+      String response = executeGoogle(pageName, topLeftCell, bottomRightCell);
+
+      DynamicJsonDocument jsonObject(64);   // Reserving memory space to hold the json object
+      deserializeJson(jsonObject, response);  // Converting from a string to a json object
+      
+      const char* value = jsonObject["values"];
+      
+      logger->print("Fetched cell range values: " + (String)value);
+    }
+
+
+    //////////////////////////////////
+    //////////// BINANCE /////////////
+    //////////////////////////////////
+
     String executeBinance(String endpoint, String queryParameterString, bool requiresAuth) {
-      String timestamp    = getTimestamp();
+      String timestamp      = getTimestamp();
         const char *payload = ("timestamp=" + timestamp + queryParameterString).c_str();
         String signature    = parseSignature(payload);
 
@@ -146,6 +312,38 @@ class ApiCaller
       return inverseRate;
     }
 
+    
+    bool hasBinanceApiConnection() {
+      String timestamp    = getTimestamp();
+        const char *payload = ("timestamp=" + timestamp).c_str();
+        String signature = parseSignature(payload);
+        bool isConnected = false;
+        
+        String targetUrl = 
+          apiBaseUrl + 
+          "/api/v3/ping";  
+        
+        logger->print("Executing GET request on: " + targetUrl);
+        
+        http.begin(targetUrl.c_str()); // Start API request with the constructed url
+
+        http.addHeader("Content-Type", "application/json");
+        http.addHeader("X-MBX-APIKEY", BINANCE_API_KEY);
+
+        int responseCode = http.GET(); // Send HTTP GET request to the server. The response data is stored in the jsonResponse variable
+        
+        String response = "";
+        
+        if (responseCode > 0) {
+          return true;
+        }
+        return false;
+    }
+
+    /////////////////////////////////
+    //////////// OTHER //////////////
+    /////////////////////////////////
+
     /* This method grabs the current time (as a timestamp), which is required for other API calls */
     String getTimestamp() {
       String targetUrl = "https://worldtimeapi.org/api/timezone/Etc/UTC"; // Set target URL to the time API
@@ -198,32 +396,5 @@ class ApiCaller
         logger->print("Generated signature: " + signature);
 
         return signature;
-    }
-
-    bool hasBinanceApiConnection() {
-      String timestamp    = getTimestamp();
-        const char *payload = ("timestamp=" + timestamp).c_str();
-        String signature = parseSignature(payload);
-        bool isConnected = false;
-        
-        String targetUrl = 
-          apiBaseUrl + 
-          "/api/v3/ping";  
-        
-        logger->print("Executing GET request on: " + targetUrl);
-        
-        http.begin(targetUrl.c_str()); // Start API request with the constructed url
-
-        http.addHeader("Content-Type", "application/json");
-        http.addHeader("X-MBX-APIKEY", BINANCE_API_KEY);
-
-        int responseCode = http.GET(); // Send HTTP GET request to the server. The response data is stored in the jsonResponse variable
-        
-        String response = "";
-        
-        if (responseCode > 0) {
-          return true;
-        }
-        return false;
     }
 };

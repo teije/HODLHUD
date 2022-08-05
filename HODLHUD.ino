@@ -52,9 +52,9 @@
     
 */  
 
+// External Libraries
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
-
 
 // Project classes
 #include "Logger.h"
@@ -80,33 +80,32 @@ void setup() {
   hotSpotTeije->connect();
 
   // Test Coins
-  Coin* ADA = new Coin("ADA", "Cardano");
-  Coin* ADAwithAmount = new Coin("ADA", "Cardano", 10, 1.50);
+  Coin* Cardano   = new Coin("ADA", "Cardano");
+  // Symbol,Title,Amount,rate (in EUR)
+  Coin* Ethereum  = new Coin("ETH", "Ethereum", 10, 1.50);
 
   
   ApiCaller* apiCaller = new ApiCaller(); // Instance of the API caller class to fetch data from the binance API
 
-  logger->print("Fetching Account Snapshot");
-  String walletSnapshot  = apiCaller->executeBinance("/sapi/v1/accountSnapshot", "&type=SPOT", true); 
-
-  logger->print("Fetching ADA/EUR Spot Price");
-  String adaSpotPrice = apiCaller->executeBinance("/api/v3/ticker/price", "?symbol=" + ADA->symbol + "USDT", false);
-
-  apiCaller->getUSDtoEURrate();
-  apiCaller->getEURtoUSDrate();
-
-  logger->print("The 'trades' Google Sheet Page - Range A1:B2");
-  apiCaller->executeGoogle("trades", "A1", "B2");
+  logger->print("Fetching number of transactions from Google Sheet");
+  int transactionCount = apiCaller->getTransactionCount();
+  logger->print("Transaction Count: " + (String)transactionCount);
   
-  logger->print("The 'balance' Google Sheet Page - Range A1:B2");
-  apiCaller->executeGoogle("balance", "A1", "B2");
+  logger->print("Fetching all transactions from Google Sheet");
+  Transaction *transactions[transactionCount] = { apiCaller->getTransactions() };
+
+  logger->print("Fetched ransactions: ");
+  for (int i=0; i<transactionCount; i++) {
+    Coin *baseCoin    = transactions[i]->baseCoin;
+    Coin *counterCoin = transactions[i]->counterCoin;
+  }
  
   logger->print("Setup end\n\n");
 }
 
 void loop() {
-  logger->print("Loop start");
+  //logger->print("Loop start");
 
   delay(LOOP_DELAY);
-  logger->print("Loop end");
+  //logger->print("Loop end");
 }
