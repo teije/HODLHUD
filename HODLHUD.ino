@@ -70,7 +70,7 @@ int LOOP_DELAY = 10000;
 char ssid[]     = "Deepthought";
 char password[] = "dont-forget-your-towel";
 
-Logger *logger = new Logger();
+Logger *logger = new Logger("HODLHUD");
 
 void setup() {
   Serial.begin(9600);
@@ -90,15 +90,10 @@ void setup() {
 
   TransactionService *transactionService = new TransactionService(apiCaller);
   
-  int transactionCount = apiCaller->getTransactionCount();
+  int transactionCount = transactionService->getTransactionCount();
   
-  Transaction *transactions[transactionCount] = { apiCaller->getTransactions() };
-
-  for (int i=0; i<transactionCount; i++) {
-    Coin *baseCoin    = transactions[i]->baseCoin;
-    Coin *counterCoin = transactions[i]->counterCoin;
-  }
   logger->println("Fetching all transactions using the TransactionService");
+  Transaction *transactions[transactionCount] = { transactionService->getTransactions() };
  
   logger->println("Setup end\n\n");
 }
