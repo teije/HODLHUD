@@ -13,7 +13,7 @@ class Transaction {
     float baseValueInEUR;
 
     Transaction(bool ShowOnHud, Coin *BaseCoin, Coin *CounterCoin, int Day, int Month, int Year, String Remarks, float BaseValueInEUR = 0) {
-      _logger         = new Logger();
+      _logger         = new Logger("Transaction");
       
       showOnHud       = ShowOnHud;
       baseCoin        = BaseCoin;
@@ -22,7 +22,6 @@ class Transaction {
       remarks         = Remarks;
       baseValueInEUR  = BaseValueInEUR;
 
-      _logger->setSourceName("Transaction");
-      _logger->print("New Transaction created for :" + BaseCoin->symbol + CounterCoin->symbol);
+      _logger->println("New Transaction created for :" + BaseCoin->symbol + CounterCoin->symbol);
     }
 };

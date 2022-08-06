@@ -13,18 +13,17 @@ class Coin
 
     Coin(String Symbol, String Title, float Amount = NULL, float Value = NULL) 
     {
-      _logger   = new Logger();
+      _logger   = new Logger("Coin");
       
       symbol    = Symbol;
       title     = Title;
       amount    = Amount;
       value     = Value;
-
-      _logger->setSourceName("Coin");
-      _logger->print("New Coin created: ("+ title +")");
       
       if(value > 0) {
-        _logger->print(" with a value price of: " + String(Value) + "EUR");
+        _logger->println("New Coin created: ("+ title +") with a value of: " + String(Value) + "EUR");
+      } else {
+        _logger->println("New Coin created: ("+ title +")");
       }
     }
 };

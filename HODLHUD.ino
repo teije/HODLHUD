@@ -74,8 +74,7 @@ Logger *logger = new Logger();
 
 void setup() {
   Serial.begin(9600);
-  logger->print("Setup start");
-  logger->setSourceName("Coin");
+  logger->println("Setup start");
 
   // Test Hotspot WiFi configuration
   WiFiConnector* hotSpotTeije = new WiFiConnector(ssid, password);
@@ -86,31 +85,27 @@ void setup() {
   // Symbol,Title,Amount,rate (in EUR)
   Coin* Ethereum  = new Coin("ETH", "Ethereum", 10, 1.50);
 
-  Logger *logger = new Logger();
+  Logger *logger = new Logger("HODLHUD");
   ApiCaller *apiCaller = new ApiCaller(); // Instance of the API caller class to fetch data from the binance API
 
   TransactionService *transactionService = new TransactionService(apiCaller);
-
   
-  logger->print("Fetching number of transactions from Google Sheet");
   int transactionCount = apiCaller->getTransactionCount();
-  logger->print("Transaction Count: " + (String)transactionCount);
   
-  logger->print("Fetching all transactions from Google Sheet");
   Transaction *transactions[transactionCount] = { apiCaller->getTransactions() };
 
-  logger->print("Fetched transactions: ");
   for (int i=0; i<transactionCount; i++) {
     Coin *baseCoin    = transactions[i]->baseCoin;
     Coin *counterCoin = transactions[i]->counterCoin;
   }
+  logger->println("Fetching all transactions using the TransactionService");
  
-  logger->print("Setup end\n\n");
+  logger->println("Setup end\n\n");
 }
 
 void loop() {
   //logger->print("Loop start");
 
   delay(LOOP_DELAY);
-  //logger->print("Loop end");
+  //logger->println("Loop end");
 }

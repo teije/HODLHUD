@@ -27,7 +27,7 @@ class WiFiConnector {
 
   public: 
     WiFiConnector(char* Ssid, char* Password, String DeviceHostName = "HODL-HUD", uint32_t ConnectionAttemptCount = 1, uint32_t MaxConnectionAttempts = 5, uint32_t ConnectionAttemptDelay = 2500) {
-      _logger                 = new Logger();
+      _logger                 = new Logger("WiFiConnector");
       
       ssid                    = Ssid;
       password                = Password;
@@ -35,8 +35,7 @@ class WiFiConnector {
       maxConnectionAttempts   = MaxConnectionAttempts;
       connectionAttemptDelay  = ConnectionAttemptDelay;
 
-      _logger->setSourceName("WiFiConnector");
-      _logger->print("New WiFi connection configured: " + String(ssid) + "");
+      _logger->println("New WiFi connection configured: " + String(ssid) + "");
     }
 
     /* Connect to the network using the configured credentials */
@@ -45,8 +44,8 @@ class WiFiConnector {
       WiFi.hostname(deviceHostName);
       WiFi.begin(ssid, password);
       
-      _logger->print("Connecting to WiFi (" + String(ssid) + ")");
-      _logger->print("Using MAC address: " + WiFi.macAddress());
+      _logger->println("Connecting to WiFi (" + String(ssid) + ")");
+      _logger->println("Using MAC address: " + WiFi.macAddress());
 
       notConnectedCounter = 1;
 
@@ -54,7 +53,7 @@ class WiFiConnector {
         reconnect();
       }
 
-      _logger->print("WiFi connected");
+      _logger->println("WiFi connected");
     }
 
     
@@ -62,14 +61,14 @@ class WiFiConnector {
       delay(connectionAttemptDelay);
       
       // Report how many times a connection has been attempted
-      _logger->print("Connection attempt " + String(notConnectedCounter) + "/" + String(maxConnectionAttempts));
+      _logger->println("Connection attempt " + String(notConnectedCounter) + "/" + String(maxConnectionAttempts));
     
       // Reset board if not connected after max attempts
       notConnectedCounter++;
       
       if(notConnectedCounter > maxConnectionAttempts) {
-        _logger->print("Resetting " + deviceHostName + " due to Wifi not connecting...");
-        _logger->print("Is your mobile hotspot, WiFi or ssid/password setup correctly & online?");
+        _logger->println("Resetting " + deviceHostName + " due to Wifi not connecting...");
+        _logger->println("Is your mobile hotspot, WiFi or ssid/password setup correctly & online?");
         
         delay(1000);
         
