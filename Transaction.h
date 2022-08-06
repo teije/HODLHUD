@@ -1,7 +1,7 @@
 class Transaction {
   private:
     // Services
-    Logger* logger = new Logger("Transaction");
+    Logger *_logger;
      
   public:
     // Properties
@@ -13,6 +13,8 @@ class Transaction {
     float baseValueInEUR;
 
     Transaction(bool ShowOnHud, Coin *BaseCoin, Coin *CounterCoin, int Day, int Month, int Year, String Remarks, float BaseValueInEUR = 0) {
+      _logger         = new Logger();
+      
       showOnHud       = ShowOnHud;
       baseCoin        = BaseCoin;
       counterCoin     = CounterCoin;
@@ -20,6 +22,7 @@ class Transaction {
       remarks         = Remarks;
       baseValueInEUR  = BaseValueInEUR;
 
-      logger->print("New Transaction created for :" + BaseCoin->symbol + CounterCoin->symbol);
+      _logger->setSourceName("Transaction");
+      _logger->print("New Transaction created for :" + BaseCoin->symbol + CounterCoin->symbol);
     }
 };

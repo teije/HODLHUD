@@ -1,17 +1,20 @@
 class Logger {  
   private:
-    String loggerSourceName; // Name of the class calling the logger (makes it easier to see where the log is comming from)
+    String _sourceName; // Name of the class calling the logger (makes it easier to see where the log is comming from)
 
   public:
-    Logger(String LoggerSourceName) {
-      loggerSourceName = LoggerSourceName; 
+    Logger() 
+    {
+      
     }
+
+    void setSourceName(String sourceName) { _sourceName = sourceName; }
   
-    void print(String text) { Serial.println("["+ loggerSourceName +"] \t" + text); }
+    void print(String text) { Serial.println("["+ _sourceName +"] \t" + text); }
 
     void printFloat(float floatValue, int decimalsToShow = 5) 
     { 
-      Serial.print("["+ loggerSourceName +"] \t");
+      Serial.print("["+ _sourceName +"] \t");
       Serial.println(floatValue, decimalsToShow); 
     }
 

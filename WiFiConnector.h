@@ -1,4 +1,4 @@
-// Third party libraries#include <WiFi.h>
+// Third party libraries
 #include <WiFi.h>
 #include <WiFiAP.h>
 #include <WiFiMulti.h>
@@ -10,6 +10,7 @@
 #include <WiFiServer.h>
 #include <WiFiType.h>
 #include <WiFiGeneric.h>
+
 class WiFiConnector {
   private:
     // Properties
@@ -22,17 +23,20 @@ class WiFiConnector {
     uint32_t notConnectedCounter;    // Time between each connection attempt in ms
 
     // Services
-    Logger* logger = new Logger("WiFiConnector");
+    Logger *_logger;
 
   public: 
     WiFiConnector(char* Ssid, char* Password, String DeviceHostName = "HODL-HUD", uint32_t ConnectionAttemptCount = 1, uint32_t MaxConnectionAttempts = 5, uint32_t ConnectionAttemptDelay = 2500) {
+      _logger                 = new Logger();
+      
       ssid                    = Ssid;
       password                = Password;
       connectionAttemptCount  = ConnectionAttemptCount;
       maxConnectionAttempts   = MaxConnectionAttempts;
       connectionAttemptDelay  = ConnectionAttemptDelay;
 
-      logger->print("New WiFi connection configured: " + String(ssid) + "");
+      _logger->setSourceName("WiFiConnector");
+      _logger->print("New WiFi connection configured: " + String(ssid) + "");
     }
 
     /* Connect to the network using the configured credentials */
@@ -41,8 +45,8 @@ class WiFiConnector {
       WiFi.hostname(deviceHostName);
       WiFi.begin(ssid, password);
       
-      logger->print("Connecting to WiFi (" + String(ssid) + ")");
-      logger->print("Using MAC address: " + WiFi.macAddress());
+      _logger->print("Connecting to WiFi (" + String(ssid) + ")");
+      _logger->print("Using MAC address: " + WiFi.macAddress());
 
       notConnectedCounter = 1;
 
@@ -50,7 +54,7 @@ class WiFiConnector {
         reconnect();
       }
 
-      logger->print("WiFi connected");
+      _logger->print("WiFi connected");
     }
 
     
@@ -58,14 +62,14 @@ class WiFiConnector {
       delay(connectionAttemptDelay);
       
       // Report how many times a connection has been attempted
-      logger->print("Connection attempt " + String(notConnectedCounter) + "/" + String(maxConnectionAttempts));
+      _logger->print("Connection attempt " + String(notConnectedCounter) + "/" + String(maxConnectionAttempts));
     
       // Reset board if not connected after max attempts
       notConnectedCounter++;
       
       if(notConnectedCounter > maxConnectionAttempts) {
-        logger->print("Resetting " + deviceHostName + " due to Wifi not connecting...");
-        logger->print("Is your mobile hotspot, WiFi or ssid/password setup correctly & online?");
+        _logger->print("Resetting " + deviceHostName + " due to Wifi not connecting...");
+        _logger->print("Is your mobile hotspot, WiFi or ssid/password setup correctly & online?");
         
         delay(1000);
         

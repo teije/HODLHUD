@@ -61,6 +61,7 @@
 #include "WiFiConnector.h"
 #include "Coin.h"
 #include "ApiCaller.h"
+#include "TransactionService.h"
 
 // Constants
 int LOOP_DELAY = 10000;
@@ -69,11 +70,12 @@ int LOOP_DELAY = 10000;
 char ssid[]     = "Deepthought";
 char password[] = "dont-forget-your-towel";
 
-Logger* logger = new Logger(" HODLHUD ");
+Logger *logger = new Logger();
 
 void setup() {
   Serial.begin(9600);
   logger->print("Setup start");
+  logger->setSourceName("Coin");
 
   // Test Hotspot WiFi configuration
   WiFiConnector* hotSpotTeije = new WiFiConnector(ssid, password);
@@ -84,9 +86,12 @@ void setup() {
   // Symbol,Title,Amount,rate (in EUR)
   Coin* Ethereum  = new Coin("ETH", "Ethereum", 10, 1.50);
 
-  
-  ApiCaller* apiCaller = new ApiCaller(); // Instance of the API caller class to fetch data from the binance API
+  Logger *logger = new Logger();
+  ApiCaller *apiCaller = new ApiCaller(); // Instance of the API caller class to fetch data from the binance API
 
+  TransactionService *transactionService = new TransactionService(apiCaller);
+
+  
   logger->print("Fetching number of transactions from Google Sheet");
   int transactionCount = apiCaller->getTransactionCount();
   logger->print("Transaction Count: " + (String)transactionCount);
@@ -94,7 +99,7 @@ void setup() {
   logger->print("Fetching all transactions from Google Sheet");
   Transaction *transactions[transactionCount] = { apiCaller->getTransactions() };
 
-  logger->print("Fetched ransactions: ");
+  logger->print("Fetched transactions: ");
   for (int i=0; i<transactionCount; i++) {
     Coin *baseCoin    = transactions[i]->baseCoin;
     Coin *counterCoin = transactions[i]->counterCoin;

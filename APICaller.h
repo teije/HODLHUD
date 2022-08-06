@@ -28,11 +28,13 @@ class ApiCaller
     
 
     // Services
-    Logger* logger = new Logger("ApiCaller");
+    Logger *_logger;
      
   public:
     ApiCaller() {
-      logger->print("New APICaller created");
+      _logger = new Logger();
+      _logger->setSourceName("ApiCaller");
+      _logger->print("New APICaller created");
     }
 
     
@@ -52,7 +54,7 @@ class ApiCaller
                     GOOGLE_BASE_URL_SUFFIX  + 
                     GOOGLE_API_KEY;
 
-        logger->print("Executing GET request on: " + targetUrl);
+        _logger->print("Executing GET request on: " + targetUrl);
         
         http.begin(targetUrl.c_str()); // Start API request with the constructed url
 
@@ -62,15 +64,15 @@ class ApiCaller
         
         if (responseCode > 0) { //Check for the returning code
           response = http.getString();
-          logger->print("Response Code (" + String(responseCode) + ") " + response);
+          _logger->print("Response Code (" + String(responseCode) + ") " + response);
 
           if (response == "") {
-            logger->print("The response was empty");
+            _logger->print("The response was empty");
           }
         } else if (responseCode < 0) {
-          logger->print("Response Code (" + String(responseCode) + ") Response received, but API call was not executed succesfully");
+          _logger->print("Response Code (" + String(responseCode) + ") Response received, but API call was not executed succesfully");
         } else {
-          logger->print("Response Code (" + String(responseCode) + ") API call was not executed succesfully");
+          _logger->print("Response Code (" + String(responseCode) + ") API call was not executed succesfully");
         }
        
         http.end();
@@ -94,7 +96,7 @@ class ApiCaller
                   GOOGLE_BASE_URL_SUFFIX  + 
                   GOOGLE_API_KEY;
 
-      logger->print("Executing GET request on: " + targetUrl);
+      _logger->print("Executing GET request on: " + targetUrl);
       
       http.begin(targetUrl.c_str()); // Start API request with the constructed url
 
@@ -104,15 +106,15 @@ class ApiCaller
       
       if (responseCode > 0) { //Check for the returning code
         response = http.getString();
-        logger->print("Response Code (" + String(responseCode) + ") " + response);
+        _logger->print("Response Code (" + String(responseCode) + ") " + response);
 
         if (response == "") {
-          logger->print("The response was empty");
+          _logger->print("The response was empty");
         }
       } else if (responseCode < 0) {
-        logger->print("Response Code (" + String(responseCode) + ") Response received, but API call was not executed succesfully");
+        _logger->print("Response Code (" + String(responseCode) + ") Response received, but API call was not executed succesfully");
       } else {
-        logger->print("Response Code (" + String(responseCode) + ") API call was not executed succesfully");
+        _logger->print("Response Code (" + String(responseCode) + ") API call was not executed succesfully");
       }
      
       http.end();
@@ -122,7 +124,7 @@ class ApiCaller
       
       String transactionCount = jsonObject["values"][0][0];
 
-      logger->print("Extracted transaction count from json response: " + transactionCount);
+      _logger->print("Extracted transaction count from json response: " + transactionCount);
       
       return transactionCount.toInt();
     }
@@ -147,7 +149,7 @@ class ApiCaller
                   GOOGLE_BASE_URL_SUFFIX  + 
                   GOOGLE_API_KEY;
 
-      logger->print("Executing GET request on: " + targetUrl);
+      _logger->print("Executing GET request on: " + targetUrl);
       
       http.begin(targetUrl.c_str()); // Start API request with the constructed url
 
@@ -157,15 +159,15 @@ class ApiCaller
       
       if (responseCode > 0) { //Check for the returning code
         response = http.getString();
-        logger->print("Response Code (" + String(responseCode) + ") " + response);
+        _logger->print("Response Code (" + String(responseCode) + ") " + response);
 
         if (response == "") {
-          logger->print("The response was empty");
+          _logger->print("The response was empty");
         }
       } else if (responseCode < 0) {
-        logger->print("Response Code (" + String(responseCode) + ") Response received, but API call was not executed succesfully");
+        _logger->print("Response Code (" + String(responseCode) + ") Response received, but API call was not executed succesfully");
       } else {
-        logger->print("Response Code (" + String(responseCode) + ") API call was not executed succesfully");
+        _logger->print("Response Code (" + String(responseCode) + ") API call was not executed succesfully");
       }
      
       http.end();
@@ -173,11 +175,11 @@ class ApiCaller
       DynamicJsonDocument jsonObject(1024);   // Reserving memory space to hold the json object
       deserializeJson(jsonObject, response);  // Converting from a string to a json object
       
-      logger->print("Creating " + (String)transactionCount + " transaction objects");
+      _logger->print("Creating " + (String)transactionCount + " transaction objects");
       Transaction *transactions[transactionCount];
 
       for (int i=0; i<transactionCount; i++) { 
-        logger->print("Creating transaction#" + (String)i);
+        _logger->print("Creating transaction#" + (String)i);
       
         bool showOnHud        = jsonObject["values"][i][0].as<bool>();
         String baseName       = jsonObject["values"][i][1].as<String>();
@@ -204,8 +206,6 @@ class ApiCaller
           );
       }
 
-      
-      
       return *transactions;
     }
     
@@ -217,7 +217,7 @@ class ApiCaller
       
       const char* value = jsonObject["values"];
       
-      logger->print("Fetched cell value: " + (String)value);
+      _logger->print("Fetched cell value: " + (String)value);
     }
 
     String getCellRangeValues(String pageName, String topLeftCell, String bottomRightCell) {
@@ -228,7 +228,7 @@ class ApiCaller
       
       const char* value = jsonObject["values"];
       
-      logger->print("Fetched cell range values: " + (String)value);
+      _logger->print("Fetched cell range values: " + (String)value);
     }
 
 
@@ -260,7 +260,7 @@ class ApiCaller
             queryParameterString;
         }
         
-        logger->print("Executing GET request on: " + targetUrl);
+        _logger->print("Executing GET request on: " + targetUrl);
         
         http.begin(targetUrl.c_str()); // Start API request with the constructed url
 
@@ -273,14 +273,14 @@ class ApiCaller
         
         if (responseCode > 0) { //Check for the returning code
           response = http.getString();
-          logger->print("Response Code (" + String(responseCode) + ") " + response);
+          _logger->print("Response Code (" + String(responseCode) + ") " + response);
           if (response == "") {
-            logger->print("The response was empty");
+            _logger->print("The response was empty");
           }
         } else if (responseCode < 0) {
-          logger->print("Response Code (" + String(responseCode) + ") Response received, but API call was not executed succesfully");
+          _logger->print("Response Code (" + String(responseCode) + ") Response received, but API call was not executed succesfully");
         } else {
-          logger->print("Response Code (" + String(responseCode) + ") API call was not executed succesfully");
+          _logger->print("Response Code (" + String(responseCode) + ") API call was not executed succesfully");
         }
        
         http.end();
@@ -296,8 +296,8 @@ class ApiCaller
       const char* valueString = jsonObject["price"];
       float rate = strtof(valueString, NULL);
       
-      logger->print("Fetched EUR to USDT Rate: ");
-      logger->printFloat(rate);
+      _logger->print("Fetched EUR to USDT Rate: ");
+      _logger->printFloat(rate);
 
       return rate;
     }
@@ -306,8 +306,8 @@ class ApiCaller
       float rate = getUSDtoEURrate();
       float inverseRate = 1 / rate;
       
-      logger->print("Fetched USDT to EUR Rate: ");
-      logger->printFloat(inverseRate);
+      _logger->print("Fetched USDT to EUR Rate: ");
+      _logger->printFloat(inverseRate);
       
       return inverseRate;
     }
@@ -323,7 +323,7 @@ class ApiCaller
           apiBaseUrl + 
           "/api/v3/ping";  
         
-        logger->print("Executing GET request on: " + targetUrl);
+        _logger->print("Executing GET request on: " + targetUrl);
         
         http.begin(targetUrl.c_str()); // Start API request with the constructed url
 
@@ -348,7 +348,7 @@ class ApiCaller
     String getTimestamp() {
       String targetUrl = "https://worldtimeapi.org/api/timezone/Etc/UTC"; // Set target URL to the time API
         
-      logger->print("Fetching timestamp from: " + targetUrl);                    
+      _logger->print("Fetching timestamp from: " + targetUrl);                    
       http.begin(targetUrl.c_str());          // Start API request with the constructed url
       
       int responseCode = http.GET();          // Send the request
@@ -358,12 +358,12 @@ class ApiCaller
       deserializeJson(jsonObject, response);  // Converting from a string to a json object
 
       String timestamp_seconds = jsonObject["unixtime"]; // Grabbing the unix timestamp from the jsonObject
-      logger->print("JSON Object timestamp seconds: " + timestamp_seconds);
+      _logger->print("JSON Object timestamp seconds: " + timestamp_seconds);
       
       String timestamp_milliseconds  = timestamp_seconds + "000"; // 'Convert' to miliseconds
-      logger->print("JSON Object timestamp milliseconds: " + timestamp_milliseconds);
+      _logger->print("JSON Object timestamp milliseconds: " + timestamp_milliseconds);
 
-      logger->print("Extracted timestamp (milliseconds/UNIX) from JSON object: " + timestamp_milliseconds);
+      _logger->print("Extracted timestamp (milliseconds/UNIX) from JSON object: " + timestamp_milliseconds);
 
       http.end(); // End API request to free up resources
 
@@ -393,7 +393,7 @@ class ApiCaller
             signature += str;
         }
 
-        logger->print("Generated signature: " + signature);
+        _logger->print("Generated signature: " + signature);
 
         return signature;
     }
