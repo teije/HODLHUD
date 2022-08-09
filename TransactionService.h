@@ -12,7 +12,7 @@ class TransactionService
       _apiCaller = apiCaller;
       _logger = new Logger("TransactionService");
 
-      _logger->println("New TransactionService created");
+      //_logger->println("New TransactionService created");
     }
 
     int getTransactionCount() {

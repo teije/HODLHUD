@@ -33,7 +33,46 @@ class ApiCaller
   public:
     ApiCaller() {
       _logger = new Logger("ApiCaller");
-      _logger->println("New APICaller created");
+      //_logger->println("New APICaller created");
+    }
+
+    //////////////////////////////////
+    /////////// GENERIC //////////////
+    //////////////////////////////////
+    
+    String get(String targetUrl) {
+      //_logger->println("Executing GET request on: " + targetUrl);
+      
+      http.begin(targetUrl.c_str()); // Start API request with the constructed url
+
+      int responseCode = http.GET(); // Send HTTP GET request to the server. The response data is stored in the jsonResponse variable
+      
+      String response = "";
+      
+      if (responseCode > 0) { //Check for the returning code
+        response = http.getString();
+        //_logger->println("Response Code (" + String(responseCode) + ") " + response);
+
+        if (response == "") {
+          //_logger->println("The response was empty");
+        }
+      } else if (responseCode < 0) {
+        //_logger->println("Response Code (" + String(responseCode) + ") Response received, but API call was not executed succesfully");
+      } else {
+        //_logger->println("Response Code (" + String(responseCode) + ") API call was not executed succesfully");
+      }
+     
+      http.end();
+
+        return response;
+    }
+
+    DynamicJsonDocument responseToJsonObject(String response, int reservedMemorySize) {
+      DynamicJsonDocument jsonObject(reservedMemorySize);   // Reserving memory space to hold the json object
+      deserializeJson(jsonObject, response);  // Converting from a string to a json object
+      jsonObject.shrinkToFit();
+
+      return jsonObject;
     }
 
     
@@ -53,30 +92,7 @@ class ApiCaller
                     GOOGLE_BASE_URL_SUFFIX  + 
                     GOOGLE_API_KEY;
 
-        _logger->println("Executing GET request on: " + targetUrl);
-        
-        http.begin(targetUrl.c_str()); // Start API request with the constructed url
-
-        int responseCode = http.GET(); // Send HTTP GET request to the server. The response data is stored in the jsonResponse variable
-        
-        String response = "";
-        
-        if (responseCode > 0) { //Check for the returning code
-          response = http.getString();
-          _logger->println("Response Code (" + String(responseCode) + ") " + response);
-
-          if (response == "") {
-            _logger->println("The response was empty");
-          }
-        } else if (responseCode < 0) {
-          _logger->println("Response Code (" + String(responseCode) + ") Response received, but API call was not executed succesfully");
-        } else {
-          _logger->println("Response Code (" + String(responseCode) + ") API call was not executed succesfully");
-        }
-       
-        http.end();
-        
-        return response;
+        return get(targetUrl);
     }
 
     int getTransactionCount() {
@@ -95,36 +111,17 @@ class ApiCaller
                   GOOGLE_BASE_URL_SUFFIX  + 
                   GOOGLE_API_KEY;
 
-      _logger->println("Executing GET request on: " + targetUrl);
+      String response = get(targetUrl);
       
-      http.begin(targetUrl.c_str()); // Start API request with the constructed url
+//      DynamicJsonDocument jsonObject(256);   // Reserving memory space to hold the json object
+//      responseToJsonObject(jsonObject, response);  // Converting from a string to a json object
+//      jsonObject.shrinkToFit();
 
-      int responseCode = http.GET(); // Send HTTP GET request to the server. The response data is stored in the jsonResponse variable
-      
-      String response = "";
-      
-      if (responseCode > 0) { //Check for the returning code
-        response = http.getString();
-        _logger->println("Response Code (" + String(responseCode) + ") " + response);
-
-        if (response == "") {
-          _logger->println("The response was empty");
-        }
-      } else if (responseCode < 0) {
-        _logger->println("Response Code (" + String(responseCode) + ") Response received, but API call was not executed succesfully");
-      } else {
-        _logger->println("Response Code (" + String(responseCode) + ") API call was not executed succesfully");
-      }
-     
-      http.end();
-
-      DynamicJsonDocument jsonObject(1024);   // Reserving memory space to hold the json object
-      deserializeJson(jsonObject, response);  // Converting from a string to a json object
-      jsonObject.shrinkToFit();
+      DynamicJsonDocument jsonObject = responseToJsonObject(response, 256);
       
       String transactionCount = jsonObject["values"][0][0];
 
-      _logger->println("Extracted transaction count from json response: " + transactionCount);
+      //_logger->println("Extracted transaction count from json response: " + transactionCount);
       
       return transactionCount.toInt();
     }
@@ -149,31 +146,12 @@ class ApiCaller
                   GOOGLE_BASE_URL_SUFFIX  + 
                   GOOGLE_API_KEY;
 
-      _logger->println("Executing GET request on: " + targetUrl);
-      
-      http.begin(targetUrl.c_str()); // Start API request with the constructed url
+      String response = get(targetUrl);
 
-      int responseCode = http.GET(); // Send HTTP GET request to the server. The response data is stored in the jsonResponse variable
-      
-      String response = "";
-      
-      if (responseCode > 0) { //Check for the returning code
-        response = http.getString();
-        _logger->println("Response Code (" + String(responseCode) + ") " + response);
+      //DynamicJsonDocument jsonObject(256);   // Reserving memory space to hold the json object
+      //responseToJsonObject(jsonObject, response);  // Converting from a string to a json object
 
-        if (response == "") {
-          _logger->println("The response was empty");
-        }
-      } else if (responseCode < 0) {
-        _logger->println("Response Code (" + String(responseCode) + ") Response received, but API call was not executed succesfully");
-      } else {
-        _logger->println("Response Code (" + String(responseCode) + ") API call was not executed succesfully");
-      }
-     
-      http.end();
-
-      DynamicJsonDocument jsonObject(1024);   // Reserving memory space to hold the json object
-      deserializeJson(jsonObject, response);  // Converting from a string to a json object
+      DynamicJsonDocument jsonObject = responseToJsonObject(response, 256);
       
       return response;
     }
@@ -181,8 +159,10 @@ class ApiCaller
     String getCellValue(String pageName, String cell) {
       String response = executeGoogle(pageName, cell, cell);
 
-      DynamicJsonDocument jsonObject(64);   // Reserving memory space to hold the json object
-      deserializeJson(jsonObject, response);  // Converting from a string to a json object
+      //DynamicJsonDocument jsonObject(64);   // Reserving memory space to hold the json object
+      //responseToJsonObject(jsonObject, response);  // Converting from a string to a json object
+
+    DynamicJsonDocument jsonObject = responseToJsonObject(response, 64);
       
       const char* value = jsonObject["values"][0][0];
       
@@ -192,13 +172,15 @@ class ApiCaller
     String getCellRangeValues(String pageName, String topLeftCell, String bottomRightCell) {
       String response = executeGoogle(pageName, topLeftCell, bottomRightCell);
 
-      DynamicJsonDocument jsonObject(1024);    // Reserving memory space to hold the json object
-      deserializeJson(jsonObject, response);  // Converting from a string to a json object
-      jsonObject.shrinkToFit();
+      //DynamicJsonDocument jsonObject(256);    // Reserving memory space to hold the json object
+      //responseToJsonObject(jsonObject, response);  // Converting from a string to a json object
+      //jsonObject.shrinkToFit();
+
+      DynamicJsonDocument jsonObject = responseToJsonObject(response, 256);
       
       const char* value = jsonObject["values"];
       
-      _logger->println("Fetched cell range values: " + (String)value);
+      //_logger->println("Fetched cell range values: " + (String)value);
     }
 
 
@@ -230,46 +212,23 @@ class ApiCaller
             queryParameterString;
         }
         
-        _logger->println("Executing GET request on: " + targetUrl);
-        
-        http.begin(targetUrl.c_str()); // Start API request with the constructed url
-
-        http.addHeader("Content-Type", "application/json");
-        http.addHeader("X-MBX-APIKEY", BINANCE_API_KEY);
-
-        int responseCode = http.GET(); // Send HTTP GET request to the server. The response data is stored in the jsonResponse variable
-        
-        String response = "";
-        
-        if (responseCode > 0) { //Check for the returning code
-          response = http.getString();
-          _logger->println("Response Code (" + String(responseCode) + ") " + response);
-          if (response == "") {
-            _logger->println("The response was empty");
-          }
-        } else if (responseCode < 0) {
-          _logger->println("Response Code (" + String(responseCode) + ") Response received, but API call was not executed succesfully");
-        } else {
-          _logger->println("Response Code (" + String(responseCode) + ") API call was not executed succesfully");
-        }
-       
-        http.end();
-        
-        return response;
+        return get(targetUrl);
     }
 
     float getUSDtoEURrate() {
       String response = executeBinance("/api/v3/ticker/price", "?symbol=EURUSDT", false);
 
-      DynamicJsonDocument jsonObject(1024);   // Reserving memory space to hold the json object
-      deserializeJson(jsonObject, response);  // Converting from a string to a json object
+      //DynamicJsonDocument jsonObject(256);   // Reserving memory space to hold the json object
+      //responseToJsonObject(jsonObject, response);  // Converting from a string to a json object
+
+      DynamicJsonDocument jsonObject = responseToJsonObject(response, 256);
       
       jsonObject.shrinkToFit();
       const char* valueString = jsonObject["price"];
       float rate = strtof(valueString, NULL);
       
-      _logger->println("Fetched EUR to USDT Rate: ");
-      _logger->printFloat(rate);
+      //_logger->println("Fetched EUR to USDT Rate: ");
+      //_logger->printFloat(rate);
 
       return rate;
     }
@@ -278,8 +237,8 @@ class ApiCaller
       float rate = getUSDtoEURrate();
       float inverseRate = 1 / rate;
       
-      _logger->println("Fetched USDT to EUR Rate: ");
-      _logger->printFloat(inverseRate);
+      //_logger->println("Fetched USDT to EUR Rate: ");
+      //_logger->printFloat(inverseRate);
       
       return inverseRate;
     }
@@ -287,29 +246,31 @@ class ApiCaller
     
     bool hasBinanceApiConnection() {
       String timestamp    = getTimestamp();
-        const char *payload = ("timestamp=" + timestamp).c_str();
-        String signature = parseSignature(payload);
-        bool isConnected = false;
-        
-        String targetUrl = 
-          apiBaseUrl + 
-          "/api/v3/ping";  
-        
-        _logger->println("Executing GET request on: " + targetUrl);
-        
-        http.begin(targetUrl.c_str()); // Start API request with the constructed url
+      
+      const char *payload = ("timestamp=" + timestamp).c_str();
+      String signature = parseSignature(payload);
+      bool isConnected = false;
+      
+      String targetUrl = 
+        apiBaseUrl + 
+        "/api/v3/ping";  
+       
+       _logger->println("Executing GET request on: " + targetUrl);
+      
+      http.begin(targetUrl.c_str()); // Start API request with the constructed url
 
-        http.addHeader("Content-Type", "application/json");
-        http.addHeader("X-MBX-APIKEY", BINANCE_API_KEY);
+      http.addHeader("Content-Type", "application/json");
+      http.addHeader("X-MBX-APIKEY", BINANCE_API_KEY);
 
-        int responseCode = http.GET(); // Send HTTP GET request to the server. The response data is stored in the jsonResponse variable
-        
-        String response = "";
-        
-        if (responseCode > 0) {
-          return true;
-        }
-        return false;
+      int responseCode = http.GET(); // Send HTTP GET request to the server. The response data is stored in the jsonResponse variable
+      
+      String response = "";
+      
+      if (responseCode > 0) {
+        return true;
+      }
+      
+      return false;
     }
 
     /////////////////////////////////
@@ -320,22 +281,21 @@ class ApiCaller
     String getTimestamp() {
       String targetUrl = "https://worldtimeapi.org/api/timezone/Etc/UTC"; // Set target URL to the time API
         
-      _logger->println("Fetching timestamp from: " + targetUrl);                    
-      http.begin(targetUrl.c_str());          // Start API request with the constructed url
+      //_logger->println("Fetching timestamp from: " + targetUrl);                    
+      String response = get(targetUrl);     // Get the response as a String
       
-      int responseCode = http.GET();          // Send the request
-      String response = http.getString();     // Get the response as a String
-      
-      DynamicJsonDocument jsonObject(1024);   // Reserving memory space to hold the json object
-      deserializeJson(jsonObject, response);  // Converting from a string to a json object
+      //DynamicJsonDocument jsonObject(256);   // Reserving memory space to hold the json object
+      //responseToJsonObject(jsonObject, response);  // Converting from a string to a json object
+
+      DynamicJsonDocument jsonObject = responseToJsonObject(response, 256);
 
       String timestamp_seconds = jsonObject["unixtime"]; // Grabbing the unix timestamp from the jsonObject
-      _logger->println("JSON Object timestamp seconds: " + timestamp_seconds);
+      //_logger->println("JSON Object timestamp seconds: " + timestamp_seconds);
       
       String timestamp_milliseconds  = timestamp_seconds + "000"; // 'Convert' to miliseconds
-      _logger->println("JSON Object timestamp milliseconds: " + timestamp_milliseconds);
+      //_logger->println("JSON Object timestamp milliseconds: " + timestamp_milliseconds);
 
-      _logger->println("Extracted timestamp (milliseconds/UNIX) from JSON object: " + timestamp_milliseconds);
+      //_logger->println("Extracted timestamp (milliseconds/UNIX) from JSON object: " + timestamp_milliseconds);
 
       http.end(); // End API request to free up resources
 
@@ -365,7 +325,7 @@ class ApiCaller
             signature += str;
         }
 
-        _logger->println("Generated signature: " + signature);
+        //_logger->println("Generated signature: " + signature);
 
         return signature;
     }

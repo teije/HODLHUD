@@ -9,9 +9,9 @@ class Coin
     {
       _logger   = new Logger("Coin");
       if(value > 0) {
-        _logger->println("New Coin created: ("+ title +") with a value of: " + String(Value) + "EUR");
+        //_logger->println("New Coin created: ("+ title +") with a value of: " + String(Value) + "EUR");
       } else {
-        _logger->println("New Coin created: ("+ title +")");
+        //_logger->println("New Coin created: ("+ title +")");
       }
       abbreviation  = Abbreviation;
       title         = Title;
