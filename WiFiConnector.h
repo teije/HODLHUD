@@ -71,8 +71,15 @@ class WiFiConnector {
         _logger->println("Is your mobile hotspot, WiFi or ssid/password setup correctly & online?");
         
         delay(1000);
-        
-        ESP.restart();
+
+        connect();
+        //ESP.restart();
+        // TODO: REBUILD THIS TO RECONNECT WITHOUT REBOOTING
+        // OR CREATE A NEW METHOD THAT CAN JUST RECONNECT WITHOUT REBOOTING
       }
+    }
+
+    bool isConnectedToWiFi() {
+      return (WiFi.status() != WL_CONNECTED);
     }
 };

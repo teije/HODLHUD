@@ -120,6 +120,7 @@ class ApiCaller
 
       DynamicJsonDocument jsonObject(1024);   // Reserving memory space to hold the json object
       deserializeJson(jsonObject, response);  // Converting from a string to a json object
+      jsonObject.shrinkToFit();
       
       String transactionCount = jsonObject["values"][0][0];
 
@@ -214,16 +215,17 @@ class ApiCaller
       DynamicJsonDocument jsonObject(64);   // Reserving memory space to hold the json object
       deserializeJson(jsonObject, response);  // Converting from a string to a json object
       
-      const char* value = jsonObject["values"];
+      const char* value = jsonObject["values"][0][0];
       
-      _logger->println("Fetched cell value: " + (String)value);
+      return value;
     }
 
     String getCellRangeValues(String pageName, String topLeftCell, String bottomRightCell) {
       String response = executeGoogle(pageName, topLeftCell, bottomRightCell);
 
-      DynamicJsonDocument jsonObject(64);   // Reserving memory space to hold the json object
+      DynamicJsonDocument jsonObject(1024);    // Reserving memory space to hold the json object
       deserializeJson(jsonObject, response);  // Converting from a string to a json object
+      jsonObject.shrinkToFit();
       
       const char* value = jsonObject["values"];
       
@@ -292,6 +294,8 @@ class ApiCaller
 
       DynamicJsonDocument jsonObject(1024);   // Reserving memory space to hold the json object
       deserializeJson(jsonObject, response);  // Converting from a string to a json object
+      
+      jsonObject.shrinkToFit();
       const char* valueString = jsonObject["price"];
       float rate = strtof(valueString, NULL);
       

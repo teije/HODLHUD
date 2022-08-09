@@ -15,13 +15,13 @@
         [ ] Move the WiFi credentials to a file that is not committed to GIT (https://www.arduino.cc/en/Reference/FileRead)
 
 [ ] We want to: Fetch all available coins from a Google Sheet
-    [ ] Create the google sheet document
+    [X] Create the google sheet document
     [ ] We want to store:
-        [ ] A trades per row, with values:
-            [ ] Base symbol
-            [ ] Counter symbol
-            [ ] Amount
-            [ ] Date/Time
+        [X] A trades per row, with values:
+            [X] Base symbol
+            [X] Counter symbol
+            [X] Amount
+            [X] Date/Time
         [ ] A row (seperate sheet?) that holds our balance for each coin with amount > 0
         [ ] 
         
@@ -80,27 +80,35 @@ void setup() {
   WiFiConnector* hotSpotTeije = new WiFiConnector(ssid, password);
   hotSpotTeije->connect();
 
-  // Test Coins
-  Coin* Cardano   = new Coin("ADA", "Cardano");
-  // Symbol,Title,Amount,rate (in EUR)
-  Coin* Ethereum  = new Coin("ETH", "Ethereum", 10, 1.50);
-
-  Logger *logger = new Logger("HODLHUD");
-  ApiCaller *apiCaller = new ApiCaller(); // Instance of the API caller class to fetch data from the binance API
-
-  TransactionService *transactionService = new TransactionService(apiCaller);
-  
-  int transactionCount = transactionService->getTransactionCount();
-  
-  logger->println("Fetching all transactions using the TransactionService");
-  Transaction *transactions[transactionCount] = { transactionService->getTransactions() };
- 
   logger->println("Setup end\n\n");
 }
 
-void loop() {
-  //logger->print("Loop start");
+  Logger *logger = new Logger("HODLHUD");
+void loop() {  
+  logger->println("Loop start");
+  
+
+  // Grab all transactions in the Google Sheet
+  TransactionService *transactionService = new TransactionService(apiCaller);
+  
+  int transactionCount = transactionService->getTransactionCount();
+  Transaction *transactions = transactionService->getTransactions();
+  //CoinService *coinService = new CoinService(apiCaller);
+
+  // Grab all values for all transactions
+  String symbols[sizeof(transactions)];
+  
+  for(int i=0; i<sizeof(transactions); i++) {
+    Transaction t = transactions[i];
+    Coin *c = t.baseCoin;
+    if (transactions[i].baseCoin != NULL && transactions[i].baseCoin->abbreviation != NULL) {
+      logger->println("--------");
+      symbols[i] = transactions[i].baseCoin->abbreviation;
+    }
+  }
+  
+  //coinService->getMultipleSpotValues(symbols);
 
   delay(LOOP_DELAY);
-  //logger->println("Loop end");
+  logger->println("Loop end");
 }

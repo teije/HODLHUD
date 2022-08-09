@@ -14,12 +14,12 @@ class Logger {
 
     void setSourceName(String sourceName) { _sourceName = sourceName; }
   
-    void println(String text) { Serial.println(_sourceName + _labelWhitespace + "|" + text); }
+    void println(String text) { Serial.println(_sourceName + _labelWhitespace + " > " + text); }
     void print(String text) { Serial.print(text); }
 
     void printFloat(float floatValue, int decimalsToShow = 5) 
     { 
-      Serial.print(_sourceName +"|" + _labelWhitespace );
+      Serial.print(_sourceName + _labelWhitespace + " > ");
       Serial.println(floatValue, decimalsToShow); 
     }
 
