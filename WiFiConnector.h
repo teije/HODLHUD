@@ -26,7 +26,7 @@ class WiFiConnector {
     Logger *_logger;
 
   public: 
-    WiFiConnector(char* Ssid, char* Password, String DeviceHostName = "HODL-HUD", uint32_t ConnectionAttemptCount = 1, uint32_t MaxConnectionAttempts = 5, uint32_t ConnectionAttemptDelay = 2500) {
+    WiFiConnector(char* Ssid, char* Password, String DeviceHostName = "HODL-HUD", uint32_t ConnectionAttemptCount = 1, uint32_t MaxConnectionAttempts = 5, uint32_t ConnectionAttemptDelay = 1500) {
       _logger                 = new Logger("WiFiConnector");
       
       ssid                    = Ssid;
@@ -72,8 +72,8 @@ class WiFiConnector {
         
         delay(1000);
 
-        connect();
-        //ESP.restart();
+        //connect();
+        ESP.restart();
         // TODO: REBUILD THIS TO RECONNECT WITHOUT REBOOTING
         // OR CREATE A NEW METHOD THAT CAN JUST RECONNECT WITHOUT REBOOTING
       }

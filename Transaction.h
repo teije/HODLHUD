@@ -22,6 +22,6 @@ class Transaction {
       remarks         = Remarks;
       baseValueInEUR  = BaseValueInEUR;
 
-      _logger->println("New Transaction created for :" + BaseCoin->symbol + CounterCoin->symbol);
+      _logger->println("New Transaction created for :" + BaseCoin->abbreviation + CounterCoin->abbreviation);
     }
 };

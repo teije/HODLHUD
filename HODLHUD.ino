@@ -83,10 +83,10 @@ void setup() {
   logger->println("Setup end\n\n");
 }
 
-  Logger *logger = new Logger("HODLHUD");
 void loop() {  
   logger->println("Loop start");
-  
+
+  ApiCaller *apiCaller = new ApiCaller();
 
   // Grab all transactions in the Google Sheet
   TransactionService *transactionService = new TransactionService(apiCaller);
