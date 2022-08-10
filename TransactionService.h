@@ -64,15 +64,15 @@ class TransactionService
     
       JsonArray jsonValuesArray = jsonDocument["values"];
     
-      for (int i=0; i<jsonValuesArray.size(); i++) {                                 // Print all values for each transaction
-        for(int j=0; j<TRANSACTION_FIELD_COUNT; j++) {
-          Serial.print(variable_labels[j]);
-          Serial.print(':');
-          Serial.println(jsonValuesArray[i][j].as<const char*>());
-        }
-        
-        Serial.println('\n');
-      }
+//      for (int i=0; i<jsonValuesArray.size(); i++) {                                 // Print all values for each transaction
+//        for(int j=0; j<TRANSACTION_FIELD_COUNT; j++) {
+//          Serial.print(variable_labels[j]);
+//          Serial.print(':');
+//          Serial.println(jsonValuesArray[i][j].as<const char*>());
+//        }
+//        
+//        Serial.println('\n');
+//      }
 
       return jsonValuesArray;
     }
