@@ -248,14 +248,6 @@ class ApiCaller
 
       return jsonArray;
     }
-
-    DynamicJsonDocument responseToJsonObject(String response, int reservedMemorySize = 1024) {
-      DynamicJsonDocument jsonObject(reservedMemorySize); // Reserving memory space to hold the json object
-      deserializeJson(jsonObject, response);              // Converting from a string to a json object
-      jsonObject.shrinkToFit();                           // Shrink memory size to fit the content
-
-      return jsonObject;
-    }
     
     /* This method grabs the current time (as a timestamp), which is required for other API calls */
     String getTimestamp() {
