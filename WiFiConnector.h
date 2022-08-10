@@ -23,7 +23,6 @@ class WiFiConnector {
     uint32_t notConnectedCounter;      // Time between each connection attempt in ms
 
   public: 
-    WiFiConnector(char* Ssid, char* Password, String DeviceHostName = "HODL-HUD", uint32_t ConnectionAttemptCount = 1, uint32_t MaxConnectionAttempts = 5, uint32_t ConnectionAttemptDelay = 1500) {
       ssid                    = Ssid;
       password                = Password;
       connectionAttemptCount  = ConnectionAttemptCount;
