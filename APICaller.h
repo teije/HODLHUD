@@ -1,8 +1,7 @@
+// External libraries
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 #include "mbedtls/md.h"
-
-#include "Transaction.h"
 
 class ApiCaller
 {
@@ -17,7 +16,6 @@ class ApiCaller
     char *BINANCE_API_KEY         = "y7ZTPqACsHNxFR5m2JDQ7SdgJ1mOaInXWJT74QWVo3jgTdgAWUVbjMBFZolcTopb";
     char *BINANCE_API_SECRET      = "TGdqRdsKQ3YtEBaOW9uOgBQbWXrD8QubAXUUfaGocZraOVRG3Hs5tjNQeWt8Tyxo";
 
-
     //https://sheets.googleapis.com/v4/spreadsheets/{sheet_id}/values/Sheet1!A1:D5?key={YOUR_API_KEY}
     //https://sheets.googleapis.com/v4/spreadsheets/spreadsheetId/values/Sheet1!A1:D5
     const String GOOGLE_BASE_URL            = "https://sheets.googleapis.com/v4/spreadsheets";
@@ -25,57 +23,10 @@ class ApiCaller
     const String GOOGLE_BASE_URL_SUFFIX     = "?key=";
     const String GOOGLE_SHEET_ID            = "1geu-fnt5D6whhLoX8m_mC-AKpi6enbpTGn6bZ2PFQik";
     const String GOOGLE_API_KEY             = "AIzaSyCRrO7YUxzgkhW8kDI8j9I257QnuykSxH0";
-    
 
-    // Services
-    Logger *_logger;
-     
   public:
-    ApiCaller() {
-      _logger = new Logger("ApiCaller");
-      //_logger->println("New APICaller created");
-    }
+    ApiCaller() { }
 
-    //////////////////////////////////
-    /////////// GENERIC //////////////
-    //////////////////////////////////
-    
-    String get(String targetUrl) {
-      //_logger->println("Executing GET request on: " + targetUrl);
-      
-      http.begin(targetUrl.c_str()); // Start API request with the constructed url
-
-      int responseCode = http.GET(); // Send HTTP GET request to the server. The response data is stored in the jsonResponse variable
-      
-      String response = "";
-      
-      if (responseCode > 0) { //Check for the returning code
-        response = http.getString();
-        //_logger->println("Response Code (" + String(responseCode) + ") " + response);
-
-        if (response == "") {
-          //_logger->println("The response was empty");
-        }
-      } else if (responseCode < 0) {
-        //_logger->println("Response Code (" + String(responseCode) + ") Response received, but API call was not executed succesfully");
-      } else {
-        //_logger->println("Response Code (" + String(responseCode) + ") API call was not executed succesfully");
-      }
-     
-      http.end();
-
-        return response;
-    }
-
-    DynamicJsonDocument responseToJsonObject(String response, int reservedMemorySize) {
-      DynamicJsonDocument jsonObject(reservedMemorySize);   // Reserving memory space to hold the json object
-      deserializeJson(jsonObject, response);  // Converting from a string to a json object
-      jsonObject.shrinkToFit();
-
-      return jsonObject;
-    }
-
-    
     //////////////////////////////////
     //////////// GOOGLE //////////////
     //////////////////////////////////
@@ -112,10 +63,6 @@ class ApiCaller
                   GOOGLE_API_KEY;
 
       String response = get(targetUrl);
-      
-//      DynamicJsonDocument jsonObject(256);   // Reserving memory space to hold the json object
-//      responseToJsonObject(jsonObject, response);  // Converting from a string to a json object
-//      jsonObject.shrinkToFit();
 
       DynamicJsonDocument jsonObject = responseToJsonObject(response, 256);
       
@@ -146,14 +93,7 @@ class ApiCaller
                   GOOGLE_BASE_URL_SUFFIX  + 
                   GOOGLE_API_KEY;
 
-      String response = get(targetUrl);
-
-      //DynamicJsonDocument jsonObject(256);   // Reserving memory space to hold the json object
-      //responseToJsonObject(jsonObject, response);  // Converting from a string to a json object
-
-      DynamicJsonDocument jsonObject = responseToJsonObject(response, 256);
-      
-      return response;
+      return get(targetUrl);
     }
     
     String getCellValue(String pageName, String cell) {
@@ -253,9 +193,7 @@ class ApiCaller
       
       String targetUrl = 
         apiBaseUrl + 
-        "/api/v3/ping";  
-       
-       _logger->println("Executing GET request on: " + targetUrl);
+        "/api/v3/ping";
       
       http.begin(targetUrl.c_str()); // Start API request with the constructed url
 
@@ -277,27 +215,60 @@ class ApiCaller
     //////////// OTHER //////////////
     /////////////////////////////////
 
+        
+    String get(String targetUrl) {
+      http.begin(targetUrl.c_str()); // Start API request with the constructed url
+
+      int responseCode = http.GET(); // Send HTTP GET request to the server. The response data is stored in the jsonResponse variable
+      
+      String response = "";
+      
+      if (responseCode > 0) {        //Check for the returning code
+        response = http.getString();
+        
+        if (response == "") {
+          // The response was empty
+        }
+      } else if (responseCode < 0) {
+        // Response received, but API call was not executed succesfully
+      } else {
+        // API call was not executed succesfully");
+      }
+     
+      http.end();
+
+        return response;
+    }
+
+    JsonArray responseToJsonArray(String response, int reservedMemorySize = 1024) {
+      DynamicJsonDocument jsonDoc(reservedMemorySize); // Reserving memory space to hold the json object
+      deserializeJson(jsonDoc, response);              // Converting from a string to a json object
+      jsonDoc.shrinkToFit();                        // Shrink memory size to fit the content
+      JsonArray jsonArray = jsonDoc.as<JsonArray>();
+
+      return jsonArray;
+    }
+
+    DynamicJsonDocument responseToJsonObject(String response, int reservedMemorySize = 1024) {
+      DynamicJsonDocument jsonObject(reservedMemorySize); // Reserving memory space to hold the json object
+      deserializeJson(jsonObject, response);              // Converting from a string to a json object
+      jsonObject.shrinkToFit();                           // Shrink memory size to fit the content
+
+      return jsonObject;
+    }
+    
     /* This method grabs the current time (as a timestamp), which is required for other API calls */
     String getTimestamp() {
-      String targetUrl = "https://worldtimeapi.org/api/timezone/Etc/UTC"; // Set target URL to the time API
+      String targetUrl = "https://worldtimeapi.org/api/timezone/Etc/UTC";   // Set target URL to the time API
         
-      //_logger->println("Fetching timestamp from: " + targetUrl);                    
-      String response = get(targetUrl);     // Get the response as a String
-      
-      //DynamicJsonDocument jsonObject(256);   // Reserving memory space to hold the json object
-      //responseToJsonObject(jsonObject, response);  // Converting from a string to a json object
+      String response = get(targetUrl);                                     // Get the response as a String
 
       DynamicJsonDocument jsonObject = responseToJsonObject(response, 256);
-
-      String timestamp_seconds = jsonObject["unixtime"]; // Grabbing the unix timestamp from the jsonObject
-      //_logger->println("JSON Object timestamp seconds: " + timestamp_seconds);
       
-      String timestamp_milliseconds  = timestamp_seconds + "000"; // 'Convert' to miliseconds
-      //_logger->println("JSON Object timestamp milliseconds: " + timestamp_milliseconds);
-
-      //_logger->println("Extracted timestamp (milliseconds/UNIX) from JSON object: " + timestamp_milliseconds);
-
-      http.end(); // End API request to free up resources
+      String timestamp_seconds       = jsonObject["unixtime"];              // Grabbing the unix timestamp from the jsonObject
+      String timestamp_milliseconds  = timestamp_seconds + "000";           // 'Convert' to miliseconds
+      
+      http.end();                                                           // End API request to free up resources
 
       return timestamp_milliseconds;
     }
@@ -324,8 +295,6 @@ class ApiCaller
             sprintf(str, "%02x", (int)hmacResult[i]);
             signature += str;
         }
-
-        //_logger->println("Generated signature: " + signature);
 
         return signature;
     }

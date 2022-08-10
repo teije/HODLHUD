@@ -1,114 +1,102 @@
-/* TODO 
-
-[X] We want to: Connect to WiFi
-    [X] Create WiFi connector class
-        [X] Create properties
-            [X] SSID:     string
-            [X] Password: string
-        [ ] Create functions
-            [X] Connect()     return boolean:connectionSuccesful
-            [X] Reconnect()   return boolean:connectionSuccesful
-            [ ] IsConnected() return boolean:isConnected
-        [X] Initialize WiFi connector class
-        [X] Establish a WiFi connection
-        [ ] Allow connecting/testing sequential WiFi connections
-        [ ] Move the WiFi credentials to a file that is not committed to GIT (https://www.arduino.cc/en/Reference/FileRead)
-
-[ ] We want to: Fetch all available coins from a Google Sheet
-    [X] Create the google sheet document
-    [ ] We want to store:
-        [X] A trades per row, with values:
-            [X] Base symbol
-            [X] Counter symbol
-            [X] Amount
-            [X] Date/Time
-        [ ] A row (seperate sheet?) that holds our balance for each coin with amount > 0
-        [ ] 
-        
-[ ] We want to: Print visual elements to the display
-    [ ] Create a UIElement data object
-        [ ] Create properties
-            [ ] Name:         string
-            [ ] Shape Type:   string     
-            [ ] Start Pos X:  int 
-            [ ] Start Pos Y:  int
-            [ ] Width (X):    int
-            [ ] Width (Y):    int
-            [ ] Colour/Shade: int/string
-        [ ] Create functions
-            [ ]     
-    
-    [ ] Create a Display printer class (that prints UIElements)
-        [ ] Create properties
-                [ ]  
-            [ ] Create functions
-                [ ] DisplayElement(UIElement)
-                [ ] Reset Display Fully()
-                [ ] Reset Display Partially()
-                [ ] 
-
-[ ] We want to: Interact with the elements on the display
-    [ ] 
-    
-*/  
-
 // External Libraries
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 
 // Project classes
-#include "Logger.h"
 #include "WiFiConnector.h"
-#include "Coin.h"
 #include "ApiCaller.h"
 #include "TransactionService.h"
 
 // Constants
-int LOOP_DELAY = 10000;
+int LOOP_DELAY = 1000;
+
+int TRANSACTION_FIELD_COUNT    = 10;
+
+const char* variable_labels[10] = {
+  "Show on HUD",
+  "Base title",
+  "Base symbol",
+  "Base amount",
+  "Counter title",
+  "Counter symbol",
+  "Counter amount",
+  "Date",
+  "Remarks",
+  "Value in EUR",
+};
+
+int TRANSACTION_SHOW_ON_HUD    = 0;
+int TRANSACTION_BASE_TITLE     = 1;
+int TRANSACTION_BASE_SYMBOL    = 2;
+int TRANSACTION_BASE_AMOUNT    = 3;
+int TRANSACTION_COUNTER_TITLE  = 4;
+int TRANSACTION_COUNTER_SYMBOL = 5;
+int TRANSACTION_COUNTER_AMOUNT = 6;
+int TRANSACTION_DATE           = 7;
+int TRANSACTION_REMARKS        = 8;
+int TRANSACTION_VALUE_IN_EUR   = 9;
+
 
 // Testing WiFi hotspot config
 char ssid[]     = "Deepthought";
 char password[] = "dont-forget-your-towel";
 
-Logger *logger = new Logger("HODLHUD");
+ApiCaller *apiCaller                   = new ApiCaller();
+TransactionService *transactionService = new TransactionService(apiCaller);
 
 void setup() {
   Serial.begin(9600);
-  logger->println("Setup start");
+  Serial.println("Setup start");
 
   // Test Hotspot WiFi configuration
-  WiFiConnector* hotSpotTeije = new WiFiConnector(ssid, password);
-  hotSpotTeije->connect();
-
-  logger->println("Setup end\n\n");
+  WiFiConnector* WiFiHotspot = new WiFiConnector(ssid, password);
+  WiFiHotspot->connect();
+  
+  Serial.println("Setup end\n\n");
 }
 
 void loop() {  
-  logger->println("Loop start");
-
-  ApiCaller *apiCaller = new ApiCaller();
-
-  // Grab all transactions in the Google Sheet
-  TransactionService *transactionService = new TransactionService(apiCaller);
+  Serial.println("Loop start");
   
-  int transactionCount = transactionService->getTransactionCount();
-  Transaction *transactions = transactionService->getTransactions();
-  //CoinService *coinService = new CoinService(apiCaller);
+  int transactionCount  = transactionService->getTransactionCount();            // Fetch number of transactions in the google sheet
+  int transactionObjectSize = 300;                                              // In JSON a transaction costs about 300 memory units
+  int jsonDocumentSize  = transactionCount * transactionObjectSize;             // Calculate the size by multiplying the units per transaction * amount of transactions
+  String responseString = transactionService->getTransactions();                // Grabbing transactions from the Google Sheet
 
-  // Grab all values for all transactions
-  String symbols[sizeof(transactions)];
-  
-  for(int i=0; i<sizeof(transactions); i++) {
-    Transaction t = transactions[i];
-    Coin *c = t.baseCoin;
-    if (transactions[i].baseCoin != NULL && transactions[i].baseCoin->abbreviation != NULL) {
-      logger->println("--------");
-      symbols[i] = transactions[i].baseCoin->abbreviation;
+  DynamicJsonDocument jsonDocument(jsonDocumentSize);                           // Reserving memory space to hold the json object
+  DeserializationError error = deserializeJson(jsonDocument, responseString);   // Converting from the api response string to a json object we can work with
+
+  if (error) {                                                                  // Throw error if serialization fails (happens usually when loading too many transactions - so far >~200)
+    Serial.print("deserializeJson() failed: ");
+    Serial.println(error.c_str());
+    return;
+  }
+
+  jsonDocument.shrinkToFit();                                                    // Shrink memory size to fit the content & to not waste any memory
+
+  JsonArray jsonValuesArray = jsonDocument["values"];
+
+  for (int i=0; i<jsonValuesArray.size(); i++) {                                 // Print all values for each transaction
+    for(int j=0; j<TRANSACTION_FIELD_COUNT; j++) {
+      Serial.print(variable_labels[j]);
+      Serial.print(':');
+      Serial.println(jsonValuesArray[i][j].as<const char*>());
     }
+    
+    Serial.println('\n');
   }
   
-  //coinService->getMultipleSpotValues(symbols);
-
+  Serial.println("||| Loop end");
   delay(LOOP_DELAY);
-  logger->println("Loop end");
 }
+
+/* TODO 
+[ ] Add logger that can be disabled (0/1 or true/false) and won't be compiled when the debug bit is 0
+[ ] Move transaction logic in main class to the transaction service
+[ ] Clean up the API caller - can it be made more generic?
+[ ] Add the ability to attempt to connect to multiple networks
+    [ ] Add the ability to save wifi networks to EEPROM
+    [ ] Add the ability to read the wifi credentials from a file (that won't be pushed to GIT)
+        [ ] File does not exist yet? Create it with hints on the expected input
+[ ] 
+*/

@@ -22,20 +22,13 @@ class WiFiConnector {
     uint32_t connectionAttemptDelay;    // Time between each connection attempt in ms
     uint32_t notConnectedCounter;    // Time between each connection attempt in ms
 
-    // Services
-    Logger *_logger;
-
   public: 
     WiFiConnector(char* Ssid, char* Password, String DeviceHostName = "HODL-HUD", uint32_t ConnectionAttemptCount = 1, uint32_t MaxConnectionAttempts = 5, uint32_t ConnectionAttemptDelay = 1500) {
-      _logger                 = new Logger("WiFiConnector");
-      
       ssid                    = Ssid;
       password                = Password;
       connectionAttemptCount  = ConnectionAttemptCount;
       maxConnectionAttempts   = MaxConnectionAttempts;
       connectionAttemptDelay  = ConnectionAttemptDelay;
-
-      //_logger->println("New WiFi connection configured: " + String(ssid) + "");
     }
 
     /* Connect to the network using the configured credentials */
@@ -44,32 +37,21 @@ class WiFiConnector {
       WiFi.hostname(deviceHostName);
       WiFi.begin(ssid, password);
       
-      //_logger->println("Connecting to WiFi (" + String(ssid) + ")");
-      //_logger->println("Using MAC address: " + WiFi.macAddress());
-
       notConnectedCounter = 1;
 
       while (WiFi.status() != WL_CONNECTED) {
         reconnect();
       }
-
-      //_logger->println("WiFi connected");
     }
 
     
     void reconnect() {
       delay(connectionAttemptDelay);
-      
-      // Report how many times a connection has been attempted
-      //_logger->println("Connection attempt " + String(notConnectedCounter) + "/" + String(maxConnectionAttempts));
     
       // Reset board if not connected after max attempts
       notConnectedCounter++;
       
       if(notConnectedCounter > maxConnectionAttempts) {
-        //_logger->println("Resetting " + deviceHostName + " due to Wifi not connecting...");
-        //_logger->println("Is your mobile hotspot, WiFi or ssid/password setup correctly & online?");
-        
         delay(1000);
 
         //connect();
