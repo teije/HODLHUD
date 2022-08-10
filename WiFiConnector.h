@@ -46,6 +46,7 @@ class WiFiConnector {
 
     
     void reconnect() {
+      Serial.println("Reconnecting to WiFi");
       delay(connectionAttemptDelay);
     
       // Reset board if not connected after max attempts
@@ -55,13 +56,17 @@ class WiFiConnector {
         delay(1000);
 
         //connect();
-        ESP.restart();
-        // TODO: REBUILD THIS TO RECONNECT WITHOUT REBOOTING
-        // OR CREATE A NEW METHOD THAT CAN JUST RECONNECT WITHOUT REBOOTING
+        ESP.restart();  // TODO: REBUILD THIS TO RECONNECT WITHOUT REBOOTING OR CREATE A NEW METHOD THAT CAN JUST RECONNECT WITHOUT REBOOTING
       }
     }
 
     bool isConnectedToWiFi() {
-      return (WiFi.status() != WL_CONNECTED);
+      bool isConnected = WiFi.status() != WL_CONNECTED;
+
+      Serial.println("You are currently ");
+      if (isConnected) { Serial.println("NOT ");
+      Serial.println("connected to WiFi");
+      
+      return isConnected;
     }
 };
