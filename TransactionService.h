@@ -20,6 +20,17 @@ class TransactionService
       "Value in EUR",
     };
     
+    const int TRANSACTION_SHOW_ON_HUD    = 0;
+    const int TRANSACTION_BASE_TITLE     = 1;
+    const int TRANSACTION_BASE_SYMBOL    = 2;
+    const int TRANSACTION_BASE_AMOUNT    = 3;
+    const int TRANSACTION_COUNTER_TITLE  = 4;
+    const int TRANSACTION_COUNTER_SYMBOL = 5;
+    const int TRANSACTION_COUNTER_AMOUNT = 6;
+    const int TRANSACTION_DATE           = 7;
+    const int TRANSACTION_REMARKS        = 8;
+    const int TRANSACTION_VALUE_IN_EUR   = 9;
+    
   public:
     TransactionService(ApiCaller *apiCaller) {
       _apiCaller = apiCaller;
