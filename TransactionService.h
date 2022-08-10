@@ -9,10 +9,12 @@ class TransactionService
       _apiCaller = apiCaller;
     }
 
+    /* Get the total count of transactions defined in the Google Sheet */
     int getTransactionCount() {
       return _apiCaller->getTransactionCount();
     }
 
+    /* Get all transactions defined in the Google Sheet */
     String getTransactions() {
       return _apiCaller->getTransactions();
     }

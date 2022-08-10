@@ -23,6 +23,7 @@ class WiFiConnector {
     uint32_t notConnectedCounter;      // Time between each connection attempt in ms
 
   public: 
+    WiFiConnector(char* Ssid, char* Password, String DeviceHostName = "T-Logica HODL-HUD Mk.1", uint32_t ConnectionAttemptCount = 1, uint32_t MaxConnectionAttempts = 5, uint32_t ConnectionAttemptDelay = 1500) {
       ssid                    = Ssid;
       password                = Password;
       connectionAttemptCount  = ConnectionAttemptCount;
@@ -30,8 +31,13 @@ class WiFiConnector {
       connectionAttemptDelay  = ConnectionAttemptDelay;
     }
 
-    /* Connect to the network using the configured credentials */
+    /* Connect to the network using the configured credentials 
+     * return: void
+    */
     void connect() {
+      Serial.println("Connecting to WiFi '" + String(ssid) + "'" + " as " + String(deviceHostName));
+      Serial.println("Using MAC address: " + WiFi.macAddress());
+    
       // Set hostname of the device & connect to the WiFi
       WiFi.hostname(deviceHostName);
       WiFi.begin(ssid, password);
@@ -43,7 +49,9 @@ class WiFiConnector {
       }
     }
 
-    
+    /* Reconnect to the network using the configured credentials 
+     * return: void
+    */
     void reconnect() {
       Serial.println("Reconnecting to WiFi");
       delay(connectionAttemptDelay);
@@ -59,11 +67,14 @@ class WiFiConnector {
       }
     }
 
+    /* Check if the device is connected to a WiFi network
+     * return: boolean 
+    */
     bool isConnectedToWiFi() {
       bool isConnected = WiFi.status() != WL_CONNECTED;
 
       Serial.println("You are currently ");
-      if (isConnected) { Serial.println("NOT ");
+      if (isConnected) { Serial.println("NOT "); }
       Serial.println("connected to WiFi");
       
       return isConnected;

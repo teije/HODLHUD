@@ -7,8 +7,6 @@ class ApiCaller
 {
   private:
     // Properties
-    String apiName;
-    String apiBaseUrl;
     HTTPClient http;
 
     // Constants
@@ -31,6 +29,7 @@ class ApiCaller
     //////////// GOOGLE //////////////
     //////////////////////////////////
 
+    /* Execute a call on the Google Sheet Api - with the supplied cell range */
     String executeGoogle(String pageTitle, String topLeftCell, String bottomRightCell) {
         String targetUrl = "";
         // Construct the full request url
@@ -46,6 +45,7 @@ class ApiCaller
         return get(targetUrl);
     }
 
+    /* Get the number of transactions defined in the Google Sheet 'trades' page - this allows us to know which cell is the bottom one that contains a transaction  */
     int getTransactionCount() {
       String targetUrl        = "";
       String pageTitle        = "trades";
@@ -64,15 +64,16 @@ class ApiCaller
 
       String response = get(targetUrl);
 
-      DynamicJsonDocument jsonObject = responseToJsonObject(response, 256);
+      DynamicJsonDocument jsonObject = responseToJsonDocument(response, 256);
       
       String transactionCount = jsonObject["values"][0][0];
 
-      //_logger->println("Extracted transaction count from json response: " + transactionCount);
+      Serial.println("Extracted transaction count from json response: " + transactionCount);
       
       return transactionCount.toInt();
     }
 
+    /* Get all gransactions defined in the Google Sheets 'trades' page */
     String getTransactions() {
       String targetUrl              = "";
       String pageTitle              = "trades";
@@ -95,39 +96,29 @@ class ApiCaller
 
       return get(targetUrl);
     }
-    
+
+    /* Get the value of a single cell in the provided Google Sheet page */
     String getCellValue(String pageName, String cell) {
       String response = executeGoogle(pageName, cell, cell);
-
-      //DynamicJsonDocument jsonObject(64);   // Reserving memory space to hold the json object
-      //responseToJsonObject(jsonObject, response);  // Converting from a string to a json object
-
-    DynamicJsonDocument jsonObject = responseToJsonObject(response, 64);
       
+      DynamicJsonDocument jsonObject = responseToJsonDocument(response, 64);
       const char* value = jsonObject["values"][0][0];
       
       return value;
     }
 
+    /* Get all values within a grid marked by the top left- and bottom right cell */
     String getCellRangeValues(String pageName, String topLeftCell, String bottomRightCell) {
-      String response = executeGoogle(pageName, topLeftCell, bottomRightCell);
-
-      //DynamicJsonDocument jsonObject(256);    // Reserving memory space to hold the json object
-      //responseToJsonObject(jsonObject, response);  // Converting from a string to a json object
-      //jsonObject.shrinkToFit();
-
-      DynamicJsonDocument jsonObject = responseToJsonObject(response, 256);
-      
-      const char* value = jsonObject["values"];
-      
-      //_logger->println("Fetched cell range values: " + (String)value);
+      return executeGoogle(pageName, topLeftCell, bottomRightCell);
     }
+
 
 
     //////////////////////////////////
     //////////// BINANCE /////////////
     //////////////////////////////////
 
+    /* Execute an API call on the supplied Binance endpoint (along with the required parameters) */
     String executeBinance(String endpoint, String queryParameterString, bool requiresAuth) {
       String timestamp      = getTimestamp();
         const char *payload = ("timestamp=" + timestamp + queryParameterString).c_str();
@@ -155,35 +146,7 @@ class ApiCaller
         return get(targetUrl);
     }
 
-    float getUSDtoEURrate() {
-      String response = executeBinance("/api/v3/ticker/price", "?symbol=EURUSDT", false);
-
-      //DynamicJsonDocument jsonObject(256);   // Reserving memory space to hold the json object
-      //responseToJsonObject(jsonObject, response);  // Converting from a string to a json object
-
-      DynamicJsonDocument jsonObject = responseToJsonObject(response, 256);
-      
-      jsonObject.shrinkToFit();
-      const char* valueString = jsonObject["price"];
-      float rate = strtof(valueString, NULL);
-      
-      //_logger->println("Fetched EUR to USDT Rate: ");
-      //_logger->printFloat(rate);
-
-      return rate;
-    }
-
-    float getEURtoUSDrate() {
-      float rate = getUSDtoEURrate();
-      float inverseRate = 1 / rate;
-      
-      //_logger->println("Fetched USDT to EUR Rate: ");
-      //_logger->printFloat(inverseRate);
-      
-      return inverseRate;
-    }
-
-    
+    /* Check if a connection can be established to binance */
     bool hasBinanceApiConnection() {
       String timestamp    = getTimestamp();
       
@@ -192,7 +155,7 @@ class ApiCaller
       bool isConnected = false;
       
       String targetUrl = 
-        apiBaseUrl + 
+        BINANCE_BASE_URL + 
         "/api/v3/ping";
       
       http.begin(targetUrl.c_str()); // Start API request with the constructed url
@@ -211,11 +174,38 @@ class ApiCaller
       return false;
     }
 
+    /* Get the value of 1 USD to EUR */
+    float getUSDtoEURrate() {
+      String response = executeBinance("/api/v3/ticker/price", "?symbol=EURUSDT", false);
+
+      DynamicJsonDocument jsonObject = responseToJsonDocument(response, 256);
+      jsonObject.shrinkToFit();
+      
+      const char* valueString = jsonObject["price"];
+      float rate = strtof(valueString, NULL);
+      
+      Serial.print("Fetched EUR to USDT Rate: ");
+      Serial.println(rate);
+
+      return rate;
+    }
+
+    /* Get the value of 1 EUR to USD (by inverting the USD to EUR value) */
+    float getEURtoUSDrate() {
+      float rate = getUSDtoEURrate();
+      float inverseRate = 1 / rate;
+      
+      Serial.print("Fetched USDT to EUR Rate: ");
+      Serial.println(inverseRate, 5);
+      
+      return inverseRate;
+    }
+    
     /////////////////////////////////
-    //////////// OTHER //////////////
+    /////////// GENERIC /////////////
     /////////////////////////////////
 
-        
+    /* Perform a GET request on the provided targetUrl */
     String get(String targetUrl) {
       http.begin(targetUrl.c_str()); // Start API request with the constructed url
 
@@ -240,13 +230,13 @@ class ApiCaller
         return response;
     }
 
-    JsonArray responseToJsonArray(String response, int reservedMemorySize = 1024) {
-      DynamicJsonDocument jsonDoc(reservedMemorySize); // Reserving memory space to hold the json object
-      deserializeJson(jsonDoc, response);              // Converting from a string to a json object
-      jsonDoc.shrinkToFit();                        // Shrink memory size to fit the content
-      JsonArray jsonArray = jsonDoc.as<JsonArray>();
+    /* Parse an API response (in String format) to a JsonDocument (from the ArduinoJson.h library) */
+    DynamicJsonDocument responseToJsonDocument(String response, int reservedMemorySize = 1024) {
+      DynamicJsonDocument jsonObject(reservedMemorySize); // Reserving memory space to hold the json object
+      deserializeJson(jsonObject, response);              // Converting from a string to a json object
+      jsonObject.shrinkToFit();                           // Shrink memory size to fit the content
 
-      return jsonArray;
+      return jsonObject;
     }
     
     /* This method grabs the current time (as a timestamp), which is required for other API calls */
@@ -255,7 +245,7 @@ class ApiCaller
         
       String response = get(targetUrl);                                     // Get the response as a String
 
-      DynamicJsonDocument jsonObject = responseToJsonObject(response, 256);
+      DynamicJsonDocument jsonObject = responseToJsonDocument(response, 256);
       
       String timestamp_seconds       = jsonObject["unixtime"];              // Grabbing the unix timestamp from the jsonObject
       String timestamp_milliseconds  = timestamp_seconds + "000";           // 'Convert' to miliseconds
@@ -265,6 +255,7 @@ class ApiCaller
       return timestamp_milliseconds;
     }
 
+    /* Parse a payload into a signature that can be used for Binance API calls */
     String parseSignature(const char *payload) {
         /* HMAC Shizzle */
         String signature = "";                                                                // Signature variable to store the entire value
