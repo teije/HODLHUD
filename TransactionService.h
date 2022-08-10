@@ -78,6 +78,16 @@ class TransactionService
     }
 
     void fillValues() {
-      
+      JsonArray transactionsJsonArray = getTransactions();
+
+      for (int i=0; i<transactionsJsonArray.size(); i++) {                                 // Print all values for each transaction
+        Serial.println(transactionsJsonArray[i][TRANSACTION_VALUE_IN_EUR].as<const char*>());
+        
+        if (transactionsJsonArray[i][TRANSACTION_VALUE_IN_EUR]) {
+          Serial.println('O');
+        } else {
+          Serial.println("It must be filled!");
+        }
+      }
     }
 };

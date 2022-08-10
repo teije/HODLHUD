@@ -43,6 +43,7 @@ void loop() {
   Serial.println("Loop start");
 
   JsonArray transactionsJsonArray = transactionService->getTransactions();
+  transactionService->fillValues();
   
   Serial.println("||| Loop end");
   delay(LOOP_DELAY);
