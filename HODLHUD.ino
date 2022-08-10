@@ -23,21 +23,21 @@ const char* variable_labels[10] = {
   "Value in EUR",
 };
 
-int TRANSACTION_SHOW_ON_HUD    = 0;
-int TRANSACTION_BASE_TITLE     = 1;
-int TRANSACTION_BASE_SYMBOL    = 2;
-int TRANSACTION_BASE_AMOUNT    = 3;
-int TRANSACTION_COUNTER_TITLE  = 4;
-int TRANSACTION_COUNTER_SYMBOL = 5;
-int TRANSACTION_COUNTER_AMOUNT = 6;
-int TRANSACTION_DATE           = 7;
-int TRANSACTION_REMARKS        = 8;
-int TRANSACTION_VALUE_IN_EUR   = 9;
+const int TRANSACTION_SHOW_ON_HUD    = 0;
+const int TRANSACTION_BASE_TITLE     = 1;
+const int TRANSACTION_BASE_SYMBOL    = 2;
+const int TRANSACTION_BASE_AMOUNT    = 3;
+const int TRANSACTION_COUNTER_TITLE  = 4;
+const int TRANSACTION_COUNTER_SYMBOL = 5;
+const int TRANSACTION_COUNTER_AMOUNT = 6;
+const int TRANSACTION_DATE           = 7;
+const int TRANSACTION_REMARKS        = 8;
+const int TRANSACTION_VALUE_IN_EUR   = 9;
 
 
 // Testing WiFi hotspot config
-char ssid[]     = "Deepthought";
-char password[] = "dont-forget-your-towel";
+const char ssid[]     = "Deepthought";
+const char password[] = "dont-forget-your-towel";
 
 ApiCaller *apiCaller                   = new ApiCaller();
 TransactionService *transactionService = new TransactionService(apiCaller);
