@@ -1,4 +1,4 @@
-// External Libraries
+// External libraries
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 
@@ -8,10 +8,8 @@
 #include "TransactionService.h"
 
 // Constants
-int LOOP_DELAY = 1000;
-
-int TRANSACTION_FIELD_COUNT    = 10;
-
+const int LOOP_DELAY = 1000;
+const int TRANSACTION_FIELD_COUNT    = 10;
 const char* variable_labels[10] = {
   "Show on HUD",
   "Base title",

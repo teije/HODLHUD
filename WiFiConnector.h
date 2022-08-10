@@ -16,11 +16,11 @@ class WiFiConnector {
     // Properties
     char* ssid;                        // Name of the network
     char* password;                    // Password used to connect to the network
-    String deviceHostName;              // Name the device uses to idenify itself on the network/modem
-    uint32_t connectionAttemptCount;    // Tracker of current connection attempts
-    uint32_t maxConnectionAttempts;     // Amount of times a WiFi connection attempt must be made before the device is reboot
-    uint32_t connectionAttemptDelay;    // Time between each connection attempt in ms
-    uint32_t notConnectedCounter;    // Time between each connection attempt in ms
+    String deviceHostName;             // Name the device uses to idenify itself on the network/modem
+    uint32_t connectionAttemptCount;   // Tracker of current connection attempts
+    uint32_t maxConnectionAttempts;    // Amount of times a WiFi connection attempt must be made before the device is reboot
+    uint32_t connectionAttemptDelay;   // Time between each connection attempt in ms
+    uint32_t notConnectedCounter;      // Time between each connection attempt in ms
 
   public: 
     WiFiConnector(char* Ssid, char* Password, String DeviceHostName = "HODL-HUD", uint32_t ConnectionAttemptCount = 1, uint32_t MaxConnectionAttempts = 5, uint32_t ConnectionAttemptDelay = 1500) {
