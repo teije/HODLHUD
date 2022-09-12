@@ -3,11 +3,11 @@ class TransactionService
   private:
     // Services
     ApiCaller *_apiCaller;
+    CoinService *_coinService;
   
     // Constants
     const int TRANSACTION_FIELD_COUNT = 10;
-    
-    const char* variable_labels[10] = {
+    const char* variable_labels[10]   = {
       "Show on HUD",
       "Base title",
       "Base symbol",
@@ -32,8 +32,9 @@ class TransactionService
     const int TRANSACTION_VALUE_IN_EUR   = 9;
     
   public:
-    TransactionService(ApiCaller *apiCaller) {
-      _apiCaller = apiCaller;
+    TransactionService(ApiCaller *apiCaller, CoinService *coinService) {
+      _apiCaller   = apiCaller;
+      _coinService = coinService;
     }
 
     /* Get the total count of transactions defined in the Google Sheet */
@@ -63,30 +64,18 @@ class TransactionService
       jsonDocument.shrinkToFit();                                                    // Shrink memory size to fit the content & to not waste any memory
     
       JsonArray jsonValuesArray = jsonDocument["values"];
-    
-//      for (int i=0; i<jsonValuesArray.size(); i++) {                                 // Print all values for each transaction
-//        for(int j=0; j<TRANSACTION_FIELD_COUNT; j++) {
-//          Serial.print(variable_labels[j]);
-//          Serial.print(':');
-//          Serial.println(jsonValuesArray[i][j].as<const char*>());
-//        }
-//        
-//        Serial.println('\n');
-//      }
-
       return jsonValuesArray;
     }
 
     void fillValues() {
       JsonArray transactionsJsonArray = getTransactions();
-
+      
       for (int i=0; i<transactionsJsonArray.size(); i++) {                                 // Print all values for each transaction
-        Serial.println(transactionsJsonArray[i][TRANSACTION_VALUE_IN_EUR].as<const char*>());
-        
         if (transactionsJsonArray[i][TRANSACTION_VALUE_IN_EUR]) {
-          Serial.println('O');
+          Serial.println('.');
         } else {
-          Serial.println("It must be filled!");
+          float valueInEUR = _coinService->getSpotValue(transactionsJsonArray[i][TRANSACTION_BASE_SYMBOL]);
+          Serial.println(valueInEUR, 5);
         }
       }
     }

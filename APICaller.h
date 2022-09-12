@@ -68,7 +68,7 @@ class ApiCaller
       
       String transactionCount = jsonObject["values"][0][0];
 
-      Serial.println("Extracted transaction count from json response: " + transactionCount);
+      //Serial.println("Extracted transaction count from json response: " + transactionCount);
       
       return transactionCount.toInt();
     }
@@ -178,14 +178,14 @@ class ApiCaller
     float getUSDtoEURrate() {
       String response = executeBinance("/api/v3/ticker/price", "?symbol=EURUSDT", false);
 
-      DynamicJsonDocument jsonObject = responseToJsonDocument(response, 256);
+      DynamicJsonDocument jsonObject = responseToJsonDocument(response, 300);
       jsonObject.shrinkToFit();
       
       const char* valueString = jsonObject["price"];
       float rate = strtof(valueString, NULL);
       
-      Serial.print("Fetched EUR to USDT Rate: ");
-      Serial.println(rate);
+      //Serial.print("Fetched EUR to USDT Rate: ");
+      //Serial.println(rate);
 
       return rate;
     }
@@ -195,8 +195,8 @@ class ApiCaller
       float rate = getUSDtoEURrate();
       float inverseRate = 1 / rate;
       
-      Serial.print("Fetched USDT to EUR Rate: ");
-      Serial.println(inverseRate, 5);
+      //Serial.print("Fetched USDT to EUR Rate: ");
+      //Serial.println(inverseRate, 5);
       
       return inverseRate;
     }
@@ -208,6 +208,8 @@ class ApiCaller
     /* Perform a GET request on the provided targetUrl */
     String get(String targetUrl) {
       http.begin(targetUrl.c_str()); // Start API request with the constructed url
+
+      Serial.println("Executing GET request on: " + targetUrl);
 
       int responseCode = http.GET(); // Send HTTP GET request to the server. The response data is stored in the jsonResponse variable
       

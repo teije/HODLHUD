@@ -16,6 +16,7 @@
 // Project classes
 #include "WiFiConnector.h"
 #include "ApiCaller.h"
+#include "CoinService.h"
 #include "TransactionService.h"
 
 // Constants
@@ -26,7 +27,8 @@ char ssid[]     = "Deepthought";
 char password[] = "dont-forget-your-towel";
 
 ApiCaller *apiCaller                   = new ApiCaller();
-TransactionService *transactionService = new TransactionService(apiCaller);
+CoinService *coinService               = new CoinService(apiCaller);
+TransactionService *transactionService = new TransactionService(apiCaller, coinService);
 
 void setup() {
   Serial.begin(9600);
@@ -42,9 +44,8 @@ void setup() {
 void loop() {  
   Serial.println("Loop start");
 
-  JsonArray transactionsJsonArray = transactionService->getTransactions();
   transactionService->fillValues();
-  
+
   Serial.println("||| Loop end");
   delay(LOOP_DELAY);
 }
