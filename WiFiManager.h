@@ -23,7 +23,7 @@ class WifiManager: public Base  {
   public:
     // Constructor that takes an array of NetworkCredentials objects and the number of networks in the array
     // Optional parameter to set the maximum number of connection attempts
-    WifiManager(NetworkCredentials* networkCredentials, int networkCount, int maxAttempts = 10) {
+    WifiManager(NetworkCredentials* networkCredentials, int networkCount, int maxAttempts = 5) {
       this->networkCredentials = networkCredentials;
       this->networkCount = networkCount;
       this->maxAttempts = maxAttempts;
@@ -32,30 +32,29 @@ class WifiManager: public Base  {
     // Method to connect to the networks sequentially
     void connect() {
       println("Connecting to Wi-Fi...");
-      int attemptCount = 0;
+      int attemptCount = 1;
 
       // Loop through each network in the array
       for (int i = 0; i < networkCount; i++) {
-        println("Connecting to ");
+        println("Target network ");
         print(networkCredentials[i].ssid);
 
         // Try to connect to the network
         WiFi.begin(networkCredentials[i].ssid.c_str(), networkCredentials[i].password.c_str());
-        attemptCount = 0;
 
         // Wait for the connection to succeed or the maximum number of attempts to be reached
         while (WiFi.status() != WL_CONNECTED && attemptCount < maxAttempts) {
           delay(1000);
-          println("Connecting to WiFi...");
+          println("Connecting to WiFi... (" + String(attemptCount) + "/" + String(maxAttempts) + ")");
           attemptCount++;
         }
 
         // If the connection succeeded, print the network SSID and IP address and break out of the loop
         if (attemptCount != maxAttempts) {
-          println("Connected to Wi-Fi: ");
+          println("Succesfully connected to: ");
           print(networkCredentials[i].ssid);
-          println("IP Address: ");
-          print(String(WiFi.localIP()));
+          println("Current device IP address: ");
+          print(WiFi.localIP().toString());
           break;
         } else {
           // If the connection failed after the maximum number of attempts, print an error message
