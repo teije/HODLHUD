@@ -14,7 +14,6 @@ void setup()
 
   int networkCount = 1;
   WifiManager wifiManager(networks, networkCount);
-  wifiManager.connect();
 
   // Define the Binance API credentials
   ApiCredentials binanceCredentials = {
