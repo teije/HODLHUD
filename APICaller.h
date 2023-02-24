@@ -1,8 +1,10 @@
-#include "Base.h"
-#include <HTTPClient.h>
-
 #ifndef APICALLER
 #define APICALLER
+
+#include "Base.h"
+#include "WiFiManager.h"
+#include <HTTPClient.h>
+
 struct ApiCredentials {
   String name;
   String apiKey;
@@ -41,13 +43,13 @@ class ApiCaller : public Base {
       println("Executing GET request on: " + url);
       String response = "";
       if (httpCode == HTTP_CODE_OK) {
-        String response = http.getString();
+        response = http.getString();
         println("Current BTC/EUR price: ");
         print(response);
       } else {
         println("Error getting price information. Status code: ");
         print(String(httpCode));
-        String response = http.getString();
+        response = http.getString();
         println(response);
       }
 

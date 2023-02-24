@@ -1,8 +1,9 @@
-#include "Base.h"
-#include <WiFi.h>
-
 #ifndef WIFIMANAGER
 #define WIFIMANAGER
+
+#include "Base.h"
+
+#include <WiFi.h>
 
 // Define a struct to store the SSID and password for each network
 struct NetworkCredentials {

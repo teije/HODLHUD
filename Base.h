@@ -1,8 +1,9 @@
+#ifndef BASE
+#define BASE
+
 #include <typeinfo>
 #pragma GCC diagnostic ignored "-fno-rtti"
 
-#ifndef BASE
-#define BASE
 class Base {
   public:
     virtual const String toString() {
