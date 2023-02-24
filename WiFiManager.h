@@ -75,6 +75,16 @@ class WifiManager: public Base  {
       println("WiFi Status: " + WiFi.status());
       return (WiFi.status() == WL_CONNECTED);
     }
+
+    void ensureConnection() {
+      println("Ensuring WiFi connection...");
+      if (!isConnected()) {
+        println("Connection lost. Reconnecting...");
+        connect();
+      }
+
+      println("Connection OK!");
+    }
 };
 
 #endif // WIFIMANAGER
