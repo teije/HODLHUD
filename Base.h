@@ -5,7 +5,7 @@
 #pragma GCC diagnostic ignored "-fno-rtti"
 
 class Base {
-  public:
+  public:  
     virtual const String toString() {
       return "Base.h";
     }
@@ -16,6 +16,10 @@ class Base {
 
     void println(String message) {
       Serial.print("\n[" + toString() + "] " + message);
+    }
+
+    void printCreateMessage() {
+      Serial.print("\n[" + toString() + "]  created...");
     }
 };
 #endif // BASE

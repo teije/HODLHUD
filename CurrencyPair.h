@@ -14,6 +14,8 @@ class CurrencyPair: public Base  {
       this->currencyLabel = currencyLabel;
       this->counterCurrencyLabel = counterCurrencyLabel;
       this->counterValue = counterValue;
+
+      printCreateMessage();
     }
 
     const String toString() override {

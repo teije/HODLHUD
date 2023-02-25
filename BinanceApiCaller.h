@@ -39,6 +39,10 @@ class BinanceApiCaller : public ApiCaller {
       return CurrencyPair(currencyLabel, counterCurrencyLabel, openPrice);
     }
 
+    private:  
+      const String toString() override {
+        return "BinanceApiCaller.h";
+      }
 };
 
 #endif // BINANCE_APICALLER_H

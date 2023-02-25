@@ -13,15 +13,6 @@ struct ApiCredentials {
 };
 
 class ApiCaller : public Base {
-  private:
-    ApiCredentials apiCredentials;
-    WiFiClient wifiClient;
-    HTTPClient httpClient;
-
-    const String toString() override {
-      return "ApiCaller.h";
-    }
-
   public:
     ApiCaller(ApiCredentials apiCredentials, WifiManager wifiManager) {
       this->apiCredentials = apiCredentials;
@@ -31,6 +22,8 @@ class ApiCaller : public Base {
 
       // Initialize the HTTP client
       httpClient.begin(wifiClient, apiCredentials.apiUrl);
+
+      printCreateMessage();
     }
 
     String GET(String endpoint) {
@@ -56,6 +49,15 @@ class ApiCaller : public Base {
       http.end();
       return response;
     }
+
+    private:
+      ApiCredentials apiCredentials;
+      WiFiClient wifiClient;
+      HTTPClient httpClient;
+  
+      const String toString() override {
+        return "ApiCaller.h";
+      }
 };
 
 #endif // BASE

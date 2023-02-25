@@ -13,7 +13,7 @@ struct NetworkCredentials {
 
 class WifiManager: public Base  {
   private:
-    NetworkCredentials* networkCredentials;  // Pointer to an array of NetworkCredentials objects
+    NetworkCredentials* networkCredentials;  // An array of NetworkCredentials objects
     int networkCount;   // Number of networks in the array
     int maxAttempts;    // Maximum number of connection attempts
 
