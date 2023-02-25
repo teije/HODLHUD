@@ -5,9 +5,12 @@
 #include "CurrencyPair.h"
 #include <ArduinoJson.h>
 
-class BinanceApiCaller : public ApiCaller {
+class BinanceApiCaller : public ApiCaller, Base {
   public:
-    BinanceApiCaller(ApiCredentials apiCredentials, WifiManager wifiManager) : ApiCaller(apiCredentials, wifiManager) {}
+    BinanceApiCaller(ApiCredentials apiCredentials, WifiManager wifiManager) : ApiCaller(apiCredentials, wifiManager) 
+    {
+      ApiCaller::printCreateMessage();
+    }
 
     CurrencyPair getCurrencyPair(const char* currencyLabel, const char* counterCurrencyLabel, time_t startTime = 0) {
       // Use current time if startTime is not provided or is equal to 0
