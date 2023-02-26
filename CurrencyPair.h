@@ -5,9 +5,6 @@
 
 class CurrencyPair: public Base  {
   private:
-    String currencyLabel;
-    String counterCurrencyLabel;
-    float value;
 
   public:
     CurrencyPair(String currencyLabel, String counterCurrencyLabel, float value) {
@@ -22,29 +19,9 @@ class CurrencyPair: public Base  {
       return "CurrencyPair.h";
     }
 
-    void setCurrencyLabel(String currencyLabel) {
-      this->currencyLabel = currencyLabel;
-    }
-
-    String getCurrencyLabel() {
-      return this->currencyLabel;
-    }
-
-    void setCounterCurrencyLabel(String counterCurrencyLabel) {
-      this->counterCurrencyLabel = counterCurrencyLabel;
-    }
-
-    String getCounterCurrencyLabel() {
-      return this->counterCurrencyLabel;
-    }
-
-    void setValue(float value) {
-      this->value = value;
-    }
-
-    float getValue() {
-      return this->value;
-    }
+    String currencyLabel;
+    String counterCurrencyLabel;
+    float value;
 };
 
 #endif
