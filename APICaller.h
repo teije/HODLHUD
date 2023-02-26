@@ -2,7 +2,7 @@
 #define APICALLER
 
 #include "Base.h"
-#include "WiFiManager.h"
+#include "WifiManager.h"
 #include <HTTPClient.h>
 
 struct ApiCredentials {
@@ -14,12 +14,9 @@ struct ApiCredentials {
 
 class ApiCaller : public Base {
   public:
-    ApiCaller(ApiCredentials apiCredentials, WifiManager wifiManager) {
+    ApiCaller(ApiCredentials apiCredentials, WifiManager wifiManager): wifiManager(wifiManager) {
       this->apiCredentials = apiCredentials;
-
-      // Connect to the Wi-Fi network
-      wifiManager.connect();
-
+      
       // Initialize the HTTP client
       httpClient.begin(wifiClient, apiCredentials.apiUrl);
 
@@ -27,6 +24,9 @@ class ApiCaller : public Base {
     }
 
     String GET(String endpoint) {
+      // Ensure that there is a wifi connection
+      wifiManager.ensureConnection();
+      
       HTTPClient http;
       String url = apiCredentials.apiUrl + endpoint;
       http.begin(url);
@@ -37,10 +37,12 @@ class ApiCaller : public Base {
       String response = "";
       if (httpCode == HTTP_CODE_OK) {
         response = http.getString();
-        println("Current BTC/EUR price: ");
+        println("Response code: ");
+        print(String(httpCode));
+        println("Response message: ");
         print(response);
       } else {
-        println("Error getting price information. Status code: ");
+        println("Error in response. Status code: ");
         print(String(httpCode));
         response = http.getString();
         println(response);
@@ -50,14 +52,15 @@ class ApiCaller : public Base {
       return response;
     }
 
-    private:
-      ApiCredentials apiCredentials;
-      WiFiClient wifiClient;
-      HTTPClient httpClient;
-  
-      const String toString() override {
-        return "ApiCaller.h";
-      }
+  private:
+    ApiCredentials apiCredentials;
+    WiFiClient wifiClient;
+    WifiManager wifiManager;
+    HTTPClient httpClient;
+
+    const String toString() override {
+      return "ApiCaller.h";
+    }
 };
 
 #endif // BASE

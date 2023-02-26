@@ -7,43 +7,43 @@ class CurrencyPair: public Base  {
   private:
     String currencyLabel;
     String counterCurrencyLabel;
-    float counterValue;
+    float value;
 
   public:
-    CurrencyPair(String currencyLabel, String counterCurrencyLabel, float counterValue) {
+    CurrencyPair(String currencyLabel, String counterCurrencyLabel, float value) {
       this->currencyLabel = currencyLabel;
       this->counterCurrencyLabel = counterCurrencyLabel;
-      this->counterValue = counterValue;
+      this->value = value;
 
       printCreateMessage();
     }
 
     const String toString() override {
-      return currencyLabel + "-" + counterCurrencyLabel + ": " + String(counterValue);
+      return "CurrencyPair.h";
     }
 
-    void SetCurrencyLabel(String currencyLabel) {
+    void setCurrencyLabel(String currencyLabel) {
       this->currencyLabel = currencyLabel;
     }
 
-    String GetCurrencyLabel() {
+    String getCurrencyLabel() {
       return this->currencyLabel;
     }
 
-    void SetCounterCurrencyLabel(String counterCurrencyLabel) {
+    void setCounterCurrencyLabel(String counterCurrencyLabel) {
       this->counterCurrencyLabel = counterCurrencyLabel;
     }
 
-    String GetCounterCurrencyLabel() {
+    String getCounterCurrencyLabel() {
       return this->counterCurrencyLabel;
     }
 
-    void SetCounterValue(float counterValue) {
-      this->counterValue = counterValue;
+    void setValue(float value) {
+      this->value = value;
     }
 
-    float GetCounterValue() {
-      return this->counterValue;
+    float getValue() {
+      return this->value;
     }
 };
 

@@ -19,7 +19,7 @@ class Base {
     }
 
     void printCreateMessage() {
-      Serial.print("\n[" + toString() + "]  created...");
+      Serial.print("\n[" + toString() + "] created...");
     }
 };
 #endif // BASE
