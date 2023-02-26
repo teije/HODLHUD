@@ -72,8 +72,9 @@ class WifiManager: public Base  {
 
     // Method to check if there is still a connection to the WiFi network
     bool isConnected() {
-      println("WiFi Status: " + WiFi.status());
-      return (WiFi.status() == WL_CONNECTED);
+      bool isConnectedToWifi = WiFi.status() == WL_CONNECTED;
+      println("WiFi Status: " + isConnectedToWifi);
+      return (isConnectedToWifi);
     }
 
     void ensureConnection() {
