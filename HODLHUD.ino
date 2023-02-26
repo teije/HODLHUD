@@ -3,12 +3,16 @@
 #include "Base.h"
 #include "BinanceApiCaller.h"
 #include "CurrencyPair.h"
+#include "ESP32Clock.h"
 #include "JsonParser.h"
 #include "WiFiManager.h"
 
 const char* ssid = "your_wifi_ssid";
 const char* password = "your_wifi_password";
 const char* ntp_server = "pool.ntp.org";
+
+// Internal clock
+ESP32Clock internalClock;
 
 String toString();
 void print(String message);
@@ -43,9 +47,14 @@ void setup()
   println("Configuring Binance API caller");
   BinanceApiCaller binanceApiCaller(binanceCredentials, wifiManager); 
 
+  // Get the Unix timestamp (for API calls)
+  uint32_t unixTime = internalClock.getUnixTimestamp();
+  // Get the current time in human-readable format (for UI)
+  String timeStr = internalClock.getHumanReadableTime();
+
   // Get the current BTC/EUR price
   CurrencyPair pairCurrentPrice = binanceApiCaller.getCurrentPrice("BTC", "EUR");
-  println("Current BTC/EUR price: " + String(pairCurrentPrice.getValue()));
+  println("Current BTC/EUR price: " + String(pairCurrentPrice.value));
 
   println("Setup end");
   print("\n\n\n\n\n");
@@ -53,12 +62,12 @@ void setup()
 
 void loop()
 {
-  println("Loop start");
+  //println("Loop start");
   
-
+  internalClock.getHumanReadableTime();
 
   delay(1000);
-  println("Loop end");
+  //println("Loop end");
 }
 
 String toString() {
