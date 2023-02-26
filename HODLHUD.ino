@@ -6,6 +6,7 @@
 #include "ESP32Clock.h"
 #include "JsonParser.h"
 #include "WiFiManager.h"
+#include "WirelessUpdateManager.h"
 
 const char* ssid = "your_wifi_ssid";
 const char* password = "your_wifi_password";
@@ -33,6 +34,10 @@ void setup()
   int networkCount = 1;
   WifiManager wifiManager(networks, networkCount);
   wifiManager.connect();
+
+  // Configure the ability to do wireless updates
+  WirelessUpdateManager wirelessUpdateManager(wifiManager);
+  wirelessUpdateManager.configure("HODL-HUD", "dont-forget-your-towel");
 
   // Define the Binance API credentials
   println("Configuring API credentials");
