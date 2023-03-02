@@ -5,11 +5,10 @@
 #include "CurrencyPair.h"
 
 class SpotPrice {
-  private:
+  public:
     CurrencyPair currency;
     String timestamp;
 
-  public:
     SpotPrice(CurrencyPair currency, String timestamp) {
       this->currency = currency;
       this->timestamp = timestamp;
@@ -21,22 +20,6 @@ class SpotPrice {
 
     const String type() override {
       return "SpotPrice.h";
-    }
-
-    void SetCurrency(CurrencyPair currency) {
-      this->currency = currency;
-    }
-
-    CurrencyPair GetCurrency() {
-      return this->currency;
-    }
-
-    void SetTimestamp(String timestamp) {
-      this->timestamp = timestamp;
-    }
-
-    String GetTimestamp() {
-      return this->timestamp;
     }
 };
 
