@@ -19,8 +19,7 @@ class SpotPrice {
       return currency.ToString() + ", Timestamp: " + timestamp;
     }
 
-    
-    const String toString() override {
+    const String type() override {
       return "SpotPrice.h";
     }
 

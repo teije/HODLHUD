@@ -18,7 +18,7 @@ class JsonParser : public Base {
     }
 
   private:
-    const String toString() override {
+    const String type() override {
       return "JsonParser.h";
     }
 };

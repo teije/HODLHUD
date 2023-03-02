@@ -75,12 +75,12 @@ void loop()
   //println("Loop end");
 }
 
-String toString() {
+String type() {
   return "HODLHUD.h";
 }
 void print(String message) {
   Serial.print(message);
 }
 void println(String message) {
-  Serial.print("\n[" + toString() + "] " + message);
+  Serial.print("\n[" + type() + "] " + message);
 }

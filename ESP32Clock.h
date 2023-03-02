@@ -61,7 +61,7 @@ class ESP32Clock : public Base {
       return humanReadableTime;
     }
 
-    const String toString() override {
+    const String type() override {
       return "ESP32Clock.h";
     }
 };

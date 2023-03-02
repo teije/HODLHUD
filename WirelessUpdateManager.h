@@ -5,7 +5,7 @@
 
 #include "WifiManager.h"
 
-class WirelessUpdateManager {
+class WirelessUpdateManager : public Base  {
   public:
     WirelessUpdateManager(WifiManager wifiManager): wifiManager(wifiManager) {}
   
@@ -27,7 +27,7 @@ class WirelessUpdateManager {
   private:
     WifiManager wifiManager;
 
-    const String toString() override {
+    const String type() override {
       return "WirelessUpdateManager.h";
     }
 };

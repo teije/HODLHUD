@@ -58,7 +58,7 @@ class ApiCaller : public Base {
     WifiManager wifiManager;
     HTTPClient httpClient;
 
-    const String toString() override {
+    const String type() override {
       return "ApiCaller.h";
     }
 };

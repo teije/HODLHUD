@@ -15,7 +15,7 @@ class CurrencyPair: public Base  {
       printCreateMessage();
     }
 
-    const String toString() override {
+    const String type() override {
       return "CurrencyPair.h";
     }
 

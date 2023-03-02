@@ -35,7 +35,7 @@ class BinanceApiCaller : public ApiCaller {
     }
 
   private:
-    const String toString() override {
+    const String type() override {
       return "BinanceApiCaller.h";
     }
 };

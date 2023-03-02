@@ -17,7 +17,7 @@ class WifiManager: public Base  {
     int networkCount;   // Number of networks in the array
     int maxAttempts;    // Maximum number of connection attempts
 
-    const String toString() override {
+    const String type() override {
       return "WiFiManager.h";
     }
     
