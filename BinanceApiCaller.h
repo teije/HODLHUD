@@ -7,9 +7,9 @@
 
 class BinanceApiCaller : public ApiCaller {
   public:
-    BinanceApiCaller(ApiCredentials apiCredentials, WifiManager wifiManager) : ApiCaller(apiCredentials, wifiManager)
+    BinanceApiCaller(WifiManager wifiManager) : ApiCaller(apiCredentials, wifiManager)
     {
-      
+      this->apiCredentials = SettingsManager::GetApiCredentialByName("Binance");
     }
 
     /*
@@ -65,14 +65,15 @@ class BinanceApiCaller : public ApiCaller {
       return pair;
     }
 
+
   private:
     String Type() {
       return "BinanceApiCaller";
     }
 
     String ToString() {
-      String output = Type() + " - " + apiCredentials.name + "\n";
-      output += "API URL: " + apiCredentials.apiUrl + "\n";
+      String output = Type() + " - " + apiCredentials.Name + "\n";
+      output += "API URL: " + apiCredentials.ApiUrl + "\n";
       return output;
     }
 };

@@ -1,4 +1,6 @@
-#include <WiFi.h>
+#ifndef ESP32CLOCK
+#define ESP32CLOCK
+
 #include <NTPClient.h>
 #include <WiFiUdp.h>
 
@@ -84,10 +86,11 @@ class ESP32Clock : public Base {
      * Format:  yyyy-mm-dd hh:mm:ss
      * To:      1234567890 (10 digit, milliseconds since January 1st, 1970)
      */
-    uint32_t parseHumanReadableTime(String timestamp) {
+    uint32_t parseHumanReadableTimeToUnix(String timestamp) {
       if (!isClockConfigured()) {
         configureClock();
       }
+      println("Parsing Human Readable time to Unix:" + String(timestamp));
       struct tm timeinfo = {};
       timeinfo.tm_year = atoi(timestamp.substring(0,4).c_str()) - 1900;
       timeinfo.tm_mon = atoi(timestamp.substring(5,7).c_str()) - 1;
@@ -97,8 +100,7 @@ class ESP32Clock : public Base {
       timeinfo.tm_sec = atoi(timestamp.substring(17,19).c_str());
       time_t epoch_time = mktime(&timeinfo);
       uint32_t unix_time = epoch_time;
-      println("Parsed Unix to Human-Readable Timestamp: ");
-      Serial.printf("%u", unix_time);
+      println("Parsed Unix Timestamp: "+ String(unix_time));
       return unix_time;
     }
     
@@ -110,3 +112,5 @@ class ESP32Clock : public Base {
       return "ESP32Clock";
     }
 };
+
+#endif

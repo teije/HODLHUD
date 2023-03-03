@@ -1,3 +1,6 @@
+#ifndef WIFIMANAGER
+#define WIFIMANAGER
+
 #include <ESPmDNS.h>
 #include <ArduinoOTA.h>
 #include <WiFi.h>
@@ -34,3 +37,5 @@ class WirelessUpdateManager : public Base  {
       return "WirelessUpdateManager.h";
     }
 };
+
+#endif

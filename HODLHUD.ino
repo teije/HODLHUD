@@ -31,26 +31,16 @@ void setup()
   };
 
   println("Configuring WiFi manager");
-  int networkCount = 1;
-  WifiManager wifiManager(networks, networkCount);
+  WifiManager wifiManager;
   wifiManager.connect();
 
   // Configure the ability to do wireless updates
   WirelessUpdateManager wirelessUpdateManager(wifiManager);
   wirelessUpdateManager.configure("HODL-HUD", "dont-forget-your-towel");
 
-  // Define the Binance API credentials
-  println("Configuring API credentials");
-  ApiCredentials binanceCredentials = {
-    "Binance",
-    "X-MBX-APIKEY",
-    "QD9otAMisbjmuOfccmiltNINByzDzpQRjpFQOKjlzP8Xw4rqwdvbTbfnD2FClXh8",
-    "https://api.binance.com"
-  };
-
   // Create a new instance of the Binance API caller
   println("Configuring Binance API caller");
-  BinanceApiCaller binanceApiCaller(binanceCredentials, wifiManager); 
+  BinanceApiCaller binanceApiCaller(wifiManager); 
 
   // Get the Unix timestamp (for API calls)
   uint32_t unixTime = internalClock.getUnixTimestamp();
@@ -62,12 +52,12 @@ void setup()
   println("Current BTC/EUR price: " + String(currentPrice.value));
 
   String historicalReadableTime = "2012-09-14 12:00:00";
-  uint32_t historicalUnixTime = internalClock.parseHumanReadableTime(historicalReadableTime);
+  uint32_t historicalUnixTime = internalClock.parseHumanReadableTimeToUnix(historicalReadableTime);
   CurrencyPair historicalPrice = binanceApiCaller.getHistoricalPrice("BTC", "EUR", 1646400000000);
-  println("Historical BTC/EUR price: " + String(currentPrice.value));
+  println("Historical BTC/EUR price: " + String(historicalPrice.value));
 
   println("Setup end");
-  print("\n\n\n\n\n");
+  print("\n\n\n");
 }
 
 void loop()
@@ -90,5 +80,6 @@ void print(String message) {
   Serial.print(message);
 }
 void println(String message) {
-  Serial.print("\n[" + Type() + "] " + message);
+  String prefix = "\n[" + Type() + "]                    ";
+  Serial.print(prefix + message);
 }

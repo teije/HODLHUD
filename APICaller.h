@@ -5,13 +5,6 @@
 #include "WifiManager.h"
 #include <HTTPClient.h>
 
-struct ApiCredentials {
-  String name;
-  String apiKey;
-  String apiKeyLabel;
-  String apiUrl;
-};
-
 class ApiCaller : public Base {
   public:
     ApiCredentials apiCredentials;  // Credentials to specific what url & key to use
@@ -23,7 +16,7 @@ class ApiCaller : public Base {
       this->apiCredentials = apiCredentials;
       
       // Initialize the HTTP client
-      httpClient.begin(wifiClient, apiCredentials.apiUrl);
+      httpClient.begin(wifiClient, apiCredentials.ApiUrl);
     }
 
     /*
@@ -33,18 +26,18 @@ class ApiCaller : public Base {
     String GET(String endpoint) {
       // Ensure that there is a wifi connection
       wifiManager.ensureConnection();
-      
+
       // Create the client to make API calls
       HTTPClient http;
       // Construct the api call target url
-      String url = apiCredentials.apiUrl + endpoint;
+      String url = apiCredentials.ApiUrl + endpoint;
       http.begin(url);
       // Add header to identify ourselves in the api call
-      http.addHeader(apiCredentials.apiKeyLabel, apiCredentials.apiKey);
+      http.addHeader(apiCredentials.ApiKeyLabel, apiCredentials.ApiKey);
 
       // Run the GET api call
       int httpCode = http.GET();
-      println("Executing GET request on: " + url);
+      println("Executing GET request on "+ apiCredentials.Name +": " + url);
       String response = "";
       // Print the response to the serial monitor
       if (httpCode == HTTP_CODE_OK) {
@@ -72,8 +65,8 @@ class ApiCaller : public Base {
     }
 
     String ToString() {
-      String str = Type() + " - " + apiCredentials.name + "\n";
-      str += "API URL: " + apiCredentials.apiUrl;
+      String str = Type() + " - " + apiCredentials.Name + "\n";
+      str += "API URL: " + apiCredentials.ApiUrl;
       return str;
     }
 };

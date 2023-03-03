@@ -2,32 +2,18 @@
 #define WIFIMANAGER
 
 #include "Base.h"
+#include "SettingsManager.h"
 
 #include <WiFi.h>
 
-// Define a struct to store the SSID and password for each network
-struct NetworkCredentials {
-  String ssid;
-  String password;
-};
-
 class WifiManager: public Base  {
-  private:
-    NetworkCredentials* networkCredentials;  // An array of NetworkCredentials objects
-    int networkCount;   // Number of networks in the array
-    int maxAttempts;    // Maximum number of connection attempts
-
-    String Type() {
-      return "WiFiManager.h";
-    }
-    
   public:
     // Constructor that takes an array of NetworkCredentials objects and the number of networks in the array
     // Optional parameter to set the maximum number of connection attempts
-    WifiManager(NetworkCredentials* networkCredentials, int networkCount, int maxAttempts = 5) {
-      this->networkCredentials = networkCredentials;
-      this->networkCount = networkCount;
-      this->maxAttempts = maxAttempts;
+    WifiManager() {
+      this->networkCredentials = SettingsManager::NetworkCredentialList;
+      this->networkCount = SettingsManager::NetworkCredentialsCount;
+      this->maxAttempts = 5;
     }
 
     // Method to connect to the networks sequentially
@@ -38,10 +24,10 @@ class WifiManager: public Base  {
       // Loop through each network in the array
       for (int i = 0; i < networkCount; i++) {
         println("Target network ");
-        print(networkCredentials[i].ssid);
+        print(networkCredentials[i].Ssid);
 
         // Try to connect to the network
-        WiFi.begin(networkCredentials[i].ssid.c_str(), networkCredentials[i].password.c_str());
+        WiFi.begin(networkCredentials[i].Ssid.c_str(), networkCredentials[i].Password.c_str());
 
         // Wait for the connection to succeed or the maximum number of attempts to be reached
         while (WiFi.status() != WL_CONNECTED && attemptCount < maxAttempts) {
@@ -53,14 +39,14 @@ class WifiManager: public Base  {
         // If the connection succeeded, print the network SSID and IP address and break out of the loop
         if (attemptCount != maxAttempts) {
           println("Succesfully connected to: ");
-          print(networkCredentials[i].ssid);
+          print(networkCredentials[i].Ssid);
           println("Current device IP address: ");
           print(WiFi.localIP().toString());
           break;
         } else {
           // If the connection failed after the maximum number of attempts, print an error message
           println("Unable to connect to ");
-          print(networkCredentials[i].ssid);
+          print(networkCredentials[i].Ssid);
         }
       }
     }
@@ -83,6 +69,16 @@ class WifiManager: public Base  {
       }
 
       println("Connection OK!");
+    }
+    
+  private:
+    NetworkCredentials* networkCredentials;  // An array of NetworkCredentials objects
+    SettingsManager settingsManager;
+    int networkCount;   // Number of networks in the array
+    int maxAttempts;    // Maximum number of connection attempts
+
+    String Type() {
+      return "WiFiManager.h";
     }
 };
 

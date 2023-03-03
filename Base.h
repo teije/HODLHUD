@@ -13,10 +13,21 @@ class Base {
       return "Base";
     }
 
-    // A more verbose method to print to the serial monitor
     void println(String message) {
-      Serial.print("\n[" + Type() + "] " + message);
+      String prefix = "\n[" + Type() + "] ";
+      int prefixLength = prefix.length();
+    
+      // Determine the number of spaces to add based on the length of the prefix
+      int spacesToAdd = 30 - prefixLength;
+    
+      // Add the required number of spaces to the end of the prefix
+      for (int i = 0; i < spacesToAdd; i++) {
+        prefix += " ";
+      }
+    
+      Serial.print(prefix + message);
     }
+
     // A passthrough of the regular print method (to allow for easier to read code)
     void print(String message) {
       Serial.print(message);
