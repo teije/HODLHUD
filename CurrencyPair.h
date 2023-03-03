@@ -3,6 +3,9 @@
 
 #include "Base.h"
 
+/*
+ * Store the value of a CurrencyPair
+ */
 class CurrencyPair : public Base  {
   public:
     String currencyLabel;

@@ -14,10 +14,10 @@ struct ApiCredentials {
 
 class ApiCaller : public Base {
   public:
-    ApiCredentials apiCredentials;
-    HTTPClient httpClient;
-    WiFiClient wifiClient;
-    WifiManager wifiManager;
+    ApiCredentials apiCredentials;  // Credentials to specific what url & key to use
+    HTTPClient httpClient;          // Client to execute the calls to the api
+    WiFiClient wifiClient;          // Client to store a wifi connection
+    WifiManager wifiManager;        // Manager to establish a wifi connection
 
     ApiCaller(ApiCredentials apiCredentials, WifiManager wifiManager): wifiManager(wifiManager) {
       this->apiCredentials = apiCredentials;
@@ -26,18 +26,27 @@ class ApiCaller : public Base {
       httpClient.begin(wifiClient, apiCredentials.apiUrl);
     }
 
+    /*
+     * Execute a GET request on an API endpoint
+     * A GET request is an HTTP method that retrieves data from an API server using a URL endpoint
+     */
     String GET(String endpoint) {
       // Ensure that there is a wifi connection
       wifiManager.ensureConnection();
       
+      // Create the client to make API calls
       HTTPClient http;
+      // Construct the api call target url
       String url = apiCredentials.apiUrl + endpoint;
       http.begin(url);
+      // Add header to identify ourselves in the api call
       http.addHeader(apiCredentials.apiKeyLabel, apiCredentials.apiKey);
 
+      // Run the GET api call
       int httpCode = http.GET();
       println("Executing GET request on: " + url);
       String response = "";
+      // Print the response to the serial monitor
       if (httpCode == HTTP_CODE_OK) {
         response = http.getString();
         println("Response code: ");
@@ -51,6 +60,7 @@ class ApiCaller : public Base {
         println(response);
       }
 
+      // End the api request and return the result
       http.end();
       println("GET request completed!");
       return response;

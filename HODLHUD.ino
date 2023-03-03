@@ -80,6 +80,9 @@ void loop()
   //println("Loop end");
 }
 
+/*
+ * Since the main .ino file cannot inherit the Base class it has its own set of logging methods
+ */
 String Type() {
   return "HODLHUD";
 }

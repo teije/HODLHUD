@@ -11,6 +11,9 @@ class ESP32Clock : public Base {
       
     }
 
+    /*
+     * Configure the internal clock
+     */
     void configureClock() {
       println("Configuring clock... ");
       timeClient.begin();
@@ -21,6 +24,9 @@ class ESP32Clock : public Base {
       print("done!");
     }
 
+    /*
+     * Check if the internal clock has already been configured
+     */
     bool isClockConfigured() {
       if (!clockHasBeenConfigured) {
         println("The internal clock has not yet been configured");
@@ -30,6 +36,14 @@ class ESP32Clock : public Base {
       return true;
     }
 
+    /*
+     * Get the unix timestamp using the internal clock
+     * A Unix timestamp is a number representation of milliseconds since January 1st, 1970
+     * Mostly used for API calls
+     * 
+     * Why? More info & a unix-timestamp to readable-timestamp converter can be found here: 
+     * https://www.unixtimestamp.com/
+     */
     uint32_t getUnixTimestamp() {
       if (!isClockConfigured()) {
         configureClock();
@@ -42,6 +56,13 @@ class ESP32Clock : public Base {
       return timestamp;
     }
 
+    /*
+     * Get a human readable timestamp using the internal clock
+     * Mostly used for the UI
+     * 
+     * Format:  yyyy-mm-dd hh:mm:ss
+     * Example: 2023-03-03 09:06:36
+     */
     String getHumanReadableTime() {
       if (!isClockConfigured()) {
         configureClock();
@@ -58,6 +79,11 @@ class ESP32Clock : public Base {
       return humanReadableTime;
     }
 
+    /*
+     * Parse a human readable timestamp to a unix timestamp
+     * Format:  yyyy-mm-dd hh:mm:ss
+     * To:      1234567890 (10 digit, milliseconds since January 1st, 1970)
+     */
     uint32_t parseHumanReadableTime(String timestamp) {
       if (!isClockConfigured()) {
         configureClock();

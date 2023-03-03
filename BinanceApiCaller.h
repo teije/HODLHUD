@@ -12,6 +12,9 @@ class BinanceApiCaller : public ApiCaller {
       
     }
 
+    /*
+     * Get the current price of a currency pair
+     */
     CurrencyPair getCurrentPrice(const char* currencyLabel, const char* counterCurrencyLabel) {
       // Construct the endpoint with the given currency labels and timestamp
       String endpoint = "/api/v3/ticker/price?symbol=" +
@@ -33,6 +36,9 @@ class BinanceApiCaller : public ApiCaller {
       return pair;
     }
 
+    /*
+     * Get the price of a currency pair at a (historical) timestamp
+     */
     CurrencyPair getHistoricalPrice(const char* currencyLabel, const char* counterCurrencyLabel, uint64_t timestamp) {
       // Construct the endpoint with the given currency labels and timestamp
       String endpoint = "/api/v3/klines?symbol=" +
