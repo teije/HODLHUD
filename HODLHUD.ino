@@ -5,6 +5,7 @@
 #include "CurrencyPair.h"
 #include "ESP32Clock.h"
 #include "JsonParser.h"
+#include "Wallet.h"
 #include "WiFiManager.h"
 #include "WirelessUpdateManager.h"
 
@@ -55,6 +56,8 @@ void setup()
   uint32_t historicalUnixTime = internalClock.parseHumanReadableTimeToUnix(historicalReadableTime);
   CurrencyPair historicalPrice = binanceApiCaller.getHistoricalPrice("BTC", "EUR", 1646400000000);
   println("Historical BTC/EUR price: " + String(historicalPrice.value));
+
+  Wallet wallet("Binance");
 
   println("Setup end");
   print("\n\n\n");
