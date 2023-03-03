@@ -58,8 +58,13 @@ void setup()
   String timeStr = internalClock.getHumanReadableTime();
 
   // Get the current BTC/EUR price
-  CurrencyPair pairCurrentPrice = binanceApiCaller.getCurrentPrice("BTC", "EUR");
-  println("Current BTC/EUR price: " + String(pairCurrentPrice.value));
+  CurrencyPair currentPrice = binanceApiCaller.getCurrentPrice("BTC", "EUR");
+  println("Current BTC/EUR price: " + String(currentPrice.value));
+
+  String historicalReadableTime = "2012-09-14 12:00:00";
+  uint32_t historicalUnixTime = internalClock.parseHumanReadableTime(historicalReadableTime);
+  CurrencyPair historicalPrice = binanceApiCaller.getHistoricalPrice("BTC", "EUR", 1646400000000);
+  println("Historical BTC/EUR price: " + String(currentPrice.value));
 
   println("Setup end");
   print("\n\n\n\n\n");
