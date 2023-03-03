@@ -11,12 +11,13 @@ class CurrencyPair : public Base  {
     String currencyLabel;
     String counterCurrencyLabel;
     float value;
+    uint32_t timestamp;
     
-    CurrencyPair(String currencyLabel, String counterCurrencyLabel, float value) {
+    CurrencyPair(String currencyLabel, String counterCurrencyLabel, float value, uint32_t timestamp = 0) {
       this->currencyLabel = currencyLabel;
       this->counterCurrencyLabel = counterCurrencyLabel;
       this->value = value;
-
+      this->timestamp = timestamp;
     }
 
   private:
@@ -31,7 +32,6 @@ class CurrencyPair : public Base  {
       output += "Value: " + String(value) + "\n";
       return output;
     }
-
 };
 
 #endif
