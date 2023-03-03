@@ -18,6 +18,13 @@ class CurrencyPair : public Base  {
       this->counterCurrencyLabel = counterCurrencyLabel;
       this->value = value;
       this->timestamp = timestamp;
+
+      println("Created " + Label() + " " + Type());
+    }
+
+    String Label()
+    {
+      return currencyLabel+counterCurrencyLabel;
     }
 
   private:
