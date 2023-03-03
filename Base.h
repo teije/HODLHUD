@@ -10,10 +10,6 @@ class Base {
       return "Base";
     }
 
-    //virtual const String ToString() {
-    //  return "Base class - not intended to be initialized";
-    //}
-
     void print(String message) {
       Serial.print(message);
     }
