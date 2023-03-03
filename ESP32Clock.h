@@ -3,14 +3,11 @@
 #include <WiFiUdp.h>
 
 class ESP32Clock : public Base {
-  private:
-    WiFiUDP ntpUDP;
-    NTPClient timeClient;
-    bool clockHasBeenConfigured = false;
-
   public:
+    bool clockHasBeenConfigured = false;
+    
     ESP32Clock() : timeClient(ntpUDP) 
-    {
+    { 
       
     }
 
@@ -60,8 +57,12 @@ class ESP32Clock : public Base {
       print(humanReadableTime);
       return humanReadableTime;
     }
-
-    const String type() override {
-      return "ESP32Clock.h";
+    
+  private:
+    WiFiUDP ntpUDP;
+    NTPClient timeClient;
+    
+    String Type() {
+      return "ESP32Clock";
     }
 };

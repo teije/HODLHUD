@@ -6,24 +6,20 @@
 
 class Base {
   public:  
-    virtual const String type() {
-      return "Base.h";
+    virtual String Type() {
+      return "Base";
     }
 
-    virtual const String ToString() {
-      return "Base class - not intended to be initialized";
-    }
+    //virtual const String ToString() {
+    //  return "Base class - not intended to be initialized";
+    //}
 
     void print(String message) {
       Serial.print(message);
     }
 
     void println(String message) {
-      Serial.print("\n[" + type() + "] " + message);
-    }
-
-    void printCreateMessage() {
-      Serial.print("\n[" + type() + "] created!");
+      Serial.print("\n[" + Type() + "] " + message);
     }
 };
 #endif // BASE

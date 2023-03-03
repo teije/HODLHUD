@@ -17,7 +17,7 @@ class WifiManager: public Base  {
     int networkCount;   // Number of networks in the array
     int maxAttempts;    // Maximum number of connection attempts
 
-    const String type() override {
+    String Type() {
       return "WiFiManager.h";
     }
     
@@ -72,9 +72,7 @@ class WifiManager: public Base  {
 
     // Method to check if there is still a connection to the WiFi network
     bool isConnected() {
-      bool isConnectedToWifi = WiFi.status() == WL_CONNECTED;
-      println("WiFi Status: " + isConnectedToWifi);
-      return (isConnectedToWifi);
+      return (WiFi.status() == WL_CONNECTED);
     }
 
     void ensureConnection() {

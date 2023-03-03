@@ -3,25 +3,32 @@
 
 #include "Base.h"
 
-class CurrencyPair: public Base  {
-  private:
-
+class CurrencyPair : public Base  {
   public:
+    String currencyLabel;
+    String counterCurrencyLabel;
+    float value;
+    
     CurrencyPair(String currencyLabel, String counterCurrencyLabel, float value) {
       this->currencyLabel = currencyLabel;
       this->counterCurrencyLabel = counterCurrencyLabel;
       this->value = value;
 
-      printCreateMessage();
     }
 
-    const String type() override {
-      return "CurrencyPair.h";
+  private:
+    String Type() {
+      return "CurrencyPair";
     }
 
-    String currencyLabel;
-    String counterCurrencyLabel;
-    float value;
+    String ToString() {
+      String output = "Type: " + Type() + "\n";
+      output += "Currency Label: " + currencyLabel + "\n";
+      output += "Counter Currency Label: " + counterCurrencyLabel + "\n";
+      output += "Value: " + String(value) + "\n";
+      return output;
+    }
+
 };
 
 #endif

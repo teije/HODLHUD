@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include "CurrencyPair.h"
 
-class SpotPrice {
+class SpotPrice : public Base{
   public:
     CurrencyPair currency;
     String timestamp;
@@ -12,14 +12,16 @@ class SpotPrice {
     SpotPrice(CurrencyPair currency, String timestamp) {
       this->currency = currency;
       this->timestamp = timestamp;
+
+      printCreateMessage();
+    }
+
+    String Type() {
+      return "SpotPrice.h";
     }
 
     String ToString() {
-      return currency.ToString() + ", Timestamp: " + timestamp;
-    }
-
-    const String type() override {
-      return "SpotPrice.h";
+      return "Currency Pair: " + currency.currencyLabel + "/" + currency.counterCurrencyLabel + "for Timestamp: " + timestamp;
     }
 };
 

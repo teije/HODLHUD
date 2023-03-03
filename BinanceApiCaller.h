@@ -7,10 +7,9 @@
 
 class BinanceApiCaller : public ApiCaller {
   public:
-    BinanceApiCaller(ApiCredentials apiCredentials, WifiManager wifiManager)
-      : ApiCaller(apiCredentials, wifiManager)
+    BinanceApiCaller(ApiCredentials apiCredentials, WifiManager wifiManager) : ApiCaller(apiCredentials, wifiManager)
     {
-      ApiCaller::printCreateMessage();
+      
     }
 
     CurrencyPair getCurrentPrice(const char* currencyLabel, const char* counterCurrencyLabel) {
@@ -35,8 +34,14 @@ class BinanceApiCaller : public ApiCaller {
     }
 
   private:
-    const String type() override {
-      return "BinanceApiCaller.h";
+    String Type() {
+      return "BinanceApiCaller";
+    }
+
+    String ToString() {
+      String output = Type() + " - " + apiCredentials.name + "\n";
+      output += "API URL: " + apiCredentials.apiUrl + "\n";
+      return output;
     }
 };
 

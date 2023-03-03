@@ -7,7 +7,10 @@
 
 class WirelessUpdateManager : public Base  {
   public:
-    WirelessUpdateManager(WifiManager wifiManager): wifiManager(wifiManager) {}
+    WirelessUpdateManager(WifiManager wifiManager): wifiManager(wifiManager) 
+    {
+      
+    }
   
     void configure(const char* devicename, const char* devicePassword) {
       wifiManager.ensureConnection();
@@ -27,7 +30,7 @@ class WirelessUpdateManager : public Base  {
   private:
     WifiManager wifiManager;
 
-    const String type() override {
+    String Type() {
       return "WirelessUpdateManager.h";
     }
 };

@@ -18,8 +18,8 @@ class JsonParser : public Base {
     }
 
   private:
-    const String type() override {
-      return "JsonParser.h";
+    String Type() {
+      return "JsonParser";
     }
 };
 
