@@ -46,6 +46,16 @@ class Wallet {
         }
       }
       return nullptr;
+
+    String Type() {
+      return "Wallet";
+    }
+    
+    String ToString() {
+      String output = "Type: " + Type() + "\n";
+      output += "Name: " + name + "\n";
+      output += "Number of Balances: " + String(balanceCount) + "\n";
+      return output;
     }
 };
 
