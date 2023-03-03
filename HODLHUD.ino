@@ -61,13 +61,10 @@ void setup()
 }
 
 void loop()
-{
-  //println("Loop start");
-  
+{  
   internalClock.getHumanReadableTime();
 
   delay(1000);
-  //println("Loop end");
 }
 
 /*

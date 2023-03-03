@@ -1,5 +1,5 @@
-#ifndef WIFIMANAGER
-#define WIFIMANAGER
+#ifndef WIRELESSUPDATEMANAGER
+#define WIRELESSUPDATEMANAGER
 
 #include <ESPmDNS.h>
 #include <ArduinoOTA.h>
