@@ -1,7 +1,6 @@
 #ifndef BASE
 #define BASE
 
-#include <typeinfo>
 #pragma GCC diagnostic ignored "-fno-rtti"
 
 /*

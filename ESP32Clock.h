@@ -2,7 +2,6 @@
 #define ESP32CLOCK
 
 #include <NTPClient.h>
-#include <WiFiUdp.h>
 
 class ESP32Clock : public Base {
   public:

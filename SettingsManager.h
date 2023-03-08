@@ -62,7 +62,7 @@ int SettingsManager::ApiCredentialsCount = 1;
 
 NetworkCredentials SettingsManager::NetworkCredentialList[1] = 
 {
-  {"Home Teije", "KPNF8A4B6", "93bwMf2vsqdsVJcx"}
+  {"Hotspot Teije", "Deepthought", "dont-forget-your-towel"}
 };
 
 ApiCredentials SettingsManager::ApiCredentialList[1] = 

@@ -9,10 +9,6 @@
 #include "WiFiManager.h"
 #include "WirelessUpdateManager.h"
 
-const char* ssid = "your_wifi_ssid";
-const char* password = "your_wifi_password";
-const char* ntp_server = "pool.ntp.org";
-
 // Internal clock
 ESP32Clock internalClock;
 
@@ -25,12 +21,7 @@ void setup()
   Serial.begin(115200);
   println("Setup start");
 
-  // Configure WiFi Networks
-  println("Configuring network credentials");
-  NetworkCredentials networks[] = {
-    {"KPNF8A4B6", "93bwMf2vsqdsVJcx"}
-  };
-
+  // Configure WiFi Network
   println("Configuring WiFi manager");
   WifiManager wifiManager;
   wifiManager.connect();
