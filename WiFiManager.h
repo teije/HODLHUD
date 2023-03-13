@@ -18,38 +18,50 @@ class WifiManager: public Base  {
 
     // Method to connect to the networks sequentially
     void connect() {
-      println("Connecting to Wi-Fi...");
-      int attemptCount = 1;
-
+      println("Connecting to Wi-Fi");
+      
       // Loop through each network in the array
       for (int i = 0; i < networkCount; i++) {
         println("Target network ");
-        print(networkCredentials[i].Ssid);
-
+        print(networkCredentials[i].Name + " (" + networkCredentials[i].Ssid + ")");
+    
         // Try to connect to the network
         WiFi.begin(networkCredentials[i].Ssid.c_str(), networkCredentials[i].Password.c_str());
-
+        
+        int attemptCount = 1;
         // Wait for the connection to succeed or the maximum number of attempts to be reached
-        while (WiFi.status() != WL_CONNECTED && attemptCount < maxAttempts) {
+        
+        println("Establishing WiFi connection");
+        while (WiFi.status() != WL_CONNECTED && attemptCount <= maxAttempts) {
           delay(1000);
-          println("Connecting to WiFi... (" + String(attemptCount) + "/" + String(maxAttempts) + ")");
+          //println("Connecting to WiFi... (" + String(attemptCount) + "/" + String(maxAttempts) + ")");
+
+          print(".");
+          
           attemptCount++;
         }
-
-        // If the connection succeeded, print the network SSID and IP address and break out of the loop
-        if (attemptCount != maxAttempts) {
-          println("Succesfully connected to: ");
-          print(networkCredentials[i].Ssid);
+    
+        // If the connection succeeded, print the network SSID and IP address and return from the function
+        if (WiFi.status() == WL_CONNECTED) {
+          println("Successfully connected to: ");
+          print(networkCredentials[i].Name + " (" + networkCredentials[i].Ssid + ")");
           println("Current device IP address: ");
           print(WiFi.localIP().toString());
-          break;
+          return;
         } else {
           // If the connection failed after the maximum number of attempts, print an error message
           println("Unable to connect to ", "warning");
           print(networkCredentials[i].Ssid);
         }
       }
+      
+      // If all attempts fail, wait for some time before retrying
+      delay(1000);
+      
+      // Recursively call the connect() function to try again
+      connect();
     }
+
 
     // Method to set the maximum number of connection attempts
     void setMaxAttempts(int maxAttempts) {
