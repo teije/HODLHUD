@@ -12,8 +12,6 @@ class Base {
       return "Base";
     }
 
-    
-
     void println(String message, String messageType = "") {
       String prefix = "\n[" + Type() + "] ";
       
@@ -35,6 +33,10 @@ class Base {
       else if (messageType == "warning") 
       {
         message = "⚠ " + message;
+      }
+      else if(messageType == "todo")
+      {
+        message = "⚑ " + message;
       }
       else // add empty spaces so messages align
       {

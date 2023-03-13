@@ -10,7 +10,10 @@ class SDManager : public Base {
      *
      * @param chipSelectPin The pin number for the chip select pin on the SD card module.
      */
-    SDManager(int chipSelectPin) : chipSelectPin(chipSelectPin) {}
+    SDManager(int chipSelectPin) : chipSelectPin(chipSelectPin) 
+    {
+      println("Add pinout when operational", "todo");  
+    }
 
     /**
      * Initializes the SD card and returns true if successful, false otherwise.

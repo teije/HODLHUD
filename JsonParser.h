@@ -7,10 +7,15 @@
 
 class JsonParser : public Base {
   public:
+    JsonParser()
+    {
+      println("Handle error when parsing fails", "todo"); 
+    }
+
+  
     // Parse a Binance price ({"symbol":"BTCEUR","price":"22746.00000000"}) into a CurrencyPair object
     static CurrencyPair parseCurrencyPair(String json, String currencyLabel, String counterCurrencyLabel) {
-      // TODO: Add error handling
-      
+
       StaticJsonDocument<128> doc;
       deserializeJson(doc, json);
 
