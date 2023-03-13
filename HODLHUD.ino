@@ -27,7 +27,7 @@ void setup()
 
   // Configure the ability to do wireless updates
   WirelessUpdateManager wirelessUpdateManager(wifiManager);
-  wirelessUpdateManager.configure("HODL-HUD", "dont-forget-your-towel");
+  wirelessUpdateManager.configure("HODL-HUD", "123");
 
   // Create a new instance of the Binance API caller
   println("Configuring Binance API caller");
