@@ -30,7 +30,7 @@ class ESP32Clock : public Base {
      */
     bool isClockConfigured() {
       if (!clockHasBeenConfigured) {
-        println("The internal clock has not yet been configured");
+        println("The internal clock has not yet been configured", "warning");
         return false;
       }
       

@@ -45,7 +45,7 @@ class WifiManager: public Base  {
           break;
         } else {
           // If the connection failed after the maximum number of attempts, print an error message
-          println("Unable to connect to ");
+          println("Unable to connect to ", "warning");
           print(networkCredentials[i].Ssid);
         }
       }

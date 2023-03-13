@@ -47,7 +47,7 @@ class ApiCaller : public Base {
         println("Response message: ");
         print(response);
       } else {
-        println("Error in response. Status code: ");
+        println("Error in response. Status code: ", "error");
         print(String(httpCode));
         response = http.getString();
         println(response);

@@ -71,6 +71,6 @@ void print(String message) {
   Serial.print(message);
 }
 void println(String message) {
-  String prefix = "\n[" + Type() + "]                    ";
+  String prefix = "\n[" + Type() + "]                      ";
   Serial.print(prefix + message);
 }

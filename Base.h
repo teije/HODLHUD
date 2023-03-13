@@ -12,8 +12,11 @@ class Base {
       return "Base";
     }
 
-    void println(String message) {
+    
+
+    void println(String message, String messageType = "") {
       String prefix = "\n[" + Type() + "] ";
+      
       int prefixLength = prefix.length();
     
       // Determine the number of spaces to add based on the length of the prefix
@@ -22,6 +25,20 @@ class Base {
       // Add the required number of spaces to the end of the prefix
       for (int i = 0; i < spacesToAdd; i++) {
         prefix += " ";
+      }
+
+      // Add optional marker based on type
+      if (messageType == "error") 
+      {
+        message = "✖ " + message;
+      }
+      else if (messageType == "warning") 
+      {
+        message = "⚠ " + message;
+      }
+      else // add empty spaces so messages align
+      {
+        message = "  " + message;
       }
     
       Serial.print(prefix + message);
