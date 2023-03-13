@@ -9,8 +9,8 @@
 #include "WiFiManager.h"
 #include "WirelessUpdateManager.h"
 
-// Internal clock
-ESP32Clock internalClock;
+WifiManager wifiManager;
+ESP32Clock internalClock(wifiManager);
 
 String toString();
 void print(String message);
@@ -23,7 +23,6 @@ void setup()
 
   // Configure WiFi Network
   println("Configuring WiFi manager");
-  WifiManager wifiManager;
   wifiManager.connect();
 
   // Configure the ability to do wireless updates
