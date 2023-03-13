@@ -7,15 +7,14 @@ class ESP32Clock : public Base {
   public:
     bool clockHasBeenConfigured = false;
     
-    ESP32Clock() : timeClient(ntpUDP) 
-    { 
-      
-    }
+    ESP32Clock(WifiManager wifiManager) : timeClient(ntpUDP), wifiManager(wifiManager) { }
 
     /*
      * Configure the internal clock
      */
     void configureClock() {
+      wifiManager.ensureConnection();
+
       println("Configuring clock... ");
       timeClient.begin();
       timeClient.setPoolServerName("pool.ntp.org");
@@ -28,12 +27,14 @@ class ESP32Clock : public Base {
     /*
      * Check if the internal clock has already been configured
      */
-    bool isClockConfigured() {
+    bool isConfigured() {
       if (!clockHasBeenConfigured) {
         println("The internal clock has not yet been configured", "warning");
+        clockHasBeenConfigured = false;
         return false;
       }
-      
+
+      clockHasBeenConfigured = true;
       return true;
     }
 
@@ -46,7 +47,7 @@ class ESP32Clock : public Base {
      * https://www.unixtimestamp.com/
      */
     uint32_t getUnixTimestamp() {
-      if (!isClockConfigured()) {
+      if (!isConfigured()) {
         configureClock();
       }
 
@@ -65,7 +66,7 @@ class ESP32Clock : public Base {
      * Example: 2023-03-03 09:06:36
      */
     String getHumanReadableTime() {
-      if (!isClockConfigured()) {
+      if (!isConfigured()) {
         configureClock();
       }
       time_t now = timeClient.getEpochTime();
@@ -86,7 +87,7 @@ class ESP32Clock : public Base {
      * To:      1234567890 (10 digit, milliseconds since January 1st, 1970)
      */
     uint32_t parseHumanReadableTimeToUnix(String timestamp) {
-      if (!isClockConfigured()) {
+      if (!isConfigured()) {
         configureClock();
       }
       println("Parsing Human Readable time to Unix:" + String(timestamp));
@@ -106,6 +107,8 @@ class ESP32Clock : public Base {
   private:
     WiFiUDP ntpUDP;
     NTPClient timeClient;
+    WifiManager wifiManager; // Manager to establish a wifi connection
+
     
     String Type() {
       return "ESP32Clock";
