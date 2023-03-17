@@ -12,7 +12,8 @@ class ApiCaller : public Base {
     WiFiClient wifiClient;          // Client to store a wifi connection
     WifiManager wifiManager;        // Manager to establish a wifi connection
 
-    ApiCaller(ApiCredentials apiCredentials, WifiManager wifiManager): wifiManager(wifiManager) {
+    ApiCaller(ApiCredentials apiCredentials, WifiManager wifiManager): wifiManager(wifiManager) 
+    {
       this->apiCredentials = apiCredentials;
       
       // Initialize the HTTP client
