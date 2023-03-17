@@ -27,7 +27,6 @@ void setup()
   bool isInitialized = sdManager.initialize();
   if (isInitialized)
   {
-    sdManager.deleteAllInDir("/");
     sdManager.runExampleOperations();
   }
 
