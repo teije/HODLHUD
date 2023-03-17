@@ -60,6 +60,22 @@ public:
     return true;
   }
 
+  bool fileExists(const char *path) {
+    bool fileAlreadyExists = SD.exists(path);
+
+    if(fileAlreadyExists)
+    {
+      println("\tFile [" +  String(path) + "] exists");
+    }
+    else
+    {
+      println("\tFile [" +  String(path) + "] does not exist", "warning");
+    }
+    
+    return fileAlreadyExists;
+  }
+
+
   void runExampleOperations()
   {
     println("Running example operations");
@@ -80,6 +96,8 @@ public:
 
   void readFile(fs::FS &fs, const char * path) {
     println("Reading file: " + String(path));
+    
+    fileExists(path);
 
     File file = fs.open(path);
     println("\tOpening file for reading");
@@ -98,6 +116,8 @@ public:
   void writeFile(fs::FS &fs, const char * path, const char * message) {
     println("Writing file: " + String(path));
 
+    fileExists(path);
+    
     File file = fs.open(path, FILE_WRITE);
     
     println("\tOpening file for writing");
@@ -115,6 +135,9 @@ public:
 
   void deleteFile(fs::FS &fs, const char * path){
       println("Deleting file: " + String(path));
+
+      fileExists(path);
+      
       if(fs.remove(path)){
           println("\tDelete OK");
       } else {
