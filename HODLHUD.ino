@@ -12,10 +12,7 @@
 
 WifiManager wifiManager;
 ESP32Clock internalClock(wifiManager);
-
-// Settings for the SD card
-const int chipSelectPin = 27;
-SDManager sdManager(chipSelectPin);
+SDManager sdManager;
 
 String toString();
 void print(String message);
@@ -25,6 +22,14 @@ void setup()
 {
   Serial.begin(115200);
   println("Setup start");
+
+  // Configure SD card manager
+  bool isInitialized = sdManager.initialize();
+  if (isInitialized)
+  {
+    sdManager.deleteAllInDir("/");
+    sdManager.runExampleOperations();
+  }
 
   // Configure WiFi Network
   println("Configuring WiFi manager");
@@ -53,20 +58,6 @@ void setup()
   println("Historical BTC/EUR price: " + String(historicalPrice.value));
 
   Wallet wallet("Binance");
-
-  // Initialize SD card
-  if (!sdManager.begin()) {
-    return;
-  }
-
-  // Write data to a file on the SD card.
-  sdManager.write("helloworld.txt", "Hello, world!");
-
-  // Read data from a file on the SD card.
-  println(sdManager.read("helloworld.txt"));
-
-  // Delete a file from the SD card.
-  sdManager.remove("helloworld.txt");
 
   println("Setup end");
   print("\n\n\n");
