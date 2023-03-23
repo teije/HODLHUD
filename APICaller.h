@@ -10,9 +10,9 @@ class ApiCaller : public Base {
     ApiCredentials apiCredentials;  // Credentials to specific what url & key to use
     HTTPClient httpClient;          // Client to execute the calls to the api
     WiFiClient wifiClient;          // Client to store a wifi connection
-    WifiManager wifiManager;        // Manager to establish a wifi connection
+    WiFiManager wifiManager;        // Manager to establish a wifi connection
 
-    ApiCaller(ApiCredentials apiCredentials, WifiManager wifiManager): wifiManager(wifiManager) 
+    ApiCaller(ApiCredentials apiCredentials, WiFiManager wifiManager): wifiManager(wifiManager) 
     {
       this->apiCredentials = apiCredentials;
       

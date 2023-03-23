@@ -7,7 +7,7 @@
 
 class BinanceApiCaller : public ApiCaller {
   public:
-    BinanceApiCaller(WifiManager wifiManager) : ApiCaller(apiCredentials, wifiManager)
+    BinanceApiCaller(WiFiManager wifiManager) : ApiCaller(apiCredentials, wifiManager)
     {
       this->apiCredentials = SettingsManager::GetApiCredentialByName("Binance");
     }

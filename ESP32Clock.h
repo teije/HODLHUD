@@ -7,7 +7,7 @@ class ESP32Clock : public Base {
   public:
     bool clockHasBeenConfigured = false;
     
-    ESP32Clock(WifiManager wifiManager) : timeClient(ntpUDP), wifiManager(wifiManager) { }
+    ESP32Clock(WiFiManager wifiManager) : timeClient(ntpUDP), wifiManager(wifiManager) { }
 
     /*
      * Configure the internal clock
@@ -107,7 +107,7 @@ class ESP32Clock : public Base {
   private:
     WiFiUDP ntpUDP;
     NTPClient timeClient;
-    WifiManager wifiManager; // Manager to establish a wifi connection
+    WiFiManager wifiManager; // Manager to establish a wifi connection
 
     
     String Type() {

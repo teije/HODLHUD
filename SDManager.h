@@ -60,7 +60,6 @@ class SDManager : public Base {
       return true;
     }
 
-
     void runExampleOperations()
     {
       print("\n\n");
@@ -177,7 +176,6 @@ class SDManager : public Base {
         }
       }
     }
-
 
     void createFolder(const char * path) {
       println("Creating folder: " + String(path));

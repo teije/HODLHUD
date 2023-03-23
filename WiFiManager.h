@@ -6,11 +6,11 @@
 
 #include <WiFi.h>
 
-class WifiManager: public Base  {
+class WiFiManager: public Base  {
   public:
     // Constructor that takes an array of NetworkCredentials objects and the number of networks in the array
     // Optional parameter to set the maximum number of connection attempts
-    WifiManager() {
+    WiFiManager() {
       this->networkCredentials = SettingsManager::NetworkCredentialList;
       this->networkCount = SettingsManager::NetworkCredentialsCount;
       this->maxAttempts = 5;

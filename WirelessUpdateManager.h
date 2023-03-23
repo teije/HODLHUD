@@ -10,7 +10,7 @@
 
 class WirelessUpdateManager : public Base  {
   public:
-    WirelessUpdateManager(WifiManager wifiManager): wifiManager(wifiManager) 
+    WirelessUpdateManager(WiFiManager wifiManager): wifiManager(wifiManager) 
     {
       
     }
@@ -31,7 +31,7 @@ class WirelessUpdateManager : public Base  {
     }
 
   private:
-    WifiManager wifiManager;
+    WiFiManager wifiManager;
 
     String Type() {
       return "WirelessUpdateManager.h";
