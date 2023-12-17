@@ -82,6 +82,12 @@ class WiFiManager: public Base  {
 
       println("Connection OK!");
     }
+
+    void printIpAddress()
+    {
+      println("Current device IP address: ");
+      print(WiFi.localIP().toString());
+    }
     
   private:
     NetworkCredentials* networkCredentials;  // An array of NetworkCredentials objects

@@ -29,7 +29,7 @@ class BinanceApiCaller : public ApiCaller {
       deserializeJson(doc, response);
 
       // Parse JSON response
-      float value = doc["price"];
+      String value = doc["price"];
     
       // Create and return CurrencyPair object
       CurrencyPair pair(currencyLabel, counterCurrencyLabel, value);
@@ -58,7 +58,7 @@ class BinanceApiCaller : public ApiCaller {
       deserializeJson(doc, response);
 
       // Get the closing price from the klines array
-      float value = doc[0][4].as<float>();
+      String value = doc[0][4];
 
       // Create and return CurrencyPair object
       CurrencyPair pair(currencyLabel, counterCurrencyLabel, value);

@@ -64,7 +64,7 @@ class Wallet : public Base {
       println("Loading Blanaces into the "+ name +" wallet");
       
       // Create currency pairs
-      CurrencyPair usdEur("USD", "EUR", 0.85);
+      CurrencyPair usdEur("USD", "EUR", "0.85");
     
       // Create Balance objects using the currency pairs
       Balance balance(usdEur, 100.0);

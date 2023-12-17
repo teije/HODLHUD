@@ -104,7 +104,7 @@ class SDManager : public Base {
       return fileAlreadyExists;
     }
 
-    String readFile(const char * path) {
+    const char * readFile(const char * path) {
       println("Reading file: " + String(path));
 
       bool exists = fileExists(path);
@@ -119,7 +119,7 @@ class SDManager : public Base {
         }
 
         println("\t Data in file: ");
-        String fileContents = "";
+        const char *  fileContents = "";
         while (file.available()) {
           Serial.write(file.read());
         }
@@ -158,8 +158,6 @@ class SDManager : public Base {
       println("If the file exists, its contents will be replaced");
 
       fileExists(path);
-
-
     }
 
     void deleteFile(const char * path) {
@@ -176,7 +174,7 @@ class SDManager : public Base {
         }
       }
     }
-
+    
     void createFolder(const char * path) {
       println("Creating folder: " + String(path));
       bool exists = fileExists(path);
