@@ -18,6 +18,7 @@ class ApiCaller : public Base {
       
       // Initialize the HTTP client
       httpClient.begin(wifiClient, apiCredentials.ApiUrl);
+      println("Created...");
     }
 
     /*

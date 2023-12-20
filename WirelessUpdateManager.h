@@ -11,7 +11,10 @@
 
 class WirelessUpdateManager : public Base {
 public:
-  WirelessUpdateManager(WiFiManager wifiManager) : server(80), wifiManager(wifiManager) {} // Initialize server in the constructor initializer list
+  WirelessUpdateManager(WiFiManager wifiManager) : server(80), wifiManager(wifiManager) 
+  {
+    println("Created...");
+  } 
 
   void begin() {
     wifiManager.ensureConnection(); // Ensure WiFi connection using WifiManager

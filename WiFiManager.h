@@ -18,7 +18,7 @@ class WiFiManager: public Base  {
 
     // Method to connect to the networks sequentially
     void connect() {
-      println("Connecting to Wi-Fi");
+      println("Connecting to Wi-Fi", "configure");
       
       // Loop through each network in the array
       for (int i = 0; i < networkCount; i++) {
@@ -44,7 +44,8 @@ class WiFiManager: public Base  {
         // If the connection succeeded, print the network SSID and IP address and return from the function
         if (WiFi.status() == WL_CONNECTED) {
           println("Successfully connected to: ");
-          print(networkCredentials[i].Name + " (" + networkCredentials[i].Ssid + ")");
+          this->connectedNetworkSsid = networkCredentials[i].Ssid;
+          print(networkCredentials[i].Name + " (" + connectedNetworkSsid + ")");
           println("Current device IP address: ");
           print(WiFi.localIP().toString());
           return;
@@ -74,26 +75,27 @@ class WiFiManager: public Base  {
     }
 
     void ensureConnection() {
-      println("Ensuring WiFi connection...");
+      println("Ensuring WiFi connection...", "configure");
       if (!isConnected()) {
         println("Connection lost. Reconnecting...");
         connect();
       }
 
-      println("Connection OK!");
+      println("Connection OK! (" + connectedNetworkSsid + ")");
     }
 
     void printIpAddress()
     {
-      println("Current device IP address: ");
+      println("Current device IP address: ", "configure");
       print(WiFi.localIP().toString());
     }
     
   private:
     NetworkCredentials* networkCredentials;  // An array of NetworkCredentials objects
     SettingsManager settingsManager;
-    int networkCount;   // Number of networks in the array
-    int maxAttempts;    // Maximum number of connection attempts
+    int networkCount;                        // Number of networks in the array
+    int maxAttempts;                         // Maximum number of connection attempts
+    String connectedNetworkSsid;             // Name of the currently connected network
 
     String Type() {
       return "WiFiManager.h";

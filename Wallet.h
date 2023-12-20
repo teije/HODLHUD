@@ -8,24 +8,31 @@ const int MAX_BALANCES = 100; // maximum number of balances in the wallet
 
 class Wallet : public Base {
   public:
-    String name;
+    String walletName;
     Balance* balances;
     int balanceCount;
 
-    Wallet(String name) {
-      this->name = name;
+    Wallet(String walletName) {
+      this->walletName = walletName;
       this->balanceCount = 0;
-      this->balances = nullptr; // initialize to nullptr
+      this->balances = new Balance[MAX_BALANCES]; // Allocate memory for balances
+    
+      println("Created " + Type() + " for " + walletName);
+    }
 
-      println("Created " + name + " " + Type());
+    // This is a destructor?
+    ~Wallet() {
+      delete[] balances; // Free the allocated memory
     }
 
     void Add(Balance balance) {
-      println("Adding Balance to " + name + " wallet");
-      
+      println("Adding Balance of "+ balance.amountToString() + balance.currencyPair.Label() + " to " + walletName + " wallet");
+    
       if (balanceCount < MAX_BALANCES) {
         balances[balanceCount] = balance;
         balanceCount++;
+      } else {
+        println("Cannot add more balances, reached the maximum limit of " + MAX_BALANCES);
       }
     }
 
@@ -55,22 +62,26 @@ class Wallet : public Base {
       return *(Balance*)nullptr;
     }
 
-    /*
-     * This method is a placeholder until we can read from the SD card
-     * WARNING: Using this method currently breaks something in the memory
-     *          Probably should not use this an donly use it for reference
-     */
     void LoadCryptoBalances() {
-      println("Loading Blanaces into the "+ name +" wallet");
-      
-      // Create currency pairs
-      CurrencyPair usdEur("USD", "EUR", "0.85");
+      println("Loading Blanaces into the "+ walletName +" wallet");
+
+      CurrencyPair BTC_EUR("BTC", "EUR");
+      CurrencyPair ETH_EUR("ETH", "EUR");
+      CurrencyPair EUR_USDT("EUR", "USDT");
     
       // Create Balance objects using the currency pairs
-      Balance balance(usdEur, 100.0);
+      Balance balance_BTC_EUR(BTC_EUR, 4.20);
+      Balance balance_ETH_EUR(ETH_EUR, 6.9);
+      Balance balance_EUR_USDT(EUR_USDT, 42);
     
       // Add the Balance objects to the Wallet's list of balances
-      Add(balance);
+      Add(balance_BTC_EUR);
+      Add(balance_ETH_EUR);
+      Add(balance_EUR_USDT);
+
+      println("TODO: Add some method to fetch values for all CurrencyPairs in wallet", "todo");
+      println("TODO: Write Wallet, Balance and Pairs to SD", "todo");
+      
     }
 
 
@@ -80,7 +91,7 @@ class Wallet : public Base {
     
     String ToString() {
       String output = "Type: " + Type() + "\n";
-      output += "Name: " + name + "\n";
+      output += "Name: " + walletName + "\n";
       output += "Number of Balances: " + String(balanceCount) + "\n";
       return output;
     }

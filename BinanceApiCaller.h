@@ -10,6 +10,7 @@ class BinanceApiCaller : public ApiCaller {
     BinanceApiCaller(WiFiManager wifiManager) : ApiCaller(apiCredentials, wifiManager)
     {
       this->apiCredentials = SettingsManager::GetApiCredentialByName("Binance");
+      println("Created...");
     }
 
     /*
@@ -29,7 +30,7 @@ class BinanceApiCaller : public ApiCaller {
       deserializeJson(doc, response);
 
       // Parse JSON response
-      String value = doc["price"];
+      float value = doc["price"];
     
       // Create and return CurrencyPair object
       CurrencyPair pair(currencyLabel, counterCurrencyLabel, value);
@@ -58,7 +59,7 @@ class BinanceApiCaller : public ApiCaller {
       deserializeJson(doc, response);
 
       // Get the closing price from the klines array
-      String value = doc[0][4];
+      float value = doc[0][4].as<float>();
 
       // Create and return CurrencyPair object
       CurrencyPair pair(currencyLabel, counterCurrencyLabel, value);
@@ -75,6 +76,13 @@ class BinanceApiCaller : public ApiCaller {
       String output = Type() + " - " + apiCredentials.Name + "\n";
       output += "API URL: " + apiCredentials.ApiUrl + "\n";
       return output;
+    }
+
+    const char * convertFloatToCharArray(float value, int ARRAY_LENGTH)
+    {
+      char result[ARRAY_LENGTH];
+      dtostrf(value, ARRAY_LENGTH, 3, result);
+      return result;
     }
 };
 

@@ -24,7 +24,7 @@ class SDManager : public Base {
   public:
     SDManager()
     {
-
+      println("Created...");
     }
 
     bool initialize()

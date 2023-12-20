@@ -2,7 +2,6 @@
 #include "ApiCaller.h"
 #include "Base.h"
 #include "BinanceApiCaller.h"
-#include "BinanceManager.h"
 #include "CurrencyPair.h"
 #include "ESP32Clock.h"
 #include "SDManager.h"
@@ -10,7 +9,6 @@
 #include "JsonParser.h"
 #include "Wallet.h"
 #include "WiFiManager.h"
-#include "WirelessDebuggingManager.h"
 #include "WirelessUpdateManager.h"
 
 WiFiManager wifiManager;
@@ -21,11 +19,14 @@ String toString();
 
 WirelessUpdateManager wirelessUpdateManager(wifiManager);
 BinanceApiCaller binanceApiCaller(wifiManager);
-WirelessDebuggingManager wirelessDebuggingManager(wifiManager);
+
+int baudrate = 115200;
 
 void setup()
 {
-  Serial.begin(115200);
+  // Set Baudrate
+  Serial.begin(baudrate);
+  println("Set baudrate for Serial Monitor to: " + baudrate);
   println("Setup start");
 
   // Configure WiFi Network
@@ -45,17 +46,18 @@ void setup()
 
   // Get the current BTC/EUR price
   CurrencyPair currentPrice = binanceApiCaller.getCurrentPrice("BTC", "EUR");
-  String message_currentPrice = "Current BTC/EUR price: " + currentPrice.value;
+  String message_currentPrice = "Current BTC/EUR price: " + currentPrice.ValueToString();
   println(message_currentPrice);
 
   String historicalReadableTime = "2012-09-14 12:00:00";
   uint32_t historicalUnixTime = internalClock.parseHumanReadableTimeToUnix(historicalReadableTime);
   CurrencyPair historicalPrice = binanceApiCaller.getHistoricalPrice("BTC", "EUR", 1646400000000);
 
-  //const char * message_historicalPrice = "Historical BTC/EUR price: " + historicalPrice.value;
-  //println(message_historicalPrice);
+  String message_historicalPrice = "Historical BTC/EUR price: " + historicalPrice.ValueToString();
+  println(message_historicalPrice);
 
-  Wallet wallet("Binance");
+  Wallet binanceWallet("Binance");
+  binanceWallet.LoadCryptoBalances();
 
   println("Setup end");
   print("\n\n\n");
@@ -64,16 +66,14 @@ void setup()
 void loop()
 {
   wirelessUpdateManager.handle();
-  internalClock.getHumanReadableDateTime();
-  wirelessDebuggingManager.
-  wifiManager.printIpAddress();
 
-  // CurrencyPair currentPrice = binanceApiCaller.getCurrentPrice("BTC", "EUR");
-  // String message_currentPrice = "Current BTC/EUR price: " + currentPrice.value;
-  // println(message_currentPrice);
-  
-  
+  println("Current Human-readable date/time: " + internalClock.getHumanReadableDateTime());
+  println("Current Human-readable date: " + internalClock.getCurrentDate());
+  println("Current Human-readable time: " + internalClock.getCurrentTime());
+
+  wifiManager.printIpAddress();
   delay(1000);
+
 }
 
 /*
@@ -89,12 +89,5 @@ void print(String message)
 }
 void println(String message) 
 {
-  Serial.println("\n[HOLDHUD]                      " + message);
-}
-
-const char * convertFloatToCharArray(float value, int ARRAY_LENGTH)
-{
-  char result[ARRAY_LENGTH];
-  dtostrf(value, ARRAY_LENGTH, 3, result);
-  return result;
+  Serial.print("\n[HOLDHUD]                      " + message);
 }

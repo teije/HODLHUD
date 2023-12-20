@@ -26,17 +26,21 @@ class Base {
       }
 
       // Add optional marker based on type
-      if (messageType == "error") 
+      if (messageType == "error") // Use for critically breaking things
       {
         message = "✖ " + message;
       }
-      else if (messageType == "warning") 
+      else if (messageType == "warning") // Use for non-critical breaking things, but should not be this way
       {
         message = "⚠ " + message;
       }
-      else if(messageType == "todo")
+      else if(messageType == "todo") // Use to include to-do's in the logs
       {
         message = "⚑ " + message;
+      }
+      else if(messageType == "configure") // Use for code that configures things to make them easier to spot
+      {
+        message = "⚙ " + message;
       }
       else // add empty spaces so messages align
       {

@@ -9,7 +9,8 @@ class JsonParser : public Base {
   public:
     JsonParser()
     {
-      println("Handle error when parsing fails", "warning"); 
+      println("Created...");
+      println("TODO: Handle error when parsing fails", "warning"); 
     }
 
   
@@ -19,7 +20,7 @@ class JsonParser : public Base {
       StaticJsonDocument<128> doc;
       deserializeJson(doc, json);
 
-      String counterValue = doc["price"];
+      float counterValue = doc["price"].as<float>();
 
       return CurrencyPair(currencyLabel, counterCurrencyLabel, counterValue);
     }

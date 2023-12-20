@@ -15,13 +15,12 @@ class ESP32Clock : public Base {
     void configureClock() {
       wifiManager.ensureConnection();
 
-      println("Configuring clock... ");
       timeClient.begin();
       timeClient.setPoolServerName("pool.ntp.org");
       timeClient.setTimeOffset(3600);
       timeClient.update();
       clockHasBeenConfigured = true;
-      print("done!");
+      println("Configured clock", "configure");
     }
 
     /*
@@ -58,17 +57,28 @@ class ESP32Clock : public Base {
       return timestamp;
     }
 
-    String getCurrentYear() {
+    String getCurrentTime() 
+    {
+      return getHumanReadableDateTime().substring(11);
+    }
+    String getCurrentDate()
+    {
+      String dateString = getCurrentDay() + "-";
+      dateString += getCurrentMonth() + "-";
+      dateString += getCurrentYear();
+      return dateString;
+    }
+    String getCurrentYear() 
+    {
       return getHumanReadableDateTime().substring(0, 4);
     }
-    String getCurrentMonth() {
+    String getCurrentMonth() 
+    {
       return getHumanReadableDateTime().substring(5, 7);
     }
-    String getCurrentDay() {
+    String getCurrentDay() 
+    {
       return getHumanReadableDateTime().substring(8, 10);
-    }
-    String getCurrentTime() {
-      return getHumanReadableDateTime().substring(11);
     }
 
     /*
@@ -93,8 +103,6 @@ class ESP32Clock : public Base {
       // Format and print so the time is actually readable
       strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &timeinfo);
       String humanReadableTime(buf);
-      println("Human-readable time: ");
-      print(humanReadableTime);
       return humanReadableTime;
     }
 
