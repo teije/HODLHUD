@@ -17,8 +17,6 @@ class CurrencyPair : public Base  {
     {
       this->currencyLabel = currencyLabel;
       this->counterCurrencyLabel = counterCurrencyLabel;
-
-      println("Created " + Type() + " for " + Label() + " without value");
     }
     
     CurrencyPair(String currencyLabel, String counterCurrencyLabel, float value, uint32_t timestamp = 0) 
