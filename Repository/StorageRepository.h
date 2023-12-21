@@ -1,0 +1,234 @@
+#ifndef STORAGE_REPOSITORY
+#define STORAGE_REPOSITORY
+
+#include "FS.h"
+#include "SD.h"
+#include "SPI.h"
+
+/*
+   Connect the SD card to the following pins:
+
+   SD Card | ESP32
+      D2       -
+      D3       SS
+      CMD      MOSI
+      VSS      G  ND
+      VDD      3.3V
+      CLK      SCK
+      VSS      GND
+      D0       MISO
+      D1       -
+*/
+
+class StorageRepository {
+  public:
+    StorageRepository() {}
+
+    bool Initialize()
+    {
+      if (!SD.begin()) {
+        return false;
+      }
+
+      uint8_t cardType = SD.cardType();
+
+      if (cardType == CARD_NONE) {
+        return false;
+      }
+
+      // //println("SD Card Type: ");
+      // if (cardType == CARD_MMC) {
+      //   //print("MMC");
+      // } else if (cardType == CARD_SD) {
+      //   //print("SDSC");
+      // } else if (cardType == CARD_SDHC) {
+      //   //print("SDHC");
+      // } else {
+      //   //print("UNKNOWN");
+      // }
+
+      uint64_t cardSize = SD.cardSize() / (1024 * 1024);
+      // //println("SD Card Size: " + String(cardSize) + "MB");
+
+      return true;
+    }
+
+    void RunExampleOperations()
+    {
+      //print("\n\n");
+      //println("Running example operations");
+      // Create a test directory
+      CreateFolder("/example-folder");
+      // Create a test file inside the test folder
+      CreateFile("/example-folder/hello_world.txt", "Hello world!");
+      // Read the entire contents of the created & appended file
+      ReadFile("/example-folder/hello_world.txt");
+      // Show what is in the flolders:
+      GetFolderContents("/");
+      GetFolderContents("/example-folder");
+      // Delete the file
+      DeleteFile("/example-folder/hello_world.txt");
+      // Delete the folder
+      DeleteFolder("/example-folder");
+      // Show that everything has been cleaned up
+      GetFolderContents("/");
+
+      uint64_t totalSpace = SD.totalBytes() / (1024 * 1024);
+      uint64_t usedSpace = SD.usedBytes() / (1024 * 1024);
+
+      //println("Total space: " + String(totalSpace) + "MB");
+      //println("Used space: " + String(usedSpace) + "MB");
+
+      //println("Completed example operations\n\n");
+    }
+
+    bool FileExists(const char *path) {
+      bool fileAlreadyExists = SD.exists(path);
+
+      if (fileAlreadyExists)
+      {
+        //println("\t File [" +  String(path) + "] exists");
+      }
+      else
+      {
+        //println("\t File [" +  String(path) + "] does not exist", "warning");
+      }
+
+      return fileAlreadyExists;
+    }
+
+    const char * ReadFile(const char * path) {
+      //println("Reading file: " + String(path));
+
+      bool exists = FileExists(path);
+
+      if (exists)
+      {
+        File file = SD.open(path);
+        //println("\t Opening file for reading");
+        if (!file) {
+          //println("\t Opening FAILED", "warning");
+          return "";
+        }
+
+        //println("\t Data in file: ");
+        const char *  fileContents = "";
+        while (file.available()) {
+          Serial.write(file.read());
+        }
+        file.close();
+      }
+    }
+
+    void CreateFile(const char * path, const char * message)
+    {
+      //println("Creating file: " + String(path));
+      //println("If no file exists yet, it will be created");
+
+      bool exists = FileExists(path);
+
+      if (exists == false)
+      {
+        File file = SD.open(path, FILE_WRITE);
+
+        //println("\t Opening file for writing");
+        if (!file) {
+          //println("\t Opening FAILED", "warning");
+          return;
+        }
+        if (file.print(message)) {
+          //println("\t Write OK");
+        } else {
+          //println("\t Write FAILED", "warning");
+        }
+        file.close();
+      }
+    }
+
+    void UpdateFile(const char * path, const char * message)
+    {
+      //println("Updating file: " + String(path));
+      //println("If the file exists, its contents will be replaced");
+
+      FileExists(path);
+    }
+
+    void DeleteFile(const char * path) {
+      //println("Deleting file: " + String(path));
+
+      bool exists = FileExists(path);
+
+      if (exists)
+      {
+        if (SD.remove(path)) {
+          //println("\t Delete OK");
+        } else {
+          //println("\t Delete FAILED", "warning");
+        }
+      }
+    }
+    
+    void CreateFolder(const char * path) {
+      //println("Creating folder: " + String(path));
+      bool exists = FileExists(path);
+
+      if (exists == false)
+      {
+        if (SD.mkdir(path)) {
+          //println("\t Create OK");
+        } else {
+          //println("\t Create FAILED", "warning");
+        }
+      }
+    }
+
+    void DeleteFolder(const char * path) {
+      //println("Deleting folder: " + String(path));
+
+      bool exists = FileExists(path);
+
+      if (exists)
+      {
+        if (SD.rmdir(path)) {
+          //println("\t Delete OK");
+        } else {
+          //println("\t Delete FAILED", "warning");
+        }
+      }
+    }
+
+    void GetFolderContents(const char * dirname) {
+      //println("Listing directory: " + String(dirname));
+
+      bool exists = FileExists(dirname);
+
+      if (exists)
+      {
+        File root = SD.open(dirname);
+        if (!root) {
+          //println("\t Opening folder FAILED", "warning");
+          return;
+        }
+        if (!root.isDirectory()) {
+          //println("\t The thing you are trying to open is not a directory", "warning");
+          return;
+        }
+
+        File file = root.openNextFile();
+        while (file) {
+          if (file.isDirectory()) {
+            //println("\t " + String(dirname) + "/" + String(file.name()));
+          } else {
+            //println("\t " + String(dirname) + "/" + String(file.name()));
+            //print(" [" + String(file.size()) + "bytes]");
+          }
+          file = root.openNextFile();
+        }
+      }
+    }
+
+  private:
+    
+};
+
+#endif
