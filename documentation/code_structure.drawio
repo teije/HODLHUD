@@ -1,13 +1,13 @@
 <mxfile host="65bd71144e" linkTarget="_blank" scale="1" border="0">
     <diagram id="QskkoMAm8eNEaI13tsmw" name="Page-1">
-        <mxGraphModel dx="2040" dy="2198" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="612" dy="1946" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="47" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontColor=#CCCCCC;endArrow=none;endFill=0;" edge="1" parent="1" source="9" target="43">
+                <mxCell id="48" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fontColor=#CCCCCC;endArrow=none;endFill=0;" parent="1" source="9" target="22" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="48" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.75;entryY=0;entryDx=0;entryDy=0;fontColor=#CCCCCC;endArrow=none;endFill=0;" edge="1" parent="1" source="9" target="22">
+                <mxCell id="71" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;endArrow=none;endFill=0;dashed=1;" parent="1" source="9" target="70" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <object label="ApiCaller" hedietLinkedDataV1_path="../../ApiCaller.h" id="9">
@@ -15,80 +15,156 @@
                         <mxGeometry x="900" y="80" width="160" height="60" as="geometry"/>
                     </mxCell>
                 </object>
-                <mxCell id="29" style="edgeStyle=none;html=1;endArrow=none;endFill=0;" edge="1" parent="1" source="10" target="13">
+                <mxCell id="29" style="edgeStyle=none;html=1;endArrow=none;endFill=0;" parent="1" source="10" target="13" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="32" value="" style="edgeStyle=none;html=1;endArrow=none;endFill=0;" edge="1" parent="1" source="10" target="21">
+                <mxCell id="32" value="" style="edgeStyle=none;html=1;endArrow=none;endFill=0;" parent="1" source="10" target="21" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="36" value="" style="edgeStyle=none;html=1;endArrow=none;endFill=0;" edge="1" parent="1" source="10" target="21">
+                <mxCell id="36" value="" style="edgeStyle=none;html=1;endArrow=none;endFill=0;" parent="1" source="10" target="21" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <object label="Balance" hedietLinkedDataV1_path="../../Balance.h" id="10">
                     <mxCell style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
-                        <mxGeometry x="1290" y="100" width="120" height="60" as="geometry"/>
+                        <mxGeometry x="1290" y="35" width="120" height="60" as="geometry"/>
                     </mxCell>
                 </object>
-                <object label="Base" hedietLinkedDataV1_path="../../Base.h" id="11">
-                    <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                        <mxGeometry x="900" y="-240" width="160" height="60" as="geometry"/>
-                    </mxCell>
-                </object>
-                <mxCell id="49" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontColor=#CCCCCC;endArrow=none;endFill=0;" edge="1" parent="1" source="12" target="9">
+                <mxCell id="49" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;fontColor=#CCCCCC;endArrow=none;endFill=0;" parent="1" source="12" target="9" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
+                <mxCell id="85" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;endArrow=none;endFill=0;dashPattern=1 2;strokeWidth=2;fillColor=#e3c800;strokeColor=#B09500;" edge="1" parent="1" source="12" target="13">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="86" value="Get currency&lt;br&gt;values from&lt;br&gt;Binance" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="85">
+                    <mxGeometry x="-0.0864" y="-3" relative="1" as="geometry">
+                        <mxPoint as="offset"/>
+                    </mxGeometry>
+                </mxCell>
                 <object label="BinanceApiCaller" hedietLinkedDataV1_path="../../BinanceApiCaller.h" id="12">
-                    <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                    <mxCell style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
                         <mxGeometry x="900" y="-50" width="160" height="60" as="geometry"/>
                     </mxCell>
                 </object>
                 <object label="CurrencyPair" hedietLinkedDataV1_path="../../CurrencyPair.h" id="13">
-                    <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                        <mxGeometry x="1290" y="260" width="120" height="60" as="geometry"/>
+                    <mxCell style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                        <mxGeometry x="1290" y="125" width="120" height="60" as="geometry"/>
                     </mxCell>
                 </object>
-                <mxCell id="39" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;exitX=0.75;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="14" target="22">
+                <mxCell id="39" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0.25;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;exitX=1.006;exitY=0.383;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="14" target="22" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="40" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="14" target="23">
+                <mxCell id="84" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;dashed=1;" edge="1" parent="1" source="14" target="83">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
                 <object label="ESP32Clock" hedietLinkedDataV1_path="../../ESP32Clock.h" id="14">
-                    <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                        <mxGeometry x="550" y="80" width="160" height="60" as="geometry"/>
+                    <mxCell style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                        <mxGeometry x="510" y="90" width="160" height="60" as="geometry"/>
                     </mxCell>
                 </object>
-                <object label="JsonParser" hedietLinkedDataV1_path="../../JsonParser.h" id="16">
-                    <mxCell style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                        <mxGeometry x="510" y="540" width="160" height="60" as="geometry"/>
-                    </mxCell>
-                </object>
-                <mxCell id="17" value="SDManager" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="870" y="540" width="160" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="19" value="SettingsManager" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="690" y="540" width="160" height="60" as="geometry"/>
-                </mxCell>
-                <mxCell id="28" style="edgeStyle=none;html=1;entryX=0.5;entryY=0;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1">
-                    <mxGeometry relative="1" as="geometry">
-                        <mxPoint x="1349" y="10" as="sourcePoint"/>
-                        <mxPoint x="1349" y="100" as="targetPoint"/>
-                    </mxGeometry>
-                </mxCell>
-                <mxCell id="37" value="" style="edgeStyle=none;html=1;endArrow=none;endFill=0;" edge="1" parent="1" source="21" target="10">
+                <mxCell id="68" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;endArrow=none;endFill=0;dashed=1;" parent="1" source="16" target="67" edge="1">
                     <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="21" value="Wallet" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+                <object label="JsonParser" hedietLinkedDataV1_path="../../JsonParser.h" id="16">
+                    <mxCell style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                        <mxGeometry x="250" width="160" height="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="61" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;endArrow=none;endFill=0;dashed=1;" parent="1" source="17" target="56" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="62" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;endArrow=none;endFill=0;dashed=1;" parent="1" source="17" target="59" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="63" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;endArrow=none;endFill=0;dashed=1;" parent="1" source="17" target="60" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <object label="SDManager" hedietLinkedDataV1_path="../../SDManager.h" id="17">
+                    <mxCell style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                        <mxGeometry x="50" width="160" height="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="69" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;fontSize=10;endArrow=none;endFill=0;dashed=1;" parent="1" source="19" target="66" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="74" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;" parent="1" source="19" target="22" edge="1">
+                    <mxGeometry relative="1" as="geometry">
+                        <Array as="points">
+                            <mxPoint x="660" y="550"/>
+                            <mxPoint x="660" y="320"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <object label="SettingsManager" hedietLinkedDataV1_path="../../SettingsManager.h" id="19">
+                    <mxCell style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                        <mxGeometry x="690" y="520" width="160" height="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="37" value="" style="edgeStyle=none;html=1;endArrow=none;endFill=0;" parent="1" source="21" target="10" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="Wallet" style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
                     <mxGeometry x="1290" y="-50" width="120" height="60" as="geometry"/>
                 </mxCell>
-                <mxCell id="22" value="WiFiManager" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="690" y="290" width="160" height="60" as="geometry"/>
+                <mxCell id="73" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;dashed=1;" parent="1" source="22" target="72" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="23" value="WirelessUpdateManager" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
-                    <mxGeometry x="510" y="290" width="160" height="60" as="geometry"/>
+                <object label="WiFiManager" hedietLinkedDataV1_path="../../WiFiManager.h" id="22">
+                    <mxCell style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                        <mxGeometry x="690" y="290" width="160" height="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="75" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.75;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;dashed=1;" parent="1" source="23" target="72" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
                 </mxCell>
-                <mxCell id="43" value="HTTPClient" style="whiteSpace=wrap;html=1;labelBorderColor=none;dashed=1;strokeColor=#999999;fontColor=#CCCCCC;" vertex="1" parent="1">
-                    <mxGeometry x="900" y="290" width="160" height="60" as="geometry"/>
+                <mxCell id="79" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;dashed=1;" parent="1" source="23" target="76" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="80" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;endArrow=none;endFill=0;" parent="1" source="23" target="77" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="81" style="edgeStyle=orthogonalEdgeStyle;html=1;exitX=0.25;exitY=1;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;dashed=1;endArrow=none;endFill=0;" parent="1" source="23" target="78" edge="1">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="82" style="edgeStyle=orthogonalEdgeStyle;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;endArrow=none;endFill=0;" edge="1" parent="1" source="23" target="22">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <object label="WirelessUpdateManager" hedietLinkedDataV1_path="../../WirelessUpdateManager.h" id="23">
+                    <mxCell style="whiteSpace=wrap;html=1;" parent="1" vertex="1">
+                        <mxGeometry x="410" y="290" width="160" height="60" as="geometry"/>
+                    </mxCell>
+                </object>
+                <mxCell id="56" value="FS.h" style="whiteSpace=wrap;html=1;labelBorderColor=none;dashed=1;strokeColor=#999999;fontColor=#CCCCCC;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="110" y="80" width="100" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="59" value="FD.h" style="whiteSpace=wrap;html=1;labelBorderColor=none;dashed=1;strokeColor=#999999;fontColor=#CCCCCC;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="110" y="160" width="100" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="60" value="SPI.h" style="whiteSpace=wrap;html=1;labelBorderColor=none;dashed=1;strokeColor=#999999;fontColor=#CCCCCC;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="110" y="240" width="100" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="66" value="Arduino.h" style="whiteSpace=wrap;html=1;labelBorderColor=none;dashed=1;strokeColor=#999999;fontColor=#CCCCCC;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="750" y="600" width="100" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="67" value="ArduinoJson.h" style="whiteSpace=wrap;html=1;labelBorderColor=none;dashed=1;strokeColor=#999999;fontColor=#CCCCCC;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="310" y="80" width="100" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="70" value="HTTPClient.h" style="whiteSpace=wrap;html=1;labelBorderColor=none;dashed=1;strokeColor=#999999;fontColor=#CCCCCC;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="960" y="160" width="100" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="72" value="WiFi.h" style="whiteSpace=wrap;html=1;labelBorderColor=none;dashed=1;strokeColor=#999999;fontColor=#CCCCCC;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="750" y="370" width="100" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="76" value="WebServer.h" style="whiteSpace=wrap;html=1;labelBorderColor=none;dashed=1;strokeColor=#999999;fontColor=#CCCCCC;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="440" width="100" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="77" value="ESPmDNS.h" style="whiteSpace=wrap;html=1;labelBorderColor=none;dashed=1;strokeColor=#999999;fontColor=#CCCCCC;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="520" width="100" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="78" value="Update.h" style="whiteSpace=wrap;html=1;labelBorderColor=none;dashed=1;strokeColor=#999999;fontColor=#CCCCCC;fontSize=10;" parent="1" vertex="1">
+                    <mxGeometry x="470" y="600" width="100" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="83" value="NTPClient.h" style="whiteSpace=wrap;html=1;labelBorderColor=none;dashed=1;strokeColor=#999999;fontColor=#CCCCCC;fontSize=10;" vertex="1" parent="1">
+                    <mxGeometry x="570" y="170" width="100" height="60" as="geometry"/>
                 </mxCell>
             </root>
         </mxGraphModel>

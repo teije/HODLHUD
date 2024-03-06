@@ -2,7 +2,7 @@
 #define WIRELESSUPDATEMANAGER_H
 
 #include <WiFi.h>
-#include <WiFiClient.h>
+#include <WiFiClient.h> // Can be removed? We are using WiFiManager for the internet connection
 #include <WebServer.h>
 #include <ESPmDNS.h>
 #include <Update.h>
