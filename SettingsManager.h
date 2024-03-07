@@ -48,7 +48,7 @@ class SettingsManager {
      * WARNING! The count integer and the value in between the [] must be equal!!!
      */
     static int NetworkCredentialsCount;
-    static NetworkCredentials NetworkCredentialList[2];
+    static NetworkCredentials NetworkCredentialList[4];
 
     /*
      * WARNING! The count integer and the value in between the [] must be equal!!!
@@ -57,13 +57,15 @@ class SettingsManager {
     static ApiCredentials ApiCredentialList[1];
 };
 
-int SettingsManager::NetworkCredentialsCount = 2;
+int SettingsManager::NetworkCredentialsCount = 4;
 int SettingsManager::ApiCredentialsCount = 1;
 
-NetworkCredentials SettingsManager::NetworkCredentialList[2] = 
+NetworkCredentials SettingsManager::NetworkCredentialList[4] = 
 {
+  {"WiFi - Pap & Mam", "Ziggo12857", "EmmaDeBeatl3!"},
+  {"WiFi - Pap & Mam [5GHz]", "Ziggo12857 5GHz", "EmmaDeBeatl3!"},
   {"WiFi Hotspot - Telefoon Teije", "Deepthought", "dont-forget-your-towel"},
-  {"WiFi - Guest T&N", "KPNF8A4B6_GUEST", "937K6Pj14Z1tJn1T"}
+  {"WiFi - Guest T&N", "KPNF8A4B6_GUEST", "937K6Pj14Z1tJn1T"},
 };
 
 ApiCredentials SettingsManager::ApiCredentialList[1] = 

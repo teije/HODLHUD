@@ -54,5 +54,14 @@ class Base {
     void print(String message) {
       Serial.print(message);
     }
+
+    // Passthrough method to handle numbers
+    void print(int number) {
+      print(String(number));
+    }
+    // Passthrough method to handle numbers
+    void println(int number, String messageType = "") {
+      println(String(number), messageType);
+    }
 };
 #endif // BASE

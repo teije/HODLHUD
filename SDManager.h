@@ -12,7 +12,7 @@
       D2       -
       D3       SS
       CMD      MOSI
-      VSS      G  ND
+      VSS      GND
       VDD      3.3V
       CLK      SCK
       VSS      GND
