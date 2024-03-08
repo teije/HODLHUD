@@ -7,7 +7,7 @@
 #include <ESPmDNS.h>
 #include <Update.h>
 #include "Base.h"
-#include "WifiManager.h"
+#include "WiFiManager.h"
 
 class WirelessUpdateManager : public Base {
 public:
