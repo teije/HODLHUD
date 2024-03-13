@@ -1,9 +1,13 @@
 #ifndef JSONPARSER
 #define JSONPARSER
 
+/** HODLHUD CLASSES */
 #include "Base.h"
 #include "CurrencyPair.h"
+
+/** EXTERNAL LIBRARIES */
 #include <ArduinoJson.h>
+#include <string>
 
 class JsonParser : public Base {
   public:
@@ -17,7 +21,7 @@ class JsonParser : public Base {
     // Parse a Binance price ({"symbol":"BTCEUR","price":"22746.00000000"}) into a CurrencyPair object
     static CurrencyPair parseCurrencyPair(String json, String currencyLabel, String counterCurrencyLabel) {
 
-      StaticJsonDocument<128> doc;
+      JsonDocument doc;
       deserializeJson(doc, json);
 
       float counterValue = doc["price"].as<float>();

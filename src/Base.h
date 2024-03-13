@@ -1,7 +1,9 @@
 #ifndef BASE
 #define BASE
 
-#pragma GCC diagnostic ignored "-fno-rtti"
+#include <Arduino.h>
+
+// #pragma GCC diagnostic ignored "-fno-rtti"
 
 /*
  * Base class provides shared functionality to derived classes, reducing code repetition and improving maintenance.
@@ -56,11 +58,11 @@ class Base {
     }
 
     // Passthrough method to handle numbers
-    void print(int number) {
+    void printInt(int number) {
       print(String(number));
     }
     // Passthrough method to handle numbers
-    void println(int number, String messageType = "") {
+    void printlnInt(int number, String messageType = "") {
       println(String(number), messageType);
     }
 };

@@ -2,6 +2,7 @@
 #define SETTINGSMANAGER
 
 #include <Arduino.h>
+#include <string>
 
 // Struct to store network credentials
 struct NetworkCredentials {

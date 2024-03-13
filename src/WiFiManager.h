@@ -4,6 +4,7 @@
 #include "Base.h"
 #include "SettingsManager.h"
 
+#include <string>
 #include <WiFi.h>
 
 class WiFiManager: public Base  {
@@ -101,7 +102,7 @@ class WiFiManager: public Base  {
       if (numNetworks == 0) {
         println("No networks found.");
       } else {
-        println (numNetworks);
+        printlnInt(numNetworks);
         print(" networks found:");
         for (int i = 0; i < numNetworks; ++i) {
           println("- ");

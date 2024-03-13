@@ -3,6 +3,8 @@
 
 #include "CurrencyPair.h"
 
+#include <string>
+
 class Balance : public Base {
 public:
     float amount;

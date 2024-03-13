@@ -4,6 +4,7 @@
 #include "FS.h"
 #include "SD.h"
 #include "SPI.h"
+#include <string>
 
 /*
    Connect the SD card to the following pins:

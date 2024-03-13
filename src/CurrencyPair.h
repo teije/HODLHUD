@@ -3,6 +3,8 @@
 
 #include "Base.h"
 
+#include <string>
+
 /*
  * Store the value of a CurrencyPair
  */

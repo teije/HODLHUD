@@ -4,6 +4,8 @@
 #include "Balance.h"
 #include "CurrencyPair.h"
 
+#include <string>
+
 const int MAX_BALANCES = 100; // maximum number of balances in the wallet
 
 class Wallet : public Base {

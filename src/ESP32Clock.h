@@ -2,6 +2,7 @@
 #define ESP32CLOCK
 
 #include <NTPClient.h>
+#include <string>
 
 class ESP32Clock : public Base {
   public:

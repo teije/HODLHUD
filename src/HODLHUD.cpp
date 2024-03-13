@@ -5,20 +5,21 @@
 #include "CurrencyPair.h"
 #include "ESP32Clock.h"
 #include "SDManager.h"
-#include <string.h>
 #include "JsonParser.h"
 #include "Wallet.h"
 #include "WiFiManager.h"
 #include "WirelessUpdateManager.h"
 
+#include <string>
+
 WiFiManager wifiManager;
 ESP32Clock internalClock(wifiManager);
 SDManager sdManager;
-
-String toString();
-
 WirelessUpdateManager wirelessUpdateManager(wifiManager);
 BinanceApiCaller binanceApiCaller(wifiManager);
+
+void print(String message);
+void println(String message);
 
 int baudrate = 115200;
 
@@ -77,16 +78,17 @@ void loop()
 }
 
 /*
-   Since the main .ino file cannot inherit the Base class it has its own set of logging methods
+   Shorthand method to print the provided message to the serial monitor
+   Starts the message on the same line as the previous message
 */
-String Type() 
-{
-  return "HODLHUD";
-}
 void print(String message) 
 {
   Serial.print(message);
 }
+/*
+   Shorthand method to print the provided message to the serial monitor
+   Starts the message on a newline
+*/
 void println(String message) 
 {
   Serial.print("\n[HOLDHUD]                      " + message);

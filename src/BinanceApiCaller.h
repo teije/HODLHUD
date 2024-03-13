@@ -3,7 +3,9 @@
 
 #include "ApiCaller.h"
 #include "CurrencyPair.h"
+
 #include <ArduinoJson.h>
+#include <string>
 
 class BinanceApiCaller : public ApiCaller {
   public:
@@ -26,7 +28,7 @@ class BinanceApiCaller : public ApiCaller {
       String response = GET(endpoint);
 
       // Parse the response string into a JSON object
-      StaticJsonDocument<256> doc;
+      JsonDocument doc;
       deserializeJson(doc, response);
 
       // Parse JSON response
@@ -55,7 +57,7 @@ class BinanceApiCaller : public ApiCaller {
       String response = GET(endpoint);
 
       // Parse the response string into a JSON object
-      StaticJsonDocument<1024> doc;
+      JsonDocument doc;
       deserializeJson(doc, response);
 
       // Get the closing price from the klines array
@@ -76,13 +78,6 @@ class BinanceApiCaller : public ApiCaller {
       String output = Type() + " - " + apiCredentials.Name + "\n";
       output += "API URL: " + apiCredentials.ApiUrl + "\n";
       return output;
-    }
-
-    const char * convertFloatToCharArray(float value, int ARRAY_LENGTH)
-    {
-      char result[ARRAY_LENGTH];
-      dtostrf(value, ARRAY_LENGTH, 3, result);
-      return result;
     }
 };
 

@@ -1,13 +1,15 @@
 #ifndef WIRELESSUPDATEMANAGER_H
 #define WIRELESSUPDATEMANAGER_H
 
-#include <WiFi.h>
-#include <WiFiClient.h> // Can be removed? We are using WiFiManager for the internet connection
-#include <WebServer.h>
-#include <ESPmDNS.h>
-#include <Update.h>
 #include "Base.h"
 #include "WiFiManager.h"
+
+#include <ESPmDNS.h>
+#include <string>
+#include <Update.h>
+#include <WebServer.h>
+#include <WiFi.h>
+#include <WiFiClient.h> // Can be removed? We are using WiFiManager for the internet connection
 
 class WirelessUpdateManager : public Base {
 public:
